@@ -13,3 +13,7 @@ type Image struct {
 func NewMagickImage(info *ImageInfo, width, height uint, background *MagickPixelPacket) *Image {
 	return &Image{img: C.NewMagickImage(info.info, C.size_t(width), C.size_t(height), background.mpp)}
 }
+
+func newImageFromCAPI(img *C.Image) *Image {
+	return &Image{img}
+}
