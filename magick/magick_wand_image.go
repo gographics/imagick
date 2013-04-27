@@ -7,8 +7,7 @@ package magick
 import "C"
 
 import (
-//"fmt"
-//"unsafe"
+	"unsafe"
 )
 
 // Returns the current image from the magick wand
@@ -51,7 +50,7 @@ func (mw *MagickWand) AdaptiveResizeImage(columns, rows uint) error {
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
 // sigma: the standard deviation of the Gaussian, in pixels.
 func (mw *MagickWand) AdaptiveSharpenImage(radius, sigma float64) error {
-	C.MAgickAdaptiveSharpenImage(mw.wand, C.double(radius), C.double(sigma))
+	C.MagickAdaptiveSharpenImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
 }
 
@@ -62,7 +61,7 @@ func (mw *MagickWand) AdaptiveSharpenImage(radius, sigma float64) error {
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
 // sigma: the standard deviation of the Gaussian, in pixels.
 func (mw *MagickWand) AdaptiveSharpenImageChannel(channel ChannelType, radius, sigma float64) error {
-	C.MagickAdaptiveSharpenImage(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
+	C.MagickAdaptiveSharpenImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
 }
 
@@ -93,7 +92,7 @@ func (mw *MagickWand) AddNoiseImage(noiseType NoiseType) error {
 }
 
 // Adds random noise to the image's channel
-func (mw *MagickWand) AddNoiseImage(channel ChannelType, noiseType NoiseType) error {
+func (mw *MagickWand) AddNoiseImageChannel(channel ChannelType, noiseType NoiseType) error {
 	C.MagickAddNoiseImageChannel(mw.wand, C.ChannelType(channel), C.NoiseType(noiseType))
 	return mw.GetLastError()
 }
@@ -155,7 +154,7 @@ func (mw *MagickWand) AutoLevelImage() error {
 }
 
 // Adjust the levels of a particular image channel by scaling the minimum and maximum values to the full quantum range.
-func (mw *MagickWand) AutoLevelImage(channel ChannelType) error {
+func (mw *MagickWand) AutoLevelImageChannel(channel ChannelType) error {
 	C.MagickAutoLevelImageChannel(mw.wand, C.ChannelType(channel))
 	return mw.GetLastError()
 }
@@ -256,11 +255,92 @@ func (mw *MagickWand) ClipImage() error {
 // inside: if true, later operations take effect inside clipping path. Otherwise later operations take effect outside clipping path
 func (mw *MagickWand) ClipImagePath(pathname string, inside bool) error {
 	cspathname := C.CString(pathname)
-	defer C.free(cspathname)
+	defer C.free(unsafe.Pointer(cspathname))
 	csinside := 0
 	if inside {
 		csinside = 1
 	}
 	C.MagickClipImagePath(mw.wand, cspathname, C.MagickBooleanType(csinside))
 	return mw.GetLastError()
+}
+
+// Replaces colors in the image from a color lookup table
+func (mw *MagickWand) ClutImage(clut *MagickWand) error {
+	C.MagickClutImage(mw.wand, clut.wand)
+	return mw.GetLastError()
+}
+
+// Replaces colors in the image's channel from a color lookup table
+func (mw *MagickWand) ClutImageChannel(channel ChannelType, clut *MagickWand) error {
+	C.MagickClutImageChannel(mw.wand, C.ChannelType(channel), clut.wand)
+	return mw.GetLastError()
+}
+
+// Composites a set of images while respecting any page offsets and disposal methods. GIF, MIFF, and MNG
+// animation sequences typically start with an image background and each subsequent image varies in size
+// and offset. CoalesceImages() returns a new sequence where each image in the sequence is the same size
+// as the first and composited with the next image in the sequence.
+func (mw *MagickWand) CoalesceImages() *MagickWand {
+	return &MagickWand{wand: C.MagickCoalesceImages(mw.wand)}
+}
+
+// Accepts a lightweight Color Correction Collection (CCC) file which solely contains one or more color
+// corrections and applies the color correction to the image. Here is a sample CCC file content:
+// <colorcorrectioncollection xmlns="urn:ASC:CDL:v1.2">
+//   <colorcorrection id="cc03345">
+//     <sopnode>
+//       <slope> 0.9 1.2 0.5 </slope>
+//       <offset> 0.4 -0.5 0.6 </offset>
+//       <power> 1.0 0.8 1.5 </power>
+//     </sopnode>
+//     <satnode>
+//       <saturation> 0.85 </saturation>
+//     </satnode>
+//   </colorcorrection>
+// </colorcorrectioncollection>
+func (mw *MagickWand) ColorDecisionListImage(cccXML string) error {
+	cscccXML := C.CString(cccXML)
+	defer C.free(unsafe.Pointer(cscccXML))
+	C.MagickColorDecisionListImage(mw.wand, cscccXML)
+	return mw.GetLastError()
+}
+
+// Blends the fill color with each pixel in the image
+func (mw *MagickWand) ColorizeImage(colorize, opacity *PixelWand) error {
+	C.MagickColorizeImage(mw.wand, colorize.pixel, opacity.pixel)
+	return mw.GetLastError()
+}
+
+// Apply color transformation to an image. The method permits saturation changes, hue rotation, luminance
+// to alpha, and various other effects. Although variable-sized transformation matrices can be used,
+// typically one uses a 5x5 matrix for an RGBA image and a 6x6 for CMYKA (or RGBA with offsets). The matrix
+// is similar to those used by Adobe Flash except offsets are in column 6 rather than 5 (in support of CMYKA
+// images) and offsets are normalized (divide Flash offset by 255).
+func (mw *MagickWand) ColorMatrixImage(colorMatrix *KernelInfo) error {
+	C.MagickColorMatrixImage(mw.wand, colorMatrix.info)
+	return mw.GetLastError()
+}
+
+// Combines one or more images into a single image. The grayscale value of the pixels of each image in the
+// sequence is assigned in order to the specified hannels of the combined image. The typical ordering would
+// be image 1 => Red, 2 => Green, 3 => Blue, etc.
+func (mw *MagickWand) CombineImages(channel ChannelType) *MagickWand {
+	return &MagickWand{C.MagickCombineImages(mw.wand, C.ChannelType(channel))}
+}
+
+// Adds a comment to your image
+func (mw *MagickWand) CommentImage(comment string) error {
+	cscomment := C.CString(comment)
+	defer C.free(unsafe.Pointer(cscomment))
+	C.MagickCommentImage(mw.wand, cscomment)
+	return mw.GetLastError()
+}
+
+// Compares one or more image channels of an image to a reconstructed image and returns the difference image
+func (mw *MagickWand) CompareImageChannels(reference *MagickWand, channel ChannelType, metric MetricType) (wand *MagickWand, distortion float64) {
+	cdistortion := C.double(0)
+	cmw := C.MagickCompareImageChannels(mw.wand, reference.wand, C.ChannelType(channel), C.MetricType(metric), &cdistortion)
+	wand = &MagickWand{cmw}
+	distortion = float64(cdistortion)
+	return
 }
