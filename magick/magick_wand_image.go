@@ -344,3 +344,8 @@ func (mw *MagickWand) CompareImageChannels(reference *MagickWand, channel Channe
 	distortion = float64(cdistortion)
 	return
 }
+
+// Compares each image with the next in a sequence and returns the maximum bounding region of any pixel differences it discovers.
+func (mw *MagickWand) CompareImageLayers(method ImageLayerMethod) *MagickWand {
+	return &MagickWand{C.MagickCompareImageLayers(mw.wand, C.ImageLayerMethod(method))}
+}
