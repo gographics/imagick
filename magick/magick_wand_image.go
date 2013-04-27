@@ -379,3 +379,77 @@ func (mw *MagickWand) CompositeImageChannel(channel ChannelType, source *MagickW
 	C.MagickCompositeImageChannel(mw.wand, C.ChannelType(channel), source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
 }
+
+// Composite the images in the source wand over the images in the destination wand in sequence,
+// starting with the current image in both lists.
+// Each layer from the two image lists are composted together until the end of one of the image
+// lists is reached. The offset of each composition is also adjusted to match the virtual canvas
+// offsets of each layer. As such the given offset is relative to the virtual canvas, and not
+// the actual image.
+// Composition uses given x and y offsets, as the 'origin' location of the source images virtual
+// canvas (not the real image) allowing you to compose a list of 'layer images' into the
+// destination images. This makes it well sutiable for directly composing 'Clears Frame Animations'
+// or 'Coaleased Animations' onto a static or other 'Coaleased Animation' destination image list.
+// GIF disposal handling is not looked at.
+// Special case: If one of the image sequences is the last image (just a single image remaining),
+// that image is repeatally composed with all the images in the other image list. Either the source
+// or destination lists may be the single image, for this situation.
+// In the case of a single destination image (or last image given), that image will ve cloned to
+// match the number of images remaining in the source image list.
+// This is equivelent to the "-layer Composite" Shell API operator.
+// source: the wand holding the source images
+// compose, x, y: composition arguments
+func (mw *MagickWand) CompositeLayers(source *MagickWand, compose CompositeOperator, x, y int) error {
+	C.MagickCompositeLayers(mw.wand, source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
+	return mw.GetLastError()
+}
+
+// Enhances the intensity differences between the lighter and darker elements of the image. Set sharpen
+// to a value other than 0 to increase the image contrast otherwise the contrast is reduced.
+// sharpen: increase or decrease image contrast
+func (mw *MagickWand) ContrastImage(sharpen bool) error {
+	cssharpen := C.MagickBooleanType(0)
+	if sharpen {
+		cssharpen = 1
+	}
+	C.MagickContrastImage(mw.wand, cssharpen)
+	return mw.GetLastError()
+}
+
+// Enhances the contrast of a color image by adjusting the pixels color to span the entire range of colors
+// available. You can also reduce the influence of a particular channel with a gamma value of 0.
+func (mw *MagickWand) ContrastStretchImage(blackPoint, whitePoint float64) error {
+	C.MagickContrastStretchImage(mw.wand, C.double(blackPoint), C.double(whitePoint))
+	return mw.GetLastError()
+}
+
+// Enhances the contrast of a color image's channel by adjusting the pixels color to span the entire range of colors
+// available. You can also reduce the influence of a particular channel with a gamma value of 0.
+func (mw *MagickWand) ContrastStretchImageChannel(channel ChannelType, blackPoint, whitePoint float64) error {
+	C.MagickContrastStretchImageChannel(mw.wand, C.ChannelType(channel), C.double(blackPoint), C.double(whitePoint))
+	return mw.GetLastError()
+}
+
+// Applies a custom convolution kernel to the image.
+// order: the number of columns and rows in the filter kernel
+// kernel: an array of doubles, representing the convolution kernel
+func (mw *MagickWand) ConvolveImage(order uint, kernel []float64) error {
+	ckernel := []C.double{}
+	for i, k := range kernel {
+		ckernel[i] = C.double(k)
+	}
+	C.MagickConvolveImage(mw.wand, C.size_t(order), &ckernel[0])
+	return mw.GetLastError()
+}
+
+// Applies a custom convolution kernel to the image's channel.
+// order: the number of columns and rows in the filter kernel
+// kernel: an array of doubles, representing the convolution kernel
+func (mw *MagickWand) ConvolveImageChannel(channel ChannelType, order uint, kernel []float64) error {
+	ckernel := []C.double{}
+	for i, k := range kernel {
+		ckernel[i] = C.double(k)
+	}
+	C.MagickConvolveImageChannel(mw.wand, C.ChannelType(channel), C.size_t(order), &ckernel[0])
+	return mw.GetLastError()
+}
