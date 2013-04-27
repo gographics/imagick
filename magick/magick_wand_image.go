@@ -349,3 +349,33 @@ func (mw *MagickWand) CompareImageChannels(reference *MagickWand, channel Channe
 func (mw *MagickWand) CompareImageLayers(method ImageLayerMethod) *MagickWand {
 	return &MagickWand{C.MagickCompareImageLayers(mw.wand, C.ImageLayerMethod(method))}
 }
+
+// CompareImages() compares an image to a reconstructed image and returns the specified difference image.
+// Returns the new MagickWand and the computed distortion between the images
+func (mw *MagickWand) CompareImages(reference *MagickWand, metric MetricType) (wand *MagickWand, distortion float64) {
+	cdistortion := C.double(0)
+	cmw := C.MagickCompareImages(mw.wand, reference.wand, C.MetricType(metric), &cdistortion)
+	wand = &MagickWand{cmw}
+	distortion = float64(cdistortion)
+	return
+}
+
+// Composite one image onto another at the specified offset.
+// source: The magick wand holding source image.
+// compose: This operator affects how the composite is applied to the image. The default is Over.
+// x: the column offset of the composited image.
+// y: the row offset of the composited image.
+func (mw *MagickWand) CompositeImage(source *MagickWand, compose CompositeOperator, x, y int) error {
+	C.MagickCompositeImage(mw.wand, source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
+	return mw.GetLastError()
+}
+
+// Composite one image onto another at the specified offset.
+// source: The magick wand holding source image.
+// compose: This operator affects how the composite is applied to the image. The default is Over.
+// x: the column offset of the composited image.
+// y: the row offset of the composited image.
+func (mw *MagickWand) CompositeImageChannel(channel ChannelType, source *MagickWand, compose CompositeOperator, x, y int) error {
+	C.MagickCompositeImageChannel(mw.wand, C.ChannelType(channel), source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
+	return mw.GetLastError()
+}
