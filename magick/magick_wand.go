@@ -33,7 +33,6 @@ func (mw *MagickWand) Clear() {
 }
 
 // Makes an exact copy of the MagickWand object
-// TODO cgo memory checks
 func (mw *MagickWand) Clone() *MagickWand {
 	clone := C.CloneMagickWand(mw.wand)
 	return &MagickWand{wand: clone}
