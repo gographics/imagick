@@ -1,4 +1,4 @@
-package magick
+package imagick
 
 import "testing"
 

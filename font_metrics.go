@@ -1,4 +1,4 @@
-package magick
+package imagick
 
 type FontMetrics struct {
 	CharacterWidth           float64
