@@ -599,15 +599,15 @@ func (mw *MagickWand) DisplayImages(server string) error {
 // sized and offset accordingly. Also in many cases the virtual offset of the source image will be taken
 // into account in the mapping.
 // method: the method of image distortion.
-//		ArcDistortion always ignores the source image offset, and always 'bestfit' the destination
-//      image with the top left corner offset relative to the polar mapping center.
-//      Bilinear has no simple inverse mapping so it does not allow 'bestfit' style of image distortion.
-//      Affine, Perspective, and Bilinear, do least squares fitting of the distortion when more than the
-//      minimum number of control point pairs are provided.
-//      Perspective, and Bilinear, falls back to a Affine distortion when less that 4 control point pairs
-//      are provided. While Affine distortions let you use any number of control point pairs, that is Zero
-//      pairs is a no-Op (viewport only) distrotion, one pair is a translation and two pairs of control
-//      points do a scale-rotate-translate, without any shearing.
+// ArcDistortion always ignores the source image offset, and always 'bestfit' the destination
+// image with the top left corner offset relative to the polar mapping center.
+// Bilinear has no simple inverse mapping so it does not allow 'bestfit' style of image distortion.
+// Affine, Perspective, and Bilinear, do least squares fitting of the distortion when more than the
+// minimum number of control point pairs are provided.
+// Perspective, and Bilinear, falls back to a Affine distortion when less that 4 control point pairs
+// are provided. While Affine distortions let you use any number of control point pairs, that is Zero
+// pairs is a no-Op (viewport only) distrotion, one pair is a translation and two pairs of control
+// points do a scale-rotate-translate, without any shearing.
 // args: the arguments for this distortion method.
 // bestfit: Attempt to resize destination to fit distorted source.
 func (mw *MagickWand) DistortImage(method DistortImageMethod, args []float64, bestfit bool) error {
@@ -1292,7 +1292,7 @@ func (mw *MagickWand) InverseFourierTransformImage(phaseWand *MagickWand, magnit
 	return mw.GetLastError()
 }
 
-//MagickLabelImage() adds a label to your image.
+// Adds a label to your image.
 func (mw *MagickWand) LabelImage(label string) error {
 	cslabel := C.CString(label)
 	defer C.free(unsafe.Pointer(cslabel))
@@ -1300,129 +1300,142 @@ func (mw *MagickWand) LabelImage(label string) error {
 	return mw.GetLastError()
 }
 
-//MagickLevelImage() adjusts the levels of an image by scaling the colors falling between specified white and black points to the full available quantum range. The parameters provided represent the black, mid, and white points. The black point specifies the darkest color in the image. Colors darker than the black point are set to zero. Mid point specifies a gamma correction to apply to the image. White point specifies the lightest color in the image. Colors brighter than the white point are set to the maximum quantum value.
-func (mw *MagickWand) LevelImage(black_point double, gamma double, white_point double) error {
-}
-func (mw *MagickWand) LevelImageChannel(channel ChannelType, black_point double, gamma double, white_point double) error {
-}
-
-//channel
-//Identify which channel to level: RedChannel, GreenChannel,
-//black_point
-//the black point.
-//gamma
-//the gamma.
-//white_point
-//the white point.
-//MagickLinearStretchImage
-//MagickLinearStretchImage() stretches with saturation the image intensity.
-//You can also reduce the influence of a particular channel with a gamma value of 0.
-func (mw *MagickWand) LinearStretchImage(black_point double, white_point double) error {
+// Adjusts the levels of an image by scaling the colors falling between specified white and black points
+// to the full available quantum range. The parameters provided represent the black, mid, and white points.
+// The black point specifies the darkest color in the image. Colors darker than the black point are set to zero.
+// Mid point specifies a gamma correction to apply to the image. White point specifies the lightest color in the
+// image. Colors brighter than the white point are set to the maximum quantum value.
+func (mw *MagickWand) LevelImage(blackPoint, gamma, whitePoint float64) error {
+	C.MagickLevelImage(mw.wand, C.double(blackPoint), C.double(gamma), C.double(whitePoint))
+	return mw.GetLastError()
 }
 
-//black_point
-//the black point.
-//white_point
-//the white point.
-//MagickLiquidRescaleImage
-//MagickLiquidRescaleImage() rescales image with seam carving.
-func (mw *MagickWand) LiquidRescaleImage(columns uint, rows uint, delta_x double, rigidity double) error {
+// Adjusts the levels of an image's channel by scaling the colors falling between specified white and black points
+// to the full available quantum range. The parameters provided represent the black, mid, and white points.
+// The black point specifies the darkest color in the image. Colors darker than the black point are set to zero.
+// Mid point specifies a gamma correction to apply to the image. White point specifies the lightest color in the
+// image. Colors brighter than the white point are set to the maximum quantum value.
+func (mw *MagickWand) LevelImageChannel(channel ChannelType, blackPoint, gamma, whitePoint float64) error {
+	C.MagickLevelImageChannel(mw.wand, C.ChannelType(channel), C.double(blackPoint), C.double(gamma), C.double(whitePoint))
+	return mw.GetLastError()
 }
 
-//columns
-//the number of columns in the scaled image.
-//rows
-//the number of rows in the scaled image.
-//delta_x
-//maximum seam transversal step (0 means straight seams).
-//rigidity
-//introduce a bias for non-straight seams (typically 0).
-//MagickMagnifyImage
-//MagickMagnifyImage() is a convenience method that scales an image proportionally to twice its original size.
+// Stretches with saturation the image intensity.
+// You can also reduce the influence of a particular channel with a gamma value of 0.
+func (mw *MagickWand) LinearStretchImage(blackPoint, whitePoint float64) error {
+	C.MagickLinearStretchImage(mw.wand, C.double(blackPoint), C.double(whitePoint))
+	return mw.GetLastError()
+}
+
+// Rescales image with seam carving.
+// columns, rows: the number of columns and rows in the scaled image.
+// deltaX: maximum seam transversal step (0 means straight seams).
+// rigidity: introduce a bias for non-straight seams (typically 0).
+func (mw *MagickWand) LiquidRescaleImage(columns, rows uint, deltaX, rigidity float64) error {
+	C.MagickLiquidRescaleImage(mw.wand, C.size_t(columns), C.size_t(rows), C.double(deltaX), C.double(rigidity))
+	return mw.GetLastError()
+}
+
+// This is a convenience method that scales an image proportionally to twice its original size.
 func (mw *MagickWand) MagnifyImage() error {
+	C.MagnifyImage(mw.wand)
+	return mw.GetLastError()
 }
 
-//MagickMergeImageLayers
-//MagickMergeImageLayers() composes all the image layers from the current given image onward to produce a single image of the merged layers.
-//The inital canvas's size depends on the given ImageLayerMethod, and is initialized using the first images background color. The images are then compositied onto that image in sequence using the given composition that has been assigned to each individual image.
+// Composes all the image layers from the current given image onward to produce a single image of the merged layers.
+// The inital canvas's size depends on the given ImageLayerMethod, and is initialized using the first images background color.
+// The images are then compositied onto that image in sequence using the given composition that has been assigned to each individual image.
+// method: the method of selecting the size of the initial canvas.
+//  * MergeLayer: Merge all layers onto a canvas just large enough to hold all the actual images.
+//                The virtual canvas of the first image is preserved but otherwise ignored.
+//  * FlattenLayer: Use the virtual canvas size of first image. Images which fall outside this canvas is clipped.
+//                  This can be used to 'fill out' a given virtual canvas.
+//  * MosaicLayer: Start with the virtual canvas of the first image, enlarging left and right edges to contain all images.
+//                 Images with negative offsets will be clipped.
 func (mw *MagickWand) MergeImageLayers(method ImageLayerMethod) *MagickWand {
+	return &MagickWand{C.MagickMergeImageLayers(C.ImageLayerMethod(method))}
 }
 
-//method
-//the method of selecting the size of the initial canvas.
-//MergeLayer: Merge all layers onto a canvas just large enough to hold all the actual images. The virtual canvas of the first image is preserved but otherwise ignored.
-//FlattenLayer: Use the virtual canvas size of first image. Images which fall outside this canvas is clipped. This can be used to 'fill out' a given virtual canvas.
-//MosaicLayer: Start with the virtual canvas of the first image, enlarging left and right edges to contain all images. Images with negative offsets will be clipped.
-//MagickMinifyImage
-//MagickMinifyImage() is a convenience method that scales an image proportionally to one-half its original size
+// This is a convenience method that scales an image proportionally to one-half its original size
 func (mw *MagickWand) MinifyImage() error {
+	C.MinifyImage(mw.wand)
+	return mw.GetLastError()
 }
 
-//MagickModulateImage
-//MagickModulateImage() lets you control the brightness, saturation, and hue of an image. Hue is the percentage of absolute rotation from the current position. For example 50 results in a counter-clockwise rotation of 90 degrees, 150 results in a clockwise rotation of 90 degrees, with 0 and 200 both resulting in a rotation of 180 degrees.
-//To increase the color brightness by 20 and decrease the color saturation by 10 and leave the hue unchanged, use: 120,90,100.
-func (mw *MagickWand) ModulateImage(brightness double, saturation double, hue double) error {
+// Lets you control the brightness, saturation, and hue of an image. Hue is the percentage of absolute rotation from the current position.
+// For example 50 results in a counter-clockwise rotation of 90 degrees, 150 results in a clockwise rotation of 90 degrees, with 0 and 200
+// both resulting in a rotation of 180 degrees.
+// To increase the color brightness by 20 and decrease the color saturation by 10 and leave the hue unchanged, use: 120, 90, 100.
+//  * **brightness**: the percent change in brighness.
+//  * **saturation**: the percent change in saturation.
+//  * **hue**: the percent change in hue.
+func (mw *MagickWand) ModulateImage(brightness, saturation, hue float64) error {
+	C.MagickModulateImage(mw.wand, C.double(brightness), C.double(saturation), C.double(hue))
+	return mw.GetLastError()
 }
 
-//brightness
-//the percent change in brighness.
-//saturation
-//the percent change in saturation.
-//hue
-//the percent change in hue.
-//MagickMontageImage
-//MagickMontageImage() creates a composite image by combining several separate images. The images are tiled on the composite image with the name of the image optionally appearing just below the individual tile.
-func (mw *MagickWand) MontageImage(drawing_wand DrawingWand, tile_geometry string, thumbnail_geometry string, mode MontageMode, frame string) *MagickWand {
+// Creates a composite image by combining several separate images.
+// The images are tiled on the composite image with the name of the image optionally appearing just below the individual tile.
+// dw: the drawing wand. The font name, size, and color are obtained from this wand.
+// tileGeo: the number of tiles per row and page (e.g. 6x4+0+0).
+// thumbGeo: Preferred image size and border size of each thumbnail (e.g. 120x120+4+3>).
+// mode: Thumbnail framing mode: Frame, Unframe, or Concatenate.
+// frame: Surround the image with an ornamental border (e.g. 15x15+3+3). The frame color is that of the thumbnail's matte color.
+func (mw *MagickWand) MontageImage(dw *DrawingWand, tileGeo string, thumbGeo string, mode MontageMode, frame string) *MagickWand {
+	cstile := C.CString(tileGeo)
+	defer C.free(unsafe.Pointer(cstile))
+	csthumb := C.CString(thumbGeo)
+	defer C.free(unsafe.Pointer(csthumb))
+	csframe := C.CString(frame)
+	defer C.free(unsafe.Pointer(csframe))
+	return &MagickWand{C.MagickMontageImage(mw.wand, dw.draw, cstile, csthumb, C.MontageMode(mode), csframe)}
 }
 
-//drawing_wand
-//the drawing wand. The font name, size, and color are obtained from this wand.
-//tile_geometry
-//the number of tiles per row and page (e.g. 6x4+0+0).
-//thumbnail_geometry
-//Preferred image size and border size of each thumbnail (e.g. 120x120+4+3>).
-//mode
-//Thumbnail framing mode: Frame, Unframe, or Concatenate.
-//frame
-//Surround the image with an ornamental border (e.g. 15x15+3+3). The frame color is that of the thumbnail's matte color.
-//MagickMorphImages
-//MagickMorphImages() method morphs a set of images. Both the image pixels and size are linearly interpolated to give the appearance of a meta-morphosis from one image to the next.
-func (mw *MagickWand) MorphImages(number_frames uint) *MagickWand {
+// Method morphs a set of images. Both the image pixels and size are linearly interpolated to give the appearance of a
+// meta-morphosis from one image to the next.
+// numFrames: the number of in-between images to generate.
+func (mw *MagickWand) MorphImages(numFrames uint) *MagickWand {
+	return &MagickWand{C.MagickMorphImages(mw.wand, C.size_t(numFrames))}
 }
 
-//number_frames
-//the number of in-between images to generate.
-//MagickMorphologyImage
-//MagickMorphologyImage() applies a user supplied kernel to the image according to the given mophology method.
+// Applies a user supplied kernel to the image according to the given mophology method.
+// channel: the image channel(s).
+// method: the morphology method to be applied.
+// iterations: apply the operation this many times (or no change). A value of -1 means loop until no change found. How this is applied may depend on the morphology method. Typically this is a value of 1.
+// kernel: An array of doubles representing the morphology kernel.
 func (mw *MagickWand) MorphologyImage(MorphologyMethod method, iterations int, KernelInfo *kernel) error {
+	// TODO MorphologyMethod
 }
 
+// Applies a user supplied kernel to the image according to the given mophology method.
+// channel : the image channel(s).
+// method : the morphology method to be applied.
+// iterations : apply the operation this many times (or no change). A value of -1 means loop until no change found. How this is applied may depend on the morphology method. Typically this is a value of 1.
+// kernel : An array of doubles representing the morphology kernel.
 func (mw *MagickWand) MorphologyImageChannel(ChannelType channel, MorphologyMethod method, iterations int, KernelInfo *kernel) error {
+	// TODO MorphologyMethod
 }
 
-//channel
-//the image channel(s).
-//method
-//the morphology method to be applied.
-//iterations
-//apply the operation this many times (or no change). A value of -1 means loop until no change found. How this is applied may depend on the morphology method. Typically this is a value of 1.
-//kernel
-//An array of doubles representing the morphology kernel.
-//MagickMotionBlurImage
-//MagickMotionBlurImage() simulates motion blur. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius of 0 and MotionBlurImage() selects a suitable radius for you. Angle gives the angle of the blurring motion.
-func (mw *MagickWand) MotionBlurImage(radius double, sigma double, angle double) error {
-}
-func (mw *MagickWand) MotionBlurImageChannel(channel ChannelType, radius double, sigma double, angle double) error {
+// Simulates motion blur. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma).
+// For reasonable results, radius should be larger than sigma. Use a radius of 0 and MotionBlurImage() selects a suitable
+// radius for you. Angle gives the angle of the blurring motion.
+func (mw *MagickWand) MotionBlurImage(radius, sigma, angle float64) error {
+	C.MagickMotionBlurImage(mw.wand, C.double(radius), C.double(sigma), C.double(angle))
+	return mw.GetLastError()
 }
 
-//radius
-//the radius of the Gaussian, in pixels, not counting the center pixel.
-//sigma
-//the standard deviation of the Gaussian, in pixels.
-//angle
-//Apply the effect along this angle.
-//MagickNegateImage
-//MagickNegateImage() negates the colors in the reference image. The Grayscale option means that only grayscale values within the image are negated.
+// Simulates motion blur. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma).
+// For reasonable results, radius should be larger than sigma. Use a radius of 0 and MotionBlurImage() selects a suitable
+// radius for you. Angle gives the angle of the blurring motion.
+// radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+// sigma: the standard deviation of the Gaussian, in pixels.
+// angle: apply the effect along this angle.
+func (mw *MagickWand) MotionBlurImageChannel(channel ChannelType, radius, sigma, angle float64) error {
+	C.MagickMotionBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma), C.double(angle))
+	return mw.GetLastError()
+}
+
+// Negates the colors in the reference image. The Grayscale option means that only grayscale values within the image are negated.
 //You can also reduce the influence of a particular channel with a gamma value of 0.
 func (mw *MagickWand) NegateImage(gray bool) error {
 }
