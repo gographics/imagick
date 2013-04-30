@@ -1371,7 +1371,7 @@ func (mw *MagickWand) MorphImages(numFrames uint) *MagickWand {
 // method: the morphology method to be applied.
 // iterations: apply the operation this many times (or no change). A value of -1 means loop until no change found. How this is applied may depend on the morphology method. Typically this is a value of 1.
 // kernel: An array of doubles representing the morphology kernel.
-func (mw *MagickWand) MorphologyImage(MorphologyMethod method, iterations int, KernelInfo *kernel) error {
+func (mw *MagickWand) MorphologyImage(method MorphologyMethod, iterations int, kernel *KernelInfo) error {
 	// TODO MorphologyMethod
 }
 
@@ -1380,7 +1380,7 @@ func (mw *MagickWand) MorphologyImage(MorphologyMethod method, iterations int, K
 // method : the morphology method to be applied.
 // iterations : apply the operation this many times (or no change). A value of -1 means loop until no change found. How this is applied may depend on the morphology method. Typically this is a value of 1.
 // kernel : An array of doubles representing the morphology kernel.
-func (mw *MagickWand) MorphologyImageChannel(ChannelType channel, MorphologyMethod method, iterations int, KernelInfo *kernel) error {
+func (mw *MagickWand) MorphologyImageChannel(channel ChannelType, method MorphologyMethod, iterations int, kernel *KernelInfo) error {
 	// TODO MorphologyMethod
 }
 
@@ -1644,9 +1644,9 @@ func (mw *MagickWand) RaiseImage(width uint, height uint, x int, y int, raise bo
 //A value other than zero creates a 3-D raise effect, otherwise it has a lowered effect.
 //MagickRandomThresholdImage
 //MagickRandomThresholdImage() changes the value of individual pixels based on the intensity of each pixel compared to threshold. The result is a high-contrast, two color image.
-func (mw *MagickWand) RandomThresholdImage(low double, high double) error {
+func (mw *MagickWand) RandomThresholdImage(low, high float64) error {
 }
-func (mw *MagickWand) RandomThresholdImageChannel(channel ChannelType, low double, high double) error {
+func (mw *MagickWand) RandomThresholdImageChannel(channel ChannelType, low, high float64) error {
 }
 
 //channel
@@ -1662,7 +1662,8 @@ func (mw *MagickWand) ReadImage(filename string) error {
 //the image filename.
 //MagickReadImageBlob
 //MagickReadImageBlob() reads an image or image sequence from a blob.
-func (mw *MagickWand) ReadImageBlob(blob *void, length uint) error {
+func (mw *MagickWand) ReadImageBlob(blob []byte, length uint) error {
+	// TODO *void to []byte ?
 }
 
 //blob
@@ -1671,7 +1672,7 @@ func (mw *MagickWand) ReadImageBlob(blob *void, length uint) error {
 //the blob length.
 //MagickReadImageFile
 //MagickReadImageFile() reads an image or image sequence from an open file descriptor.
-func (mw *MagickWand) ReadImageFile(FILE *file) error {
+func (mw *MagickWand) ReadImageFile(file *os.File) error {
 }
 
 //file
@@ -1696,7 +1697,7 @@ func (mw *MagickWand) RemoveImage() error {
 //MagickResampleImage() resample image to desired resolution.
 //Bessel Blackman Box Catrom Cubic Gaussian Hanning Hermite Lanczos Mitchell Point Quandratic Sinc Triangle
 //Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are IIR (infinite impulse response). Bessel and Sinc are windowed (brought down to zero) with the Blackman filter.
-func (mw *MagickWand) ResampleImage(x_resolution double, y_resolution double, filter FilterTypes, blur double) error {
+func (mw *MagickWand) ResampleImage(x_resolution, y_resolution float64, filter FilterTypes, blur float64) error {
 }
 
 //x_resolution
@@ -1722,7 +1723,7 @@ func (mw *MagickWand) ResetImagePage(page string) error {
 //Mitchell PointQuandratic
 //Sinc     Triangle
 //Most of the filters are FIR (finite impulse response), however, Bessel, Gaussian, and Sinc are IIR (infinite impulse response). Bessel and Sinc are windowed (brought down to zero) with the Blackman filter.
-func (mw *MagickWand) ResizeImage(columns uint, rows uint, filter FilterTypes, blur double) error {
+func (mw *MagickWand) ResizeImage(columns uint, rows uint, filter FilterTypes, blur float64) error {
 }
 
 //columns
@@ -1744,7 +1745,7 @@ func (mw *MagickWand) RollImage(x int, y uint) error {
 //the y offset.
 //MagickRotateImage
 //MagickRotateImage() rotates an image the specified number of degrees. Empty triangles left over from rotating the image are filled with the background color.
-func (mw *MagickWand) RotateImage(background *PixelWand, degrees double) error {
+func (mw *MagickWand) RotateImage(background *PixelWand, degrees float64) error {
 }
 
 //background
@@ -1771,7 +1772,7 @@ func (mw *MagickWand) ScaleImage(columns uint, rows uint) error {
 //the number of rows in the scaled image.
 //MagickSegmentImage
 //MagickSegmentImage() segments an image by analyzing the histograms of the color components and identifying units that are homogeneous with the fuzzy C-means technique.
-func (mw *MagickWand) SegmentImage(colorspace ColorspaceType, invert bool, cluster_threshold double, smooth_threshold double) error {
+func (mw *MagickWand) SegmentImage(colorspace ColorspaceType, invert bool, cluster_threshold float64, smooth_threshold float64) error {
 }
 
 //wand
@@ -1786,9 +1787,9 @@ func (mw *MagickWand) SegmentImage(colorspace ColorspaceType, invert bool, clust
 //the smoothing threshold eliminates noise in the second derivative of the histogram. As the value is increased, you can expect a smoother second derivative.
 //MagickSelectiveBlurImage
 //MagickSelectiveBlurImage() selectively blur an image within a contrast threshold. It is similar to the unsharpen mask that sharpens everything with contrast above a certain threshold.
-func (mw *MagickWand) SelectiveBlurImage(radius double, sigma double, threshold double) error {
+func (mw *MagickWand) SelectiveBlurImage(radius float64, sigma float64, threshold float64) error {
 }
-func (mw *MagickWand) SelectiveBlurImageChannel(channel ChannelType, radius double, sigma double, threshold double) error {
+func (mw *MagickWand) SelectiveBlurImageChannel(channel ChannelType, radius float64, sigma float64, threshold float64) error {
 }
 
 //channel
@@ -1808,7 +1809,7 @@ func (mw *MagickWand) SeparateImageChannel(channel ChannelType) error {
 //the image channel(s).
 //MagickSepiaToneImage
 //MagickSepiaToneImage() applies a special effect to the image, similar to the effect achieved in a photo darkroom by sepia toning. Threshold ranges from 0 to QuantumRange and is a measure of the extent of the sepia toning. A threshold of 80 is a good starting point for a reasonable tone.
-func (mw *MagickWand) SepiaToneImage(threshold double) error {
+func (mw *MagickWand) SepiaToneImage(threshold float64) error {
 }
 
 //threshold
@@ -1836,14 +1837,14 @@ func (mw *MagickWand) SetImageBackgroundColor(background *PixelWand) error {
 //the background pixel wand.
 //MagickSetImageBias
 //MagickSetImageBias() sets the image bias for any method that convolves an image (e.g. MagickConvolveImage()).
-func (mw *MagickWand) SetImageBias(bias double) error {
+func (mw *MagickWand) SetImageBias(bias float64) error {
 }
 
 //bias
 //the image bias.
 //MagickSetImageBluePrimary
 //MagickSetImageBluePrimary() sets the image chromaticity blue primary point.
-func (mw *MagickWand) SetImageBluePrimary(x double, y double) error {
+func (mw *MagickWand) SetImageBluePrimary(x float64, y float64) error {
 }
 
 //x
@@ -1970,14 +1971,14 @@ func (mw *MagickWand) SetImageFormat(format string) error {
 //the image format.
 //MagickSetImageFuzz
 //MagickSetImageFuzz() sets the image fuzz.
-func (mw *MagickWand) SetImageFuzz(fuzz double) error {
+func (mw *MagickWand) SetImageFuzz(fuzz float64) error {
 }
 
 //fuzz
 //the image fuzz.
 //MagickSetImageGamma
 //MagickSetImageGamma() sets the image gamma.
-func (mw *MagickWand) SetImageGamma(gamma double) error {
+func (mw *MagickWand) SetImageGamma(gamma float64) error {
 }
 
 //gamma
@@ -1991,7 +1992,7 @@ func (mw *MagickWand) SetImageGravity(gravity GravityType) error {
 //the image interlace scheme: NoInterlace, LineInterlace, PlaneInterlace, PartitionInterlace.
 //MagickSetImageGreenPrimary
 //MagickSetImageGreenPrimary() sets the image chromaticity green primary point.
-func (mw *MagickWand) SetImageGreenPrimary(x double, y double) error {
+func (mw *MagickWand) SetImageGreenPrimary(x float64, y float64) error {
 }
 
 //x
@@ -2035,7 +2036,7 @@ func (mw *MagickWand) SetImageMatteColor(matte *PixelWand) error {
 //the matte pixel wand.
 //MagickSetImageOpacity
 //MagickSetImageOpacity() sets the image to the specified opacity level.
-func (mw *MagickWand) SetImageOpacity(alpha double) error {
+func (mw *MagickWand) SetImageOpacity(alpha float64) error {
 }
 
 //alpha
@@ -2071,7 +2072,7 @@ func (mw *MagickWand) SetImagePage(width uint, height uint, x int, y int) error 
 //Specifies a pointer to any client data.
 //MagickSetImageRedPrimary
 //MagickSetImageRedPrimary() sets the image chromaticity red primary point.
-func (mw *MagickWand) SetImageRedPrimary(x double, y double) error {
+func (mw *MagickWand) SetImageRedPrimary(x float64, y float64) error {
 }
 
 //x
@@ -2087,7 +2088,7 @@ func (mw *MagickWand) SetImageRenderingIntent(rendering_intent RenderingIntent) 
 //the image rendering intent: UndefinedIntent, SaturationIntent, PerceptualIntent, AbsoluteIntent, or RelativeIntent.
 //MagickSetImageResolution
 //MagickSetImageResolution() sets the image resolution.
-func (mw *MagickWand) SetImageResolution(x_resolution double, y_resolution double) error {
+func (mw *MagickWand) SetImageResolution(x_resolution float64, y_resolution float64) error {
 }
 
 //x_resolution
@@ -2129,7 +2130,7 @@ func (mw *MagickWand) SetImageUnits(units ResolutionType) error {
 //the image virtual pixel method : UndefinedVirtualPixelMethod, ConstantVirtualPixelMethod, EdgeVirtualPixelMethod, MirrorVirtualPixelMethod, or TileVirtualPixelMethod.
 //MagickSetImageWhitePoint
 //MagickSetImageWhitePoint() sets the image chromaticity white point.
-func (mw *MagickWand) SetImageWhitePoint(x double, y double) error {
+func (mw *MagickWand) SetImageWhitePoint(x float64, y float64) error {
 }
 
 //x
@@ -2138,7 +2139,7 @@ func (mw *MagickWand) SetImageWhitePoint(x double, y double) error {
 //the white y-point.
 //MagickShadeImage
 //MagickShadeImage() shines a distant light on an image to create a three-dimensional effect. You control the positioning of the light with azimuth and elevation; azimuth is measured in degrees off the x axis and elevation is measured in pixels above the Z axis.
-func (mw *MagickWand) ShadeImage(invert bool, azimuth double, elevation double) error {
+func (mw *MagickWand) ShadeImage(invert bool, azimuth float64, elevation float64) error {
 }
 
 //gray
@@ -2147,7 +2148,7 @@ func (mw *MagickWand) ShadeImage(invert bool, azimuth double, elevation double) 
 //Define the light source direction.
 //MagickShadowImage
 //MagickShadowImage() simulates an image shadow.
-func (mw *MagickWand) ShadowImage(opacity double, sigma double, x int, y int) error {
+func (mw *MagickWand) ShadowImage(opacity float64, sigma float64, x int, y int) error {
 }
 
 //opacity
@@ -2160,9 +2161,9 @@ func (mw *MagickWand) ShadowImage(opacity double, sigma double, x int, y int) er
 //the shadow y-offset.
 //MagickSharpenImage
 //MagickSharpenImage() sharpens an image. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, the radius should be larger than sigma. Use a radius of 0 and MagickSharpenImage() selects a suitable radius for you.
-func (mw *MagickWand) SharpenImage(radius double, sigma double) error {
+func (mw *MagickWand) SharpenImage(radius float64, sigma float64) error {
 }
-func (mw *MagickWand) SharpenImageChannel(channel ChannelType, radius double, sigma double) error {
+func (mw *MagickWand) SharpenImageChannel(channel ChannelType, radius float64, sigma float64) error {
 }
 
 //channel
@@ -2182,7 +2183,7 @@ func (mw *MagickWand) ShaveImage(columns uint, rows uint) error {
 //the number of rows in the scaled image.
 //MagickShearImage
 //MagickShearImage() slides one edge of an image along the X or Y axis, creating a parallelogram. An X direction shear slides an edge along the X axis, while a Y direction shear slides an edge along the Y axis. The amount of the shear is controlled by a shear angle. For X direction shears, x_shear is measured relative to the Y axis, and similarly, for Y direction shears y_shear is measured relative to the X axis. Empty triangles left over from shearing the image are filled with the background color.
-func (mw *MagickWand) ShearImage(background *PixelWand, x_shear double, y_shear double) error {
+func (mw *MagickWand) ShearImage(background *PixelWand, x_shear float64, y_shear float64) error {
 }
 
 //background
@@ -2193,9 +2194,9 @@ func (mw *MagickWand) ShearImage(background *PixelWand, x_shear double, y_shear 
 //the number of degrees to shear the image.
 //MagickSigmoidalContrastImage
 //MagickSigmoidalContrastImage() adjusts the contrast of an image with a non-linear sigmoidal contrast algorithm. Increase the contrast of the image using a sigmoidal transfer function without saturating highlights or shadows. Contrast indicates how much to increase the contrast (0 is none; 3 is typical; 20 is pushing it); mid-point indicates where midtones fall in the resultant image (0 is white; 50 is middle-gray; 100 is black). Set sharpen to MagickTrue to increase the image contrast otherwise the contrast is reduced.
-func (mw *MagickWand) SigmoidalContrastImage(invert bool, alpha double, beta double) error {
+func (mw *MagickWand) SigmoidalContrastImage(invert bool, alpha float64, beta float64) error {
 }
-func (mw *MagickWand) SigmoidalContrastImageChannel(channel ChannelType, sharpen bool, alpha double, beta double) error {
+func (mw *MagickWand) SigmoidalContrastImageChannel(channel ChannelType, sharpen bool, alpha float64, beta float64) error {
 }
 
 //channel
@@ -2208,7 +2209,7 @@ func (mw *MagickWand) SigmoidalContrastImageChannel(channel ChannelType, sharpen
 //midpoint of the function as a color value 0 to QuantumRange.
 //MagickSimilarityImage
 //MagickSimilarityImage() compares the reference image of the image and returns the best match offset. In addition, it returns a similarity image such that an exact match location is completely white and if none of the pixels match, black, otherwise some gray level in-between.
-func (mw *MagickWand) SimilarityImage(reference *MagickWand, RectangeInfo *offset, double *similarity) *MagickWand {
+func (mw *MagickWand) SimilarityImage(reference *MagickWand, RectangeInfo *offset, float64 *similarity) *MagickWand {
 }
 
 //reference
@@ -2219,7 +2220,7 @@ func (mw *MagickWand) SimilarityImage(reference *MagickWand, RectangeInfo *offse
 //the computed similarity between the images.
 //MagickSketchImage
 //MagickSketchImage() simulates a pencil sketch. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius of 0 and SketchImage() selects a suitable radius for you. Angle gives the angle of the blurring motion.
-func (mw *MagickWand) SketchImage(radius double, sigma double, angle double) error {
+func (mw *MagickWand) SketchImage(radius float64, sigma float64, angle float64) error {
 }
 
 //radius
@@ -2239,9 +2240,9 @@ func (mw *MagickWand) SmushImages(stack bool, offset int) *MagickWand {
 //minimum distance in pixels between images.
 //MagickSolarizeImage
 //MagickSolarizeImage() applies a special effect to the image, similar to the effect achieved in a photo darkroom by selectively exposing areas of photo sensitive paper to light. Threshold ranges from 0 to QuantumRange and is a measure of the extent of the solarization.
-func (mw *MagickWand) SolarizeImage(threshold double) error {
+func (mw *MagickWand) SolarizeImage(threshold float64) error {
 }
-func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold double) error {
+func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float64) error {
 }
 
 //channel
@@ -2250,7 +2251,7 @@ func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold double
 //Define the extent of the solarization.
 //MagickSparseColorImage
 //MagickSparseColorImage(), given a set of coordinates, interpolates the colors found at those coordinates, across the whole image, using various methods.
-func (mw *MagickWand) SparseColorImage(channel ChannelType, method SparseColorMethod, number_arguments uint, arguments []double) error {
+func (mw *MagickWand) SparseColorImage(channel ChannelType, method SparseColorMethod, number_arguments uint, arguments []float64) error {
 }
 
 //image
@@ -2280,16 +2281,16 @@ func (mw *MagickWand) SpliceImage(width uint, height uint, x int, y int) error {
 //the region y offset.
 //MagickSpreadImage
 //MagickSpreadImage() is a special effects method that randomly displaces each pixel in a block defined by the radius parameter.
-func (mw *MagickWand) SpreadImage(radius double) error {
+func (mw *MagickWand) SpreadImage(radius float64) error {
 }
 
 //radius
 //Choose a random pixel in a neighborhood of this extent.
 //MagickStatisticImage
 //MagickStatisticImage() replace each pixel with corresponding statistic from the neighborhood of the specified width and height.
-func (mw *MagickWand) StatisticImage(stype StatisticType, width double, height uint) error {
+func (mw *MagickWand) StatisticImage(stype StatisticType, width float64, height uint) error {
 }
-func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width double, height uint) error {
+func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width float64, height uint) error {
 }
 
 //channel
@@ -2323,7 +2324,7 @@ func (mw *MagickWand) StripImage() error {
 
 //MagickSwirlImage
 //MagickSwirlImage() swirls the pixels about the center of the image, where degrees indicates the sweep of the arc through which each pixel is moved. You get a more dramatic effect as the degrees move from 1 to 360.
-func (mw *MagickWand) SwirlImage(degrees double) error {
+func (mw *MagickWand) SwirlImage(degrees float64) error {
 }
 
 //degrees
@@ -2335,9 +2336,9 @@ func (mw *MagickWand) SwirlImage(degrees double) error {
 //the texture wand
 //MagickThresholdImage
 //MagickThresholdImage() changes the value of individual pixels based on the intensity of each pixel compared to threshold. The result is a high-contrast, two color image.
-func (mw *MagickWand) ThresholdImage(threshold double) error {
+func (mw *MagickWand) ThresholdImage(threshold float64) error {
 }
-func (mw *MagickWand) ThresholdImageChannel(channel ChannelType, threshold double) error {
+func (mw *MagickWand) ThresholdImageChannel(channel ChannelType, threshold float64) error {
 }
 
 //channel
@@ -2380,7 +2381,7 @@ func (mw *MagickWand) TransformImageColorspace(colorspace ColorspaceType) error 
 //the image colorspace: UndefinedColorspace, sRGBColorspace, RGBColorspace, GRAYColorspace, OHTAColorspace, XYZColorspace, YCbCrColorspace, YCCColorspace, YIQColorspace, YPbPrColorspace, YPbPrColorspace, YUVColorspace, CMYKColorspace, HSLColorspace, HWBColorspace.
 //MagickTransparentPaintImage
 //MagickTransparentPaintImage() changes any pixel that matches color with the color defined by fill.
-func (mw *MagickWand) TransparentPaintImage(target *PixelWand, alpha double, fuzz double, invert bool) error {
+func (mw *MagickWand) TransparentPaintImage(target *PixelWand, alpha float64, fuzz float64, invert bool) error {
 }
 
 //target
@@ -2403,7 +2404,7 @@ func (mw *MagickWand) TransverseImage() error {
 
 //MagickTrimImage
 //MagickTrimImage() remove edges that are the background color from the image.
-func (mw *MagickWand) TrimImage(fuzz double) error {
+func (mw *MagickWand) TrimImage(fuzz float64) error {
 }
 
 //fuzz
@@ -2415,9 +2416,9 @@ func (mw *MagickWand) UniqueImageColors() error {
 
 //MagickUnsharpMaskImage
 //MagickUnsharpMaskImage() sharpens an image. We convolve the image with a Gaussian operator of the given radius and standard deviation (sigma). For reasonable results, radius should be larger than sigma. Use a radius of 0 and UnsharpMaskImage() selects a suitable radius for you.
-func (mw *MagickWand) UnsharpMaskImage(radius double, sigma double, amount double, threshold double) error {
+func (mw *MagickWand) UnsharpMaskImage(radius float64, sigma float64, amount float64, threshold float64) error {
 }
-func (mw *MagickWand) UnsharpMaskImageChannel(channel ChannelType, radius double, sigma double, amount double, threshold double) error {
+func (mw *MagickWand) UnsharpMaskImageChannel(channel ChannelType, radius float64, sigma float64, amount float64, threshold float64) error {
 }
 
 //channel
@@ -2432,7 +2433,7 @@ func (mw *MagickWand) UnsharpMaskImageChannel(channel ChannelType, radius double
 //the threshold in pixels needed to apply the diffence amount.
 //MagickVignetteImage
 //MagickVignetteImage() softens the edges of the image in vignette style.
-func (mw *MagickWand) VignetteImage(black_point double, white_point double, x int, y int) error {
+func (mw *MagickWand) VignetteImage(black_point float64, white_point float64, x int, y int) error {
 }
 
 //black_point
@@ -2443,7 +2444,7 @@ func (mw *MagickWand) VignetteImage(black_point double, white_point double, x in
 //Define the x and y ellipse offset.
 //MagickWaveImage
 //MagickWaveImage() creates a "ripple" effect in the image by shifting the pixels vertically along a sine wave whose amplitude and wavelength is specified by the given parameters.
-func (mw *MagickWand) WaveImage(amplitude double, wave_length double) error {
+func (mw *MagickWand) WaveImage(amplitude float64, wave_length float64) error {
 }
 
 //amplitude, wave_length
