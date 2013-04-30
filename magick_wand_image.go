@@ -128,11 +128,7 @@ func (mw *MagickWand) AnimateImages(server string) error {
 // all the images in the wand's image list will be appended together.
 // By default, images are stacked left-to-right. Set topToBottom to true to stack them top-to-bottom.
 func (mw *MagickWand) AppendImages(topToBottom bool) *MagickWand {
-	stack := C.MagickBooleanType(0)
-	if topToBottom {
-		stack = C.MagickBooleanType(1)
-	}
-	return &MagickWand{wand: C.MagickAppendImages(mw.wand, stack)}
+	return &MagickWand{wand: C.MagickAppendImages(mw.wand, b2i(topToBottom))}
 }
 
 // Extracts the 'mean' from the image and adjust the image to try make set it's gamma appropriatally
@@ -256,11 +252,7 @@ func (mw *MagickWand) ClipImage() error {
 func (mw *MagickWand) ClipImagePath(pathname string, inside bool) error {
 	cspathname := C.CString(pathname)
 	defer C.free(unsafe.Pointer(cspathname))
-	csinside := 0
-	if inside {
-		csinside = 1
-	}
-	C.MagickClipImagePath(mw.wand, cspathname, C.MagickBooleanType(csinside))
+	C.MagickClipImagePath(mw.wand, cspathname, b2i(inside))
 	return mw.GetLastError()
 }
 
@@ -408,11 +400,7 @@ func (mw *MagickWand) CompositeLayers(source *MagickWand, compose CompositeOpera
 // to a value other than 0 to increase the image contrast otherwise the contrast is reduced.
 // sharpen: increase or decrease image contrast
 func (mw *MagickWand) ContrastImage(sharpen bool) error {
-	cssharpen := C.MagickBooleanType(0)
-	if sharpen {
-		cssharpen = 1
-	}
-	C.MagickContrastImage(mw.wand, cssharpen)
+	C.MagickContrastImage(mw.wand, b2i(sharpen))
 	return mw.GetLastError()
 }
 
@@ -467,10 +455,8 @@ func (mw *MagickWand) CycleColormapImage(displace int) error {
 	return mw.GetLastError()
 }
 
-// Adds an image to the wand comprised of the pixel data you supply. The pixel data must be in scanline
-// order top-to-bottom.
-// storage: Define the data type of the pixels. Float and double types are expected to be normalized [0..1]
-// otherwise [0..QuantumRange].
+// Adds an image to the wand comprised of the pixel data you supply. The pixel data must be in scanline order top-to-bottom.
+// storage: Define the data type of the pixels. Float and double types are expected to be normalized [0..1] otherwise [0..QuantumRange].
 // pmap: This string reflects the expected ordering of the pixel array. It can be any combination or order
 // of R = red, G = green, B = blue, A = alpha (0 is transparent), O = opacity (0 is opaque), C = cyan,
 // Y = yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
@@ -478,15 +464,12 @@ func (mw *MagickWand) CycleColormapImage(displace int) error {
 func (mw *MagickWand) ConstituteImageFromBytes(cols, rows uint, pmap string, pixels []uint8) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
-	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap,
-		C.StorageType(CharPixel), unsafe.Pointer(&pixels[0]))
+	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap, C.StorageType(CharPixel), unsafe.Pointer(&pixels[0]))
 	return mw.GetLastError()
 }
 
-// Adds an image to the wand comprised of the pixel data you supply. The pixel data must be in scanline
-// order top-to-bottom.
-// storage: Define the data type of the pixels. Float and double types are expected to be normalized [0..1]
-// otherwise [0..QuantumRange].
+// Adds an image to the wand comprised of the pixel data you supply. The pixel data must be in scanline order top-to-bottom.
+// storage: Define the data type of the pixels. Float and double types are expected to be normalized [0..1] otherwise [0..QuantumRange].
 // pmap: This string reflects the expected ordering of the pixel array. It can be any combination or order
 // of R = red, G = green, B = blue, A = alpha (0 is transparent), O = opacity (0 is opaque), C = cyan,
 // Y = yellow, M = magenta, K = black, I = intensity (for grayscale), P = pad.
@@ -494,8 +477,7 @@ func (mw *MagickWand) ConstituteImageFromBytes(cols, rows uint, pmap string, pix
 func (mw *MagickWand) ConstituteImageFromShort(cols, rows uint, pmap string, pixels []uint16) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
-	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap,
-		C.StorageType(ShortPixel), unsafe.Pointer(&pixels[0]))
+	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap, C.StorageType(ShortPixel), unsafe.Pointer(&pixels[0]))
 	return mw.GetLastError()
 }
 
@@ -510,8 +492,7 @@ func (mw *MagickWand) ConstituteImageFromShort(cols, rows uint, pmap string, pix
 func (mw *MagickWand) ConstituteImageFromInt(cols, rows uint, pmap string, pixels []uint32) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
-	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap,
-		C.StorageType(IntegerPixel), unsafe.Pointer(&pixels[0]))
+	C.MagickConstituteImage(mw.wand, C.size_t(cols), C.size_t(rows), cspmap, C.StorageType(IntegerPixel), unsafe.Pointer(&pixels[0]))
 	return mw.GetLastError()
 }
 
@@ -611,11 +592,7 @@ func (mw *MagickWand) DisplayImages(server string) error {
 // args: the arguments for this distortion method.
 // bestfit: Attempt to resize destination to fit distorted source.
 func (mw *MagickWand) DistortImage(method DistortImageMethod, args []float64, bestfit bool) error {
-	cbestfit := C.MagickBooleanType(0)
-	if bestfit {
-		cbestfit = C.MagickBooleanType(1)
-	}
-	C.MagickDistortImage(mw.wand, C.DistortImageMethod(method), C.size_t(len(args)), (*C.double)(&args[0]), cbestfit)
+	C.MagickDistortImage(mw.wand, C.DistortImageMethod(method), C.size_t(len(args)), (*C.double)(&args[0]), b2i(bestfit))
 	return mw.GetLastError()
 }
 
@@ -754,11 +731,7 @@ func (mw *MagickWand) FlipImage() error {
 // x, y: the starting location of the operation.
 // invert: paint any pixel that does not match the target color.
 func (mw *MagickWand) FloodfillPaintImage(channel ChannelType, fill *PixelWand, fuzz float64, borderColor *PixelWand, x, y int, invert bool) error {
-	cinvert := C.MagickBooleanType(0)
-	if invert {
-		cinvert := C.MagickBooleanType(1)
-	}
-	C.MagickFloodfillPaintImage(mw.wand, C.ChannelType(channel), fill.pixel, C.double(fuzz), borderColor.pixel, C.ssize_t(x), C.ssize_t(y), cinvert)
+	C.MagickFloodfillPaintImage(mw.wand, C.ChannelType(channel), fill.pixel, C.double(fuzz), borderColor.pixel, C.ssize_t(x), C.ssize_t(y), b2i(invert))
 	return mw.GetLastError()
 }
 
@@ -772,11 +745,7 @@ func (mw *MagickWand) UniqueImageColors() error {
 // magnitude/phase or real/imaginary image pair.
 // magnitude: if true, return as magnitude / phase pair otherwise a real / imaginary image pair.
 func (mw *MagickWand) ForwardFourierTransformImage(magnitude bool) error {
-	cmagnitude := C.MagickBooleanType(0)
-	if magnitude {
-		cmagnitude := C.MagickBooleanType(1)
-	}
-	C.MagickForwardFourierTransformImage(mw.wand, cmagnitude)
+	C.MagickForwardFourierTransformImage(mw.wand, b2i(magnitude))
 	return mw.GetLastError()
 }
 
@@ -897,8 +866,8 @@ func (mw *MagickWand) GetImageBlob() []byte {
 // determines the format of the returned blob (GIF, JPEG, PNG, etc.). To return a different image format, use SetImageFormat().
 // Note, some image formats do not permit multiple images to the same image stream (e.g. JPEG). in this instance, just the first
 // image of the sequence is returned as a blob.
-func (mw *MagickWand) GetImagesBlob(size_t *length) []byte {
-	clen := C.size_t
+func (mw *MagickWand) GetImagesBlob() []byte {
+	clen := C.size_t(0)
 	csblob := C.MagickGetImagesBlob(mw.wand, &clen)
 	defer mw.relinquishMemory(csblob)
 	return C.GoBytes(unsafe.Pointer(csblob), clen)
@@ -935,7 +904,7 @@ func (mw *MagickWand) GetImageChannelDistortion(reference *MagickWand, channel C
 // Compares one or more image channels of an image to a reconstructed image and returns the specified distortion metrics.
 func (mw *MagickWand) GetImageChannelDistortions(reference *MagickWand, metric MetricType) []float64 {
 	cptrdbls := C.MagickGetImageChannelDistortions(mw.wand, reference.wand, C.MetricType(metric))
-	defer C.relinquishMemory(cptrdbls)
+	defer mw.relinquishMemory(cptrdbls)
 	metrics := make([]float64, 0)
 	q := uintptr(unsafe.Pointer(cptrdbls))
 	for {
@@ -1080,7 +1049,8 @@ func (mw *MagickWand) GetImageGravity() GravityType {
 // Returns the chromaticy green primary point.
 // x: the chromaticity green primary x-point.
 // y: the chromaticity green primary y-point.
-func (mw *MagickWand) GetImageGreenPrimary(double *x, double *y) error {
+func (mw *MagickWand) GetImageGreenPrimary() (x, y float64, err error) {
+
 }
 
 // Returns the image height.
@@ -1110,14 +1080,16 @@ func (mw *MagickWand) GetImageIterations() uint {
 }
 
 // Returns the image length in bytes.
-func (mw *MagickWand) GetImageLength(MagickSizeType *length) error {
-	// TODO MagickSizeType
+func (mw *MagickWand) GetImageLength() (length uint, err error) {
+	cl := C.MagickSizeType(0)
+	C.MagickGetImageLength(mw.wand, &cl)
+	return uint(cl), mw.GetLastError()
 }
 
 // Returns the image matte color.
-func (mw *MagickWand) GetImagematteColor() (matteColor *PixelWand, err error) {
+func (mw *MagickWand) GetImageMatteColor() (matteColor *PixelWand, err error) {
 	var cptrpw (*C.PixelWand)
-	C.MagickGetImagematteColor(mw.wand, cptrpw)
+	C.MagickGetImageMatteColor(mw.wand, cptrpw)
 	return &PixelWand{cptrpw}, mw.GetLastError()
 }
 
@@ -1138,7 +1110,7 @@ func (mw *MagickWand) GetImagePage() (w, h uint, x, y int, err error) {
 
 // Returns the color of the specified pixel.
 func (mw *MagickWand) GetImagePixelColor(x, y int) (color *PixelWand, err error) {
-	cpw := C.PixelWand()
+	var cpw C.PixelWand
 	C.MagickGetImagePixelColor(C.ssize_t(x), C.ssize_t(y), &cpw)
 	return &PixelWand{cpw}, mw.GetLastError()
 }
@@ -1284,11 +1256,7 @@ func (mw *MagickWand) ImportImageBytePixels(x, y int, columns, rows uint, pmap s
 // phaseWand: the phase or imaginary wand.
 // magnitude: if true, return as magnitude/phase pair otherwise a real/imaginary image pair.
 func (mw *MagickWand) InverseFourierTransformImage(phaseWand *MagickWand, magnitude bool) error {
-	cmagnitude := C.MagickBooleanType(0)
-	if magnitude {
-		cmagnitude = 1
-	}
-	C.MagickInverseFourierTransformImage(mw.wand, phaseWand.wand, cmagnitude)
+	C.MagickInverseFourierTransformImage(mw.wand, phaseWand.wand, b2i(magnitude))
 	return mw.GetLastError()
 }
 
@@ -1436,188 +1404,229 @@ func (mw *MagickWand) MotionBlurImageChannel(channel ChannelType, radius, sigma,
 }
 
 // Negates the colors in the reference image. The Grayscale option means that only grayscale values within the image are negated.
-//You can also reduce the influence of a particular channel with a gamma value of 0.
+// You can also reduce the influence of a particular channel with a gamma value of 0.
+// gray: If MagickTrue, only negate grayscale pixels within the image.
 func (mw *MagickWand) NegateImage(gray bool) error {
+	C.MagickNegateImage(mw.wand, b2i(gray))
+	return mw.GetLastError()
 }
+
+// Negates the colors in the reference image's channel. The Grayscale option means that only grayscale values within the image are negated.
+// You can also reduce the influence of a particular channel with a gamma value of 0.
+// gray: If MagickTrue, only negate grayscale pixels within the image.
 func (mw *MagickWand) NegateImageChannel(channel ChannelType, gray bool) error {
+	C.MagickNegateImageChannel(C.ChannelType(channel), b2i(gray))
+	return mw.GetLastError()
 }
 
-//channel
-//the image channel(s).
-//gray
-//If MagickTrue, only negate grayscale pixels within the image.
-//MagickNewImage
-//MagickNewImage() adds a blank image canvas of the specified size and background color to the wand.
+// Adds a blank image canvas of the specified size and background color to the wand.
 func (mw *MagickWand) NewImage(columns uint, rows uint, background *PixelWand) error {
+	C.MagickNewImage(C.size_t(columns), C.size_t(rows), background.pixel)
+	return mw.GetLastError()
 }
 
-//width
-//the image width.
-//height
-//the image height.
-//background
-//the image color.
-//MagickNextImage
-//MagickNextImage() sets the next image in the wand as the current image.
-//It is typically used after MagickResetIterator(), after which its first use will set the first image as the current image (unless the wand is empty).
-//It will return MagickFalse when no more images are left to be returned which happens when the wand is empty, or the current image is the last image.
-//When the above condition (end of image list) is reached, the iterator is automaticall set so that you can start using MagickPreviousImage() to again iterate over the images in the reverse direction, starting with the last image (again). You can jump to this condition immeditally using MagickSetLastIterator().
-func (mw *MagickWand) NextImage() error {
+// Sets the next image in the wand as the current image.
+// It is typically used after ResetIterator(), after which its first use will set the first image as the current image (unless the wand is empty).
+// It will return false when no more images are left to be returned which happens when the wand is empty, or the current image is the last image.
+// When the above condition (end of image list) is reached, the iterator is automaticall set so that you can start using PreviousImage() to again
+// iterate over the images in the reverse direction, starting with the last image (again). You can jump to this condition immeditally using SetLastIterator().
+func (mw *MagickWand) NextImage() bool {
+	return 1 == C.MagickNextImage(mw.wand)
 }
 
-//MagickNormalizeImage
-//MagickNormalizeImage() enhances the contrast of a color image by adjusting the pixels color to span the entire range of colors available
-//You can also reduce the influence of a particular channel with a gamma value of 0.
+// Enhances the contrast of a color image by adjusting the pixels color to span the entire range of colors available.
+// You can also reduce the influence of a particular channel with a gamma value of 0.
 func (mw *MagickWand) NormalizeImage() error {
+	C.MagickNormalizeImage(mw.wand)
+	return mw.GetLastError()
 }
+
+// Enhances the contrast of a color image's channel by adjusting the pixels color to span the entire range of colors available.
+// You can also reduce the influence of a particular channel with a gamma value of 0.
 func (mw *MagickWand) NormalizeImageChannel(channel ChannelType) error {
+	C.MagickNormalizeImageChannel(mw.wand, C.ChannelType(channel))
+	return mw.GetLastError()
 }
 
-//channel
-//the image channel(s).
-//MagickOilPaintImage
-//MagickOilPaintImage() applies a special effect filter that simulates an oil painting. Each pixel is replaced by the most frequent color occurring in a circular region defined by radius.
-func (mw *MagickWand) OilPaintImage(radius double) error {
+// Applies a special effect filter that simulates an oil painting. Each pixel is replaced by the most frequent color occurring in a circular region defined by radius.
+// radius: the radius of the circular neighborhood.
+func (mw *MagickWand) OilPaintImage(radius float64) error {
+	C.MagickOilPaintImage(mw.wand, C.double(radius))
+	return mw.GetLastError()
 }
 
-//radius
-//the radius of the circular neighborhood.
-//MagickOpaquePaintImage
-//MagickOpaquePaintImage() changes any pixel that matches color with the color defined by fill.
-func (mw *MagickWand) OpaquePaintImage(target *PixelWand, fill *PixelWand, fuzz double, invert bool) error {
+// Changes any pixel that matches color with the color defined by fill.
+// target: Change this target color to the fill color within the image.
+// fill: the fill pixel wand.
+// fuzz: By default target must match a particular pixel color exactly. However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same. For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.
+// invert: paint any pixel that does not match the target color.
+func (mw *MagickWand) OpaquePaintImage(target, fill *PixelWand, fuzz float64, invert bool) error {
+	C.MagickOpaquePaintImage(mw.wand, target.pixel, fill.pixel, C.double(fuzz), b2i(invert))
+	return mw.GetLastError()
 }
 
-func (mw *MagickWand) OpaquePaintImageChannel(channel ChannelType, target *PixelWand, fill *PixelWand, fuzz double, invert bool) error {
+// Changes any pixel that matches color with the color defined by fill.
+// target: Change this target color to the fill color within the image.
+// fill: the fill pixel wand.
+// fuzz: By default target must match a particular pixel color exactly. However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same. For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.
+// invert: paint any pixel that does not match the target color.
+func (mw *MagickWand) OpaquePaintImageChannel(channel ChannelType, target, fill *PixelWand, fuzz float64, invert bool) error {
+	C.MagickOpaquePaintImageChannel(mw.wand, C.ChannelType(channel), target.pixel, fill.pixel, C.double(fuzz), b2i(invert))
+	return mw.GetLastError()
 }
 
-//channel
-//the channel(s).
-//target
-//Change this target color to the fill color within the image.
-//fill
-//the fill pixel wand.
-//fuzz
-//By default target must match a particular pixel color exactly. However, in many cases two colors may differ by a small amount. The fuzz member of image defines how much tolerance is acceptable to consider two colors as the same. For example, set fuzz to 10 and the color red at intensities of 100 and 102 respectively are now interpreted as the same color for the purposes of the floodfill.
-//invert
-//paint any pixel that does not match the target color.
-//MagickOptimizeImageLayers
-//MagickOptimizeImageLayers() compares each image the GIF disposed forms of the previous image in the sequence. From this it attempts to select the smallest cropped image to replace each frame, while preserving the results of the animation.
+// Compares each image the GIF disposed forms of the previous image in the sequence. From this it attempts to select the smallest cropped image to replace each frame, while preserving the results of the animation.
 func (mw *MagickWand) OptimizeImageLayers() *MagickWand {
+	return &MagickWand{C.MagickOptimizeImageLayers(mw.wand)}
 }
 
-//MagickOptimizeImageTransparency
-//MagickOptimizeImageTransparency() takes a frame optimized GIF animation, and compares the overlayed pixels against the disposal image resulting from all the previous frames in the animation. Any pixel that does not change the disposal image (and thus does not effect the outcome of an overlay) is made transparent.
-//WARNING: This modifies the current images directly, rather than generate a new image sequence.
-func (mw *MagickWand) OptimizeImageTransparency() error {
+// Takes a frame optimized GIF animation, and compares the overlayed pixels against the disposal image resulting from all the previous frames in the animation. Any pixel that does not change the disposal image (and thus does not effect the outcome of an overlay) is made transparent.
+// WARNING: This modifies the current images directly, rather than generate a new image sequence.
+// TODO - not available in ImageMagick 6.7.7?
+//func (mw *MagickWand) OptimizeImageTransparency() error {
+//C.MagickOptimizeImageTransparency(mw.wand)
+//return mw.GetLastError()
+//}
+
+// Performs an ordered dither based on a number of pre-defined dithering threshold maps, but over
+// multiple intensity levels, which can be different for different channels, according to the input arguments.
+// thresholdMap: A string containing the name of the threshold dither map to use, followed by zero or more numbers
+// representing the number of color levels tho dither between. Any level number less than 2 is equivalent to 2,
+// and means only binary dithering will be applied to each color channel. No numbers also means a 2 level (bitmap)
+// dither will be applied to all channels, while a single number is the number of levels applied to each channel
+// in sequence. More numbers will be applied in turn to each of the color channels. For example: "o3x3,6" generates
+// a 6 level posterization of the image with a ordered 3x3 diffused pixel dither being applied between each level.
+// While checker,8,8,4 will produce a 332 colormaped image with only a single checkerboard hash pattern (50 grey)
+// between each color level, to basically double the number of color levels with a bare minimim of dithering.
+func (mw *MagickWand) OrderedPosterizeImage(thresholdMap string) error {
+	cstm := C.CString(thresholdMap)
+	defer C.free(unsafe.Pointer(cstm))
+	C.MagickOrderedPosterizeImage(mw.wand, cstm)
+	return mw.GetLastError()
 }
 
-//MagickOrderedPosterizeImage
-//MagickOrderedPosterizeImage() performs an ordered dither based on a number of pre-defined dithering threshold maps, but over multiple intensity levels, which can be different for different channels, according to the input arguments.
-func (mw *MagickWand) OrderedPosterizeImage(threshold_map string) error {
-}
-func (mw *MagickWand) OrderedPosterizeImageChannel(channel ChannelType, threshold_map string) error {
+// Performs an ordered dither based on a number of pre-defined dithering threshold maps, but over
+// multiple intensity levels, which can be different for different channels, according to the input arguments.
+// thresholdMap: A string containing the name of the threshold dither map to use, followed by zero or more numbers
+// representing the number of color levels tho dither between. Any level number less than 2 is equivalent to 2,
+// and means only binary dithering will be applied to each color channel. No numbers also means a 2 level (bitmap)
+// dither will be applied to all channels, while a single number is the number of levels applied to each channel
+// in sequence. More numbers will be applied in turn to each of the color channels. For example: "o3x3,6" generates
+// a 6 level posterization of the image with a ordered 3x3 diffused pixel dither being applied between each level.
+// While checker,8,8,4 will produce a 332 colormaped image with only a single checkerboard hash pattern (50 grey)
+// between each color level, to basically double the number of color levels with a bare minimim of dithering.
+func (mw *MagickWand) OrderedPosterizeImageChannel(channel ChannelType, thresholdMap string) error {
+	cstm := C.CString(thresholdMap)
+	defer C.free(unsafe.Pointer(cstm))
+	C.MagickOrderedPosterizeImageChannel(mw.wand, C.ChannelType(channel), cstm)
+	return mw.GetLastError()
 }
 
-//image
-//the image.
-//channel
-//the channel or channels to be thresholded.
-//threshold_map
-//A string containing the name of the threshold dither map to use, followed by zero or more numbers representing the number of color levels tho dither between.
-//Any level number less than 2 is equivalent to 2, and means only binary dithering will be applied to each color channel.
-//No numbers also means a 2 level (bitmap) dither will be applied to all channels, while a single number is the number of levels applied to each channel in sequence. More numbers will be applied in turn to each of the color channels.
-//For example: "o3x3,6" generates a 6 level posterization of the image with a ordered 3x3 diffused pixel dither being applied between each level. While checker,8,8,4 will produce a 332 colormaped image with only a single checkerboard hash pattern (50 grey) between each color level, to basically double the number of color levels with a bare minimim of dithering.
-//MagickPingImage
-//MagickPingImage() is like MagickReadImage() except the only valid information returned is the image width, height, size, and format. It is designed to efficiently obtain this information from a file without reading the entire image sequence into memory.
+// This is like ReadImage() except the only valid information returned is the image width, height, size, and format.
+// It is designed to efficiently obtain this information from a file without reading the entire image sequence into memory.
 func (mw *MagickWand) PingImage(filename string) error {
+	csfilename := C.CString(filename)
+	defer C.free(csfilename)
+	C.MagickPingImage(mw.wand, csfilename)
+	return mw.GetLastError()
 }
 
-//filename
-//the image filename.
-//MagickPingImageBlob
-//MagickPingImageBlob() pings an image or image sequence from a blob.
-func (mw *MagickWand) PingImageBlob(blob *void, length uint) error {
+// Pings an image or image sequence from a blob.
+//func (mw *MagickWand) PingImageBlob(blob *void, length uint) error {
+// TODO
+//}
+
+// Pings an image or image sequence from an open file descriptor.
+func (mw *MagickWand) PingImageFile(img *os.File) error {
+	cmode := C.CString("w+")
+	defer C.free(unsafe.Pointer(cmode))
+	file := C.fdopen(C.int(img.Fd()), cmode)
+	defer C.fclose(file)
+	C.MagickPingImageFile(mw.wand, file)
+	return mw.GetLastError()
 }
 
-//blob
-//the blob.
-//length
-//the blob length.
-//MagickPingImageFile
-//MagickPingImageFile() pings an image or image sequence from an open file descriptor.
-func (mw *MagickWand) ReadImage(filename string) error {
+// Simulates a Polaroid picture.
+func (mw *MagickWand) PolaroidImage(dw *DrawingWand, angle float64) error {
+	C.MagickPolaroidImage(mw.wand, dw.draw, C.double(angle))
+	return mw.GetLastError()
 }
 
-//file
-//the file descriptor.
-//MagickPolaroidImage
-//MagickPolaroidImage() simulates a Polaroid picture.
-func (mw *MagickWand) PolaroidImage(drawing_wand *DrawingWand, angle double) error {
-}
-
-//drawing_wand
-//the draw wand.
-//angle
-//Apply the effect along this angle.
-//MagickPosterizeImage
-//MagickPosterizeImage() reduces the image to a limited number of color level.
+// Reduces the image to a limited number of color level.
+// levels: Number of color levels allowed in each channel. Very low values (2, 3, or 4) have the most visible effect.
+// dither: Set this integer value to something other than zero to dither the mapped image.
 func (mw *MagickWand) PosterizeImage(levels uint, dither bool) error {
+	C.MagickPosterizeImage(mw.wand, C.size_t(levels), b2i(dither))
+	return mw.GetLastError()
 }
 
-//levels
-//Number of color levels allowed in each channel. Very low values (2, 3, or 4) have the most visible effect.
-//dither
-//Set this integer value to something other than zero to dither the mapped image.
-//MagickPreviewImages
-//MagickPreviewImages() tiles 9 thumbnails of the specified image with an image processing operation applied at varying strengths. This helpful to quickly pin-point an appropriate parameter for an image processing operation.
+// Tiles 9 thumbnails of the specified image with an image processing operation applied at varying strengths.
+// This helpful to quickly pin-point an appropriate parameter for an image processing operation.
 func (mw *MagickWand) PreviewImages(preview PreviewType) *MagickWand {
+	// TODO PreviewType
 }
 
-//preview
-//the preview type.
-//MagickPreviousImage
-//MagickPreviousImage() sets the previous image in the wand as the current image.
-//It is typically used after MagickSetLastIterator(), after which its first use will set the last image as the current image (unless the wand is empty).
-//It will return MagickFalse when no more images are left to be returned which happens when the wand is empty, or the current image is the first image. At that point the iterator is than reset to again process images in the forward direction, again starting with the first image in list. Images added at this point are prepended.
-//Also at that point any images added to the wand using MagickAddImages() or MagickReadImages() will be prepended before the first image. In this sense the condition is not quite exactly the same as MagickResetIterator().
-func (mw *MagickWand) ReadImage(filename string) error {
+// Sets the previous image in the wand as the current image.
+// It is typically used after SetLastIterator(), after which its first use will set the
+// last image as the current image (unless the wand is empty). It will return false when no more images are left
+// to be returned which happens when the wand is empty, or the current image is the first image. At that point
+// the iterator is than reset to again process images in the forward direction, again starting with the first
+// image in list. Images added at this point are prepended. Also at that point any images added to the wand
+// using AddImages() or ReadImages() will be prepended before the first image. In this sense the condition is
+// not quite exactly the same as ResetIterator().
+func (mw *MagickWand) PreviousImage() bool {
+	return 1 == C.MagickPreviousImage(mw.wand)
 }
 
-//MagickQuantizeImage
-//MagickQuantizeImage() analyzes the colors within a reference image and chooses a fixed number of colors to represent the image. The goal of the algorithm is to minimize the color difference between the input and output image while minimizing the processing time.
-func (mw *MagickWand) QuantizeImage(number_colors uint, colorspace ColorspaceType, treedepth uint, dither bool, measure_error bool) error {
+// Analyzes the colors within a reference image and chooses a fixed number of colors to represent the image.
+// The goal of the algorithm is to minimize the color difference between the input and output image while
+// minimizing the processing time.
+// numColors: the number of colors.
+// colorspace: Perform color reduction in this colorspace, typically RGBColorspace.
+// treedepth: Normally, this integer value is zero or one. A zero or one tells Quantize to choose a optimal
+// tree depth of Log4(number_colors). A tree of this depth generally allows the best representation of the
+// reference image with the least amount of memory and the fastest computational speed. In some cases, such
+// as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is
+// required. To expand the color tree completely, use a value of 8.
+// dither: A value other than zero distributes the difference between an original image and the corresponding
+// color reduced image to neighboring pixels along a Hilbert curve.
+// measureError: A value other than zero measures the difference between the original and quantized images.
+// This difference is the total quantization error. The error is computed by summing over all pixels in an
+// image the distance squared in RGB space between each reference pixel value and its quantized value.
+func (mw *MagickWand) QuantizeImage(numColors uint, colorspace ColorspaceType, treedepth uint, dither bool, measureError bool) error {
+	C.QuantizeImage(mw.wand, C.size_t(numColors), C.ColorspaceType(colorspace), C.size_t(treedepth), b2i(dither), b2i(measureError))
+	return mw.GetLastError()
 }
 
-//number_colors
-//the number of colors.
-//colorspace
-//Perform color reduction in this colorspace, typically RGBColorspace.
-//treedepth
-//Normally, this integer value is zero or one. A zero or one tells Quantize to choose a optimal tree depth of Log4(number_colors). A tree of this depth generally allows the best representation of the reference image with the least amount of memory and the fastest computational speed. In some cases, such as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is required. To expand the color tree completely, use a value of 8.
-//dither
-//A value other than zero distributes the difference between an original image and the corresponding color reduced image to neighboring pixels along a Hilbert curve.
-//measure_error
-//A value other than zero measures the difference between the original and quantized images. This difference is the total quantization error. The error is computed by summing over all pixels in an image the distance squared in RGB space between each reference pixel value and its quantized value.
-//MagickQuantizeImages
-//MagickQuantizeImages() analyzes the colors within a sequence of images and chooses a fixed number of colors to represent the image. The goal of the algorithm is to minimize the color difference between the input and output image while minimizing the processing time.
-func (mw *MagickWand) QuantizeImages(number_colors uint, colorspace ColorspaceType, treedepth uint, dither bool, measure_error bool) error {
+// Analyzes the colors within a sequence of images and chooses a fixed number of colors to represent the image.
+// The goal of the algorithm is to minimize the color difference between the input and output image while
+// minimizing the processing time.
+// numColors: the number of colors.
+// colorspace: Perform color reduction in this colorspace, typically RGBColorspace.
+// treedepth: Normally, this integer value is zero or one. A zero or one tells Quantize to choose a optimal
+// tree depth of Log4(number_colors). A tree of this depth generally allows the best representation of the
+// reference image with the least amount of memory and the fastest computational speed. In some cases, such
+// as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is
+// required. To expand the color tree completely, use a value of 8.
+// dither: A value other than zero distributes the difference between an original image and the corresponding
+// color reduced image to neighboring pixels along a Hilbert curve.
+// measureError: A value other than zero measures the difference between the original and quantized images.
+// This difference is the total quantization error. The error is computed by summing over all pixels in an
+// image the distance squared in RGB space between each reference pixel value and its quantized value.
+func (mw *MagickWand) QuantizeImages(numColors uint, colorspace ColorspaceType, treedepth uint, dither bool, measureError bool) error {
+	C.QuantizeImages(mw.wand, C.size_t(numColors), C.ColorspaceType(colorspace), C.size_t(treedepth), b2i(dither), b2i(measureError))
+	return mw.GetLastError()
 }
 
-//number_colors
-//the number of colors.
-//colorspace
-//Perform color reduction in this colorspace, typically RGBColorspace.
-//treedepth
-//Normally, this integer value is zero or one. A zero or one tells Quantize to choose a optimal tree depth of Log4(number_colors). A tree of this depth generally allows the best representation of the reference image with the least amount of memory and the fastest computational speed. In some cases, such as an image with low color dispersion (a few number of colors), a value other than Log4(number_colors) is required. To expand the color tree completely, use a value of 8.
-//dither
-//A value other than zero distributes the difference between an original image and the corresponding color reduced algorithm to neighboring pixels along a Hilbert curve.
-//measure_error
-//A value other than zero measures the difference between the original and quantized images. This difference is the total quantization error. The error is computed by summing over all pixels in an image the distance squared in RGB space between each reference pixel value and its quantized value.
-//MagickRadialBlurImage
-//MagickRadialBlurImage() radial blurs an image.
-func (mw *MagickWand) RadialBlurImage(angle double) error {
+// Radial blurs an image.
+func (mw *MagickWand) RadialBlurImage(angle float64) error {
+	C.MagickRadialBlurImage(mw.wand, angle)
+	return mw.GetLastError()
 }
-func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle double) error {
+
+func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle float64) error {
+	C.MagickRadialBlurImageChannel(mw.wand, channel, angle)
+	return mw.GetLastError()
 }
 
 //channel
@@ -2012,7 +2021,7 @@ func (mw *MagickWand) SetImageIterations(iterations uint) error {
 //the image delay in 1/100th of a second.
 //MagickSetImageMatte
 //MagickSetImageMatte() sets the image matte channel.
-func (mw *MagickWand) SetImageMatteColor(matte *MagickBooleanType) error {
+func (mw *MagickWand) SetImageMatte(matte *MagickBooleanType) error {
 }
 
 //matte
@@ -2459,6 +2468,7 @@ func (mw *MagickWand) WriteImageImageFile(out *os.File) error {
 	cmode := C.CString("w+")
 	defer C.free(unsafe.Pointer(cmode))
 	file := C.fdopen(C.int(out.Fd()), cmode)
+	defer C.fclose(file)
 	C.MagickWriteImageFile(mw.wand, file)
 	return mw.GetLastError()
 }
@@ -2480,6 +2490,7 @@ func (mw *MagickWand) WriteImagesFile(out *os.File) error {
 	cmode := C.CString("w+")
 	defer C.free(unsafe.Pointer(cmode))
 	file := C.fdopen(C.int(out.Fd()), cmode)
+	defer C.fclose(file)
 	C.MagickWriteImagesFile(mw.wand, file)
 	return mw.GetLastError()
 }
