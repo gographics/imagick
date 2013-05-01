@@ -13,7 +13,7 @@ import (
 type ResolutionType int
 
 const (
-	UndefinedResolution OrientationType = iota
+	UndefinedResolution ResolutionType = iota
 	PixelsPerInchResolution
 	PixelsPerCentimeterResolution
 )

@@ -13,14 +13,14 @@ import (
 type SparseColorMethod int
 
 const (
-	UndefinedColorInterpolate   = UndefinedDistortion
-	BarycentricColorInterpolate = AffineDistortion
-	BilinearColorInterpolate    = BilinearReverseDistortion
-	PolynomialColorInterpolate  = PolynomialDistortion
-	ShepardsColorInterpolate    = ShepardsDistortion
+	UndefinedColorInterpolate   = SparseColorMethod(UndefinedDistortion)
+	BarycentricColorInterpolate = SparseColorMethod(AffineDistortion)
+	BilinearColorInterpolate    = SparseColorMethod(BilinearReverseDistortion)
+	PolynomialColorInterpolate  = SparseColorMethod(PolynomialDistortion)
+	ShepardsColorInterpolate    = SparseColorMethod(ShepardsDistortion)
 	// Methods unique to SparseColor().
-	VoronoiColorInterpolate = SentinelDistortion
-	InverseColorInterpolate
+	VoronoiColorInterpolate = SparseColorMethod(SentinelDistortion)
+	InverseColorInterpolate = VoronoiColorInterpolate + 1
 )
 
 var sparseColorMethodStrings = map[SparseColorMethod]string{
