@@ -613,7 +613,7 @@ func (mw *MagickWand) EncipherImage(passphrase string) error {
 
 // Applies a digital filter that improves the quality of a noisy image
 func (mw *MagickWand) EnhanceImage() error {
-	C.MagickEnhangeImage(mw.wand)
+	C.MagickEnhanceImage(mw.wand)
 	return mw.GetLastError()
 }
 
