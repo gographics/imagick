@@ -20,8 +20,11 @@ func (mw *MagickWand) GetImageFromMagickWand() *Image {
 // the given radius and standard deviation (sigma). For reasonable results,
 // radius should be larger than sigma. Use a radius of 0 and
 // AdaptiveBlurImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels
+//
 func (mw *MagickWand) AdaptiveBlurImage(radius, sigma float64) error {
 	C.MagickAdaptiveBlurImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -32,8 +35,11 @@ func (mw *MagickWand) AdaptiveBlurImage(radius, sigma float64) error {
 // the given radius and standard deviation
 // (sigma). For reasonable results, radius should be larger than sigma. Use a
 // radius of 0 and AdaptiveBlurImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels
+//
 func (mw *MagickWand) AdaptiveBlurImageChannel(channel ChannelType, radius, sigma float64) error {
 	C.MagickAdaptiveBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -50,8 +56,11 @@ func (mw *MagickWand) AdaptiveResizeImage(cols, rows uint) error {
 // operator of the given radius and standard deviation (sigma). For reasonable
 // results, radius should be larger than sigma. Use a radius of 0 and
 // AdaptiveSharpenImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) AdaptiveSharpenImage(radius, sigma float64) error {
 	C.MagickAdaptiveSharpenImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -62,8 +71,11 @@ func (mw *MagickWand) AdaptiveSharpenImage(radius, sigma float64) error {
 // operator of the given radius and standard deviation (sigma). For reasonable
 // results, radius should be larger than sigma. Use a radius of 0 and
 // AdaptiveSharpenImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) AdaptiveSharpenImageChannel(channel ChannelType, radius, sigma float64) error {
 	C.MagickAdaptiveSharpenImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -112,9 +124,13 @@ func (mw *MagickWand) AffineTransformImage(drawingWand *DrawingWand) error {
 }
 
 // Annotates an image with text
+//
 // x: ordinate to left of text
+//
 // y: ordinate to text baseline
+//
 // angle: rotate text relative to this angle
+//
 func (mw *MagickWand) AnnotateImage(drawingWand *DrawingWand, x, y, angle float64, text string) error {
 	cstext := C.CString(text)
 	defer C.free(unsafe.Pointer(cstext))
@@ -187,8 +203,11 @@ func (mw *MagickWand) BlueShiftImage(factor float64) error {
 // given radius and standard deviation (sigma). For reasonable results, the
 // radius should be larger than sigma. Use a radius of 0 and BlurImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the, in pixels
+//
 func (mw *MagickWand) BlurImage(radius, sigma float64) error {
 	C.MagickBlurImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -198,8 +217,11 @@ func (mw *MagickWand) BlurImage(radius, sigma float64) error {
 // of the given radius and standard deviation (sigma). For reasonable results,
 // the radius should be larger than sigma. Use a radius of 0 and BlurImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the, in pixels
+//
 func (mw *MagickWand) BlurImageChannel(channel ChannelType, radius, sigma float64) error {
 	C.MagickBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -214,8 +236,11 @@ func (mw *MagickWand) BorderImage(borderColor *PixelWand, width, height uint) er
 
 // Use this to change the brightness and/or contrast of an image. It converts
 // the brightness and contrast.
+//
 // brighness: the brightness percent (-100 .. 100)
+//
 // contrast: the brightness percent (-100 .. 100)
+//
 func (mw *MagickWand) BrightnessContrastImage(brightness, contrast float64) error {
 	C.MagickBrightnessContrastImage(mw.wand, C.double(brightness), C.double(contrast))
 	return mw.GetLastError()
@@ -223,16 +248,22 @@ func (mw *MagickWand) BrightnessContrastImage(brightness, contrast float64) erro
 
 // Use this to change the brightness and/or contrast of an image's channel.
 // It converts the brightness and contrast.
+//
 // brighness: the brightness percent (-100 .. 100)
+//
 // contrast: the brightness percent (-100 .. 100)
+//
 func (mw *MagickWand) BrightnessContrastImageChannel(channel ChannelType, brightness, contrast float64) error {
 	C.MagickBrightnessContrastImageChannel(mw.wand, C.ChannelType(channel), C.double(brightness), C.double(contrast))
 	return mw.GetLastError()
 }
 
 // Simulates a charcoal drawing
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels
+//
 func (mw *MagickWand) CharcoalImage(radius, sigma float64) error {
 	C.MagickCharcoalImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -240,8 +271,11 @@ func (mw *MagickWand) CharcoalImage(radius, sigma float64) error {
 
 // Removes a region of an image and collapses the image to occupy the removed
 // portion.
+//
 // width, height: the region width and height
+//
 // x, y: the region x and y offsets
+//
 func (mw *MagickWand) ChopImage(width, height uint, x, y int) error {
 	C.MagickChopImage(mw.wand, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -270,8 +304,9 @@ func (mw *MagickWand) ClipImage() error {
 // #, to work on a numbered path, e.g. "#1" to use the first path.
 // pathname: name of clipping path resource. If name is preceded by #, use
 // clipping path numbered by name.
-// inside: if true, later operations take effect inside clipping path.
-// Otherwise later operations take effect outside clipping path.
+//
+// inside: if true, later operations take effect inside clipping path. Otherwise
+// later operations take effect outside clipping path.
 func (mw *MagickWand) ClipImagePath(pathname string, inside bool) error {
 	cspathname := C.CString(pathname)
 	defer C.free(unsafe.Pointer(cspathname))
@@ -304,18 +339,20 @@ func (mw *MagickWand) CoalesceImages() *MagickWand {
 // Accepts a lightweight Color Correction Collection (CCC) file which solely
 // contains one or more color corrections and applies the color correction to
 // the image. Here is a sample CCC file content:
-// <colorcorrectioncollection xmlns="urn:ASC:CDL:v1.2">
-//   <colorcorrection id="cc03345">
-//     <sopnode>
-//       <slope> 0.9 1.2 0.5 </slope>
-//       <offset> 0.4 -0.5 0.6 </offset>
-//       <power> 1.0 0.8 1.5 </power>
-//     </sopnode>
-//     <satnode>
-//       <saturation> 0.85 </saturation>
-//     </satnode>
-//   </colorcorrection>
-// </colorcorrectioncollection>
+//
+//    <colorcorrectioncollection xmlns="urn:ASC:CDL:v1.2">
+//      <colorcorrection id="cc03345">
+//        <sopnode>
+//          <slope> 0.9 1.2 0.5 </slope>
+//          <offset> 0.4 -0.5 0.6 </offset>
+//          <power> 1.0 0.8 1.5 </power>
+//        </sopnode>
+//        <satnode>
+//          <saturation> 0.85 </saturation>
+//        </satnode>
+//      </colorcorrection>
+//    </colorcorrectioncollection>
+//
 func (mw *MagickWand) ColorDecisionListImage(cccXML string) error {
 	cscccXML := C.CString(cccXML)
 	defer C.free(unsafe.Pointer(cscccXML))
@@ -384,8 +421,11 @@ func (mw *MagickWand) CompareImages(reference *MagickWand, metric MetricType) (w
 // source: The magick wand holding source image.
 // compose: This operator affects how the composite is applied to the image.
 // The default is Over.
+//
 // x: the column offset of the composited image.
+//
 // y: the row offset of the composited image.
+//
 func (mw *MagickWand) CompositeImage(source *MagickWand, compose CompositeOperator, x, y int) error {
 	C.MagickCompositeImage(mw.wand, source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -395,8 +435,11 @@ func (mw *MagickWand) CompositeImage(source *MagickWand, compose CompositeOperat
 // source: The magick wand holding source image.
 // compose: This operator affects how the composite is applied to the image.
 // The default is Over.
+//
 // x: the column offset of the composited image.
+//
 // y: the row offset of the composited image.
+//
 func (mw *MagickWand) CompositeImageChannel(channel ChannelType, source *MagickWand, compose CompositeOperator, x, y int) error {
 	C.MagickCompositeImageChannel(mw.wand, C.ChannelType(channel), source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -422,7 +465,9 @@ func (mw *MagickWand) CompositeImageChannel(channel ChannelType, source *MagickW
 // source image list. This is equivelent to the "-layer Composite" Shell API
 // operator.
 // source: the wand holding the source images
+//
 // compose, x, y: composition arguments
+//
 func (mw *MagickWand) CompositeLayers(source *MagickWand, compose CompositeOperator, x, y int) error {
 	C.MagickCompositeLayers(mw.wand, source.wand, C.CompositeOperator(compose), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -431,7 +476,9 @@ func (mw *MagickWand) CompositeLayers(source *MagickWand, compose CompositeOpera
 // Enhances the intensity differences between the lighter and darker elements
 // of the image. Set sharpen to a value other than 0 to increase the image
 // contrast otherwise the contrast is reduced.
+//
 // sharpen: increase or decrease image contrast
+//
 func (mw *MagickWand) ContrastImage(sharpen bool) error {
 	C.MagickContrastImage(mw.wand, b2i(sharpen))
 	return mw.GetLastError()
@@ -454,16 +501,22 @@ func (mw *MagickWand) ContrastStretchImageChannel(channel ChannelType, blackPoin
 }
 
 // Applies a custom convolution kernel to the image.
+//
 // order: the number of cols and rows in the filter kernel
+//
 // kernel: an array of doubles, representing the convolution kernel
+//
 func (mw *MagickWand) ConvolveImage(order uint, kernel []float64) error {
 	C.MagickConvolveImage(mw.wand, C.size_t(order), (*C.double)(&kernel[0]))
 	return mw.GetLastError()
 }
 
 // Applies a custom convolution kernel to the image's channel.
+//
 // order: the number of cols and rows in the filter kernel
+//
 // kernel: an array of doubles, representing the convolution kernel
+//
 func (mw *MagickWand) ConvolveImageChannel(channel ChannelType, order uint, kernel []float64) error {
 	C.MagickConvolveImageChannel(mw.wand, C.ChannelType(channel), C.size_t(order), (*C.double)(&kernel[0]))
 	return mw.GetLastError()
@@ -484,14 +537,18 @@ func (mw *MagickWand) CycleColormapImage(displace int) error {
 
 // Adds an image to the wand comprised of the pixel data you supply. The pixel
 // data must be in scanline order top-to-bottom.
+//
 // stype: Define the data type of the pixels. Float and double types are
 // expected to be normalized [0..1] otherwise [0..QuantumRange].
+//
 // pmap: This string reflects the expected ordering of the pixel array. It can
 // be any combination or order of R = red, G = green, B = blue, A = alpha
 // (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow,
 // M = magenta, K = black, I = intensity (for grayscale), P = pad.
+//
 // pixels: This array of values contain the pixel components as defined by the
 // type.
+//
 func (mw *MagickWand) ConstituteImage(cols, rows uint, pmap string, stype StorageType, pixels []interface{}) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
@@ -560,6 +617,7 @@ func (mw *MagickWand) DisplayImages(server string) error {
 // destination image, which will be sized and offset accordingly. Also in many
 // cases the virtual offset of the source image will be taken into account in
 // the mapping.
+//
 // method: the method of image distortion. ArcDistortion always ignores the
 // source image offset, and always 'bestfit' the destination image with the
 // top left corner offset relative to the polar mapping center. Bilinear has
@@ -571,8 +629,11 @@ func (mw *MagickWand) DisplayImages(server string) error {
 // you use any number of control point pairs, that is Zero pairs is a no-Op
 // (viewport only) distortion, one pair is a translation and two pairs of
 // control points do a scale-rotate-translate, without any shearing.
+//
 // args: the arguments for this distortion method.
+//
 // bestfit: Attempt to resize destination to fit distorted source.
+//
 func (mw *MagickWand) DistortImage(method DistortImageMethod, args []float64, bestfit bool) error {
 	C.MagickDistortImage(mw.wand, C.DistortImageMethod(method), C.size_t(len(args)), (*C.double)(&args[0]), b2i(bestfit))
 	return mw.GetLastError()
@@ -586,7 +647,9 @@ func (mw *MagickWand) DrawImage(drawingWand *DrawingWand) error {
 
 // Enhance edges within the image with a convolution filter of the given
 // radius. Use a radius of 0 and Edge() selects a suitable radius for you.
+//
 // radius: the radius of the pixel neighborhood
+//
 func (mw *MagickWand) EdgeImage(radius float64) error {
 	C.MagickEdgeImage(mw.wand, C.double(radius))
 	return mw.GetLastError()
@@ -596,8 +659,11 @@ func (mw *MagickWand) EdgeImage(radius float64) error {
 // image with a Gaussian operator of the given radius and standard deviation
 // (sigma). For reasonable results, radius should be larger than sigma. Use a
 // radius of 0 and Emboss() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel
+//
 // sigma: the standard deviation of the Gaussian, in pixels
+//
 func (mw *MagickWand) EmbossImage(radius, sigma float64) error {
 	C.MagickEmbossImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -654,18 +720,23 @@ func (mw *MagickWand) EvaluateImageChannel(channel ChannelType, op EvaluateOpera
 }
 
 // Extracts pixel data from an image and returns it to you.
+//
 // x, y, cols, rows: These values define the perimeter of a region of
 // pixels you want to extract.
+//
 // map: This string reflects the expected ordering of the pixel array. It can
 // be any combination or order of R = red, G = green, B = blue, A = alpha
 // (0 is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow,
 // M = magenta, K = black, I = intensity (for grayscale), P = pad.
+//
 // stype: Define the data type of the pixels. Float and double types are
 // expected to be normalized [0..1] otherwise [0..QuantumRange]. Choose from
 // these types: CharPixel, DoublePixel, FloatPixel, IntegerPixel, LongPixel,
 // QuantumPixel, or ShortPixel.
+//
 // pixels: This array of values contain the pixel components as defined by
 // map and type.
+//
 func (mw *MagickWand) ExportImagePixels(x, y int, cols, rows uint, pmap string, stype StorageType) (pixels []interface{}, err error) {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
@@ -678,24 +749,33 @@ func (mw *MagickWand) ExportImagePixels(x, y int, cols, rows uint, pmap string, 
 // Extends the image as defined by the geometry, gravitt, and wand background
 // color. Set the (x,y) offset of the geometry to move the original wand
 // relative to the extended wand.
+//
 // width: the region width.
+//
 // height: the region height.
+//
 // x: the region x offset.
+//
 // y: the region y offset.
+//
 func (mw *MagickWand) ExtentImage(width, height uint, x, y int) error {
 	C.MagickExtentImage(mw.wand, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
 }
 
 // Applies a custom convolution kernel to the image.
+//
 //  kernel: An array of doubles representing the convolution kernel.
+//
 func (mw *MagickWand) FilterImage(kernel *KernelInfo) error {
 	C.MagickFilterImage(mw.wand, kernel.info)
 	return mw.GetLastError()
 }
 
 // Applies a custom convolution kernel to the image's channel.
+//
 //  kernel: An array of doubles representing the convolution kernel.
+//
 func (mw *MagickWand) FilterImageChannel(channel ChannelType, kernel *KernelInfo) error {
 	C.MagickFilterImageChannel(mw.wand, C.ChannelType(channel), kernel.info)
 	return mw.GetLastError()
@@ -712,16 +792,23 @@ func (mw *MagickWand) FlipImage() error {
 // neighbor. If the method FillToBorderMethod is specified, the color value is
 // changed for any neighbor pixel that does not match the bordercolor member
 // of image.
+//
 // fill: the floodfill color pixel wand.
+//
 // fuzz: By default target must match a particular pixel color exactly.
+//
 // However, in many cases two colors may differ by a small amount. The fuzz
 // member of image defines how much tolerance is acceptable to consider two
 // colors as the same. For example, set fuzz to 10 and the color red at
 // intensities of 100 and 102 respectively are now interpreted as the same
 // color for the purposes of the floodfill.
+//
 // bordercolor: the border color pixel wand.
+//
 // x, y: the starting location of the operation.
+//
 // invert: paint any pixel that does not match the target color.
+//
 func (mw *MagickWand) FloodfillPaintImage(channel ChannelType, fill *PixelWand, fuzz float64, borderColor *PixelWand, x, y int, invert bool) error {
 	C.MagickFloodfillPaintImage(mw.wand, C.ChannelType(channel), fill.pixel, C.double(fuzz), borderColor.pixel, C.ssize_t(x), C.ssize_t(y), b2i(invert))
 	return mw.GetLastError()
@@ -736,7 +823,9 @@ func (mw *MagickWand) FlopImage() error {
 
 // Implements the discrete Fourier transform (DFT) of the image either as a
 // magnitude/phase or real/imaginary image pair.
+//
 // magnitude: if true, return as magnitude/phase pair otherwise a
+//
 // real/imaginary image pair.
 func (mw *MagickWand) ForwardFourierTransformImage(magnitude bool) error {
 	C.MagickForwardFourierTransformImage(mw.wand, b2i(magnitude))
@@ -747,11 +836,17 @@ func (mw *MagickWand) ForwardFourierTransformImage(magnitude bool) error {
 // height specify the border width of the vertical and horizontal sides of the
 // frame. The inner and outer bevels indicate the width of the inner and outer
 // shadows of the frame.
+//
 // matteColor: the frame color pixel wand.
+//
 // width: the border width.
+//
 // height: the border height.
+//
 // innerBevel: the inner bevel width.
+//
 // outerBevel: the outer bevel width.
+//
 func (mw *MagickWand) FrameImage(matteColor *PixelWand, width, height uint, innerBevel, outerBevel int) error {
 	C.MagickFrameImage(mw.wand, matteColor.pixel, C.size_t(width), C.size_t(height), C.ssize_t(innerBevel), C.ssize_t(outerBevel))
 	return mw.GetLastError()
@@ -813,8 +908,11 @@ func (mw *MagickWand) GammaImageChannel(channel ChannelType, gamma float64) erro
 // radius and standard deviation (sigma). For reasonable results, the radius
 // should be larger than sigma. Use a radius of 0 and GaussianBlurImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) GaussianBlurImage(radius, sigma float64) error {
 	C.MagickGaussianBlurImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -824,8 +922,11 @@ func (mw *MagickWand) GaussianBlurImage(radius, sigma float64) error {
 // the given radius and standard deviation (sigma). For reasonable results,
 // the radius should be larger than sigma. Use a radius of 0 and
 // GaussianBlurImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) GaussianBlurImageChannel(channel ChannelType, radius, sigma float64) error {
 	C.MagickGaussianBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -880,8 +981,11 @@ func (mw *MagickWand) GetImagesBlob() []byte {
 }
 
 // Returns the chromaticy blue primary point for the image.
+//
 // x: the chromaticity blue primary x-point.
+//
 // y: the chromaticity blue primary y-point.
+//
 func (mw *MagickWand) GetImageBluePrimary() (x, y float64, err error) {
 	C.MagickGetImageBluePrimary(mw.wand, (*C.double)(&x), (*C.double)(&y))
 	err = mw.GetLastError()
@@ -1071,8 +1175,11 @@ func (mw *MagickWand) GetImageGravity() GravityType {
 }
 
 // Returns the chromaticy green primary point.
+//
 // x: the chromaticity green primary x-point.
+//
 // y: the chromaticity green primary y-point.
+//
 func (mw *MagickWand) GetImageGreenPrimary() (x, y float64, err error) {
 	C.MagickGetImageGreenPrimary(mw.wand, (*C.double)(&x), (*C.double)(&y))
 	err = mw.GetLastError()
@@ -1085,6 +1192,7 @@ func (mw *MagickWand) GetImageHeight() uint {
 }
 
 // Returns the image histogram as an array of PixelWand wands.
+//
 // numberColors: the number of unique colors in the image and the number of
 // pixel wands returned.
 func (mw *MagickWand) GetImageHistogram() (numberColors uint, pws []PixelWand) {
@@ -1139,8 +1247,11 @@ func (mw *MagickWand) GetImageOrientation() OrientationType {
 }
 
 // Returns the page geometry associated with the image.
+//
 // w, h: the page width and height
+//
 // x, h: the page x-offset and y-offset.
+//
 func (mw *MagickWand) GetImagePage() (w, h uint, x, y int, err error) {
 	var cw, ch C.size_t
 	var cx, cy C.ssize_t
@@ -1156,7 +1267,9 @@ func (mw *MagickWand) GetImagePixelColor(x, y int) (color *PixelWand, err error)
 }
 
 // Returns the chromaticy red primary point.
+//
 // x, y: the chromaticity red primary x/y-point.
+//
 func (mw *MagickWand) GetImageRedPrimary() (x, y float64, err error) {
 	var cdx, cdy C.double
 	C.MagickGetImageRedPrimary(mw.wand, &cdx, &cdy)
@@ -1213,7 +1326,9 @@ func (mw *MagickWand) GetImageVirtualPixelMethod() VirtualPixelMethod {
 }
 
 // Returns the chromaticy white point.
-//x, y: the chromaticity white x/y-point.
+//
+// x, y: the chromaticity white x/y-point.
+//
 func (mw *MagickWand) GetImageWhitePoint() (x, y float64, err error) {
 	C.MagickGetImageWhitePoint(mw.wand, (*C.double)(&x), (*C.double)(&y))
 	err = mw.GetLastError()
@@ -1283,19 +1398,24 @@ func (mw *MagickWand) ImplodeImage(radius float64) error {
 // in the order specified by map. Suppose your want to upload the first
 // scanline of a 640x480 image from character data in red-green-blue order:
 // wand.ImportImagePixels(0, 0, 640, 1, "RGB", CharPixel, pixels)
+//
 // x, y, cols, rows: These values define the perimeter of a region of pixels
 // you want to define.
+//
 // pmap: This string reflects the expected ordering of the pixel array. It can
 // be any combination or order of R = red, G = green, B = blue, A = alpha (0
 // is transparent), O = opacity (0 is opaque), C = cyan, Y = yellow,
 // M = magenta, K = black, I = intensity (for grayscale), P = pad.
+//
 // stype: Define the data type of the pixels. Float and double types are
 // expected to be normalized [0..1] otherwise [0..QuantumRange]. Choose from
 // these types: CharPixel, ShortPixel, IntegerPixel, LongPixel, FloatPixel, or
 // DoublePixel.
+//
 // pixels: This array of values contain the pixel components as defined by map
 // and type. You must preallocate this array where the expected length varies
 // depending on the values of width, height, map, and type.
+//
 func (mw *MagickWand) ImportImagePixels(x, y int, cols, rows uint, pmap string, stype StorageType, pixels []interface{}) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
@@ -1305,10 +1425,14 @@ func (mw *MagickWand) ImportImagePixels(x, y int, cols, rows uint, pmap string, 
 
 // Implements the inverse discrete Fourier transform (DFT) of the image either
 // as a magnitude/phase or real/imaginary image pair.
+//
 // magnitudeWand: the magnitude or real wand.
+//
 // phaseWand: the phase or imaginary wand.
+//
 // magnitude: if true, return as magnitude/phase pair otherwise a
 // real/imaginary image pair.
+//
 func (mw *MagickWand) InverseFourierTransformImage(phaseWand *MagickWand, magnitude bool) error {
 	C.MagickInverseFourierTransformImage(mw.wand, phaseWand.wand, b2i(magnitude))
 	return mw.GetLastError()
@@ -1354,9 +1478,13 @@ func (mw *MagickWand) LinearStretchImage(blackPoint, whitePoint float64) error {
 }
 
 // Rescales image with seam carving.
+//
 // cols, rows: the number of cols and rows in the scaled image.
+//
 // deltaX: maximum seam transversal step (0 means straight seams).
+//
 // rigidity: introduce a bias for non-straight seams (typically 0).
+//
 func (mw *MagickWand) LiquidRescaleImage(cols, rows uint, deltaX, rigidity float64) error {
 	C.MagickLiquidRescaleImage(mw.wand, C.size_t(cols), C.size_t(rows), C.double(deltaX), C.double(rigidity))
 	return mw.GetLastError()
@@ -1375,6 +1503,7 @@ func (mw *MagickWand) MagnifyImage() error {
 // images background color. The images are then compositied onto that image in
 // sequence using the given composition that has been assigned to each
 // individual image.
+//
 // method: the method of selecting the size of the initial canvas. MergeLayer:
 // Merge all layers onto a canvas just large enough to hold all the actual
 // images. The virtual canvas of the first image is preserved but otherwise
@@ -1401,9 +1530,13 @@ func (mw *MagickWand) MinifyImage() error {
 // rotation of 180 degrees. To increase the color brightness by 20 and
 // decrease the color saturation by 10 and leave the hue unchanged, use: 120,
 // 90, 100.
+//
 // brightness: the percent change in brighness.
+//
 // saturation: the percent change in saturation.
+//
 // hue: the percent change in hue.
+//
 func (mw *MagickWand) ModulateImage(brightness, saturation, hue float64) error {
 	C.MagickModulateImage(mw.wand, C.double(brightness), C.double(saturation), C.double(hue))
 	return mw.GetLastError()
@@ -1412,14 +1545,20 @@ func (mw *MagickWand) ModulateImage(brightness, saturation, hue float64) error {
 // Creates a composite image by combining several separate images. The images
 // are tiled on the composite image with the name of the image optionally
 // appearing just below the individual tile.
+//
 // dw: the drawing wand. The font name, size, and color are obtained from this
 // wand.
+//
 // tileGeo: the number of tiles per row and page (e.g. 6x4+0+0).
+//
 // thumbGeo: Preferred image size and border size of each thumbnail (e.g.
 // 120x120+4+3>).
+//
 // mode: Thumbnail framing mode: Frame, Unframe, or Concatenate.
+//
 // frame: Surround the image with an ornamental border (e.g. 15x15+3+3). The
 // frame color is that of the thumbnail's matte color.
+//
 func (mw *MagickWand) MontageImage(dw *DrawingWand, tileGeo string, thumbGeo string, mode MontageMode, frame string) *MagickWand {
 	cstile := C.CString(tileGeo)
 	defer C.free(unsafe.Pointer(cstile))
@@ -1433,18 +1572,24 @@ func (mw *MagickWand) MontageImage(dw *DrawingWand, tileGeo string, thumbGeo str
 // Method morphs a set of images. Both the image pixels and size are linearly
 // interpolated to give the appearance of a meta-morphosis from one image to
 // the next.
+//
 // numFrames: the number of in-between images to generate.
 func (mw *MagickWand) MorphImages(numFrames uint) *MagickWand {
+	//
 	return &MagickWand{C.MagickMorphImages(mw.wand, C.size_t(numFrames))}
 }
 
 // Applies a user supplied kernel to the image according to the given mophology
 // method.
+//
 // channel: the image channel(s).
+//
 // method: the morphology method to be applied.
+//
 // iterations: apply the operation this many times (or no change). A value of
 // -1 means loop until no change found. How this is applied may depend on the
 // morphology method. Typically this is a value of 1.
+//
 // kernel: An array of doubles representing the morphology kernel.
 func (mw *MagickWand) MorphologyImage(method MorphologyMethod, iterations int, kernel *KernelInfo) error {
 	C.MagickMorphologyImage(mw.wand, C.MorphologyMethod(method), C.ssize_t(iterations), kernel.info)
@@ -1453,11 +1598,15 @@ func (mw *MagickWand) MorphologyImage(method MorphologyMethod, iterations int, k
 
 // Applies a user supplied kernel to the image according to the given mophology
 // method.
+//
 // channel: the image channel(s).
+//
 // method: the morphology method to be applied.
+//
 // iterations: apply the operation this many times (or no change). A value of
 // -1 means loop until no change found. How this is applied may depend on the
 // morphology method. Typically this is a value of 1.
+//
 // kernel: An array of doubles representing the morphology kernel.
 func (mw *MagickWand) MorphologyImageChannel(channel ChannelType, method MorphologyMethod, iterations int, kernel *KernelInfo) error {
 	C.MagickMorphologyImageChannel(mw.wand, C.ChannelType(channel), C.MorphologyMethod(method), C.ssize_t(iterations), kernel.info)
@@ -1469,9 +1618,13 @@ func (mw *MagickWand) MorphologyImageChannel(channel ChannelType, method Morphol
 // radius should be larger than sigma. Use a radius of 0 and MotionBlurImage()
 // selects a suitable radius for you. Angle gives the angle of the blurring
 // motion.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // angle: apply the effect along this angle.
+//
 func (mw *MagickWand) MotionBlurImage(radius, sigma, angle float64) error {
 	C.MagickMotionBlurImage(mw.wand, C.double(radius), C.double(sigma), C.double(angle))
 	return mw.GetLastError()
@@ -1482,9 +1635,13 @@ func (mw *MagickWand) MotionBlurImage(radius, sigma, angle float64) error {
 // radius should be larger than sigma. Use a radius of 0 and MotionBlurImage()
 // selects a suitable radius for you. Angle gives the angle of the blurring
 // motion.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // angle: apply the effect along this angle.
+//
 func (mw *MagickWand) MotionBlurImageChannel(channel ChannelType, radius, sigma, angle float64) error {
 	C.MagickMotionBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma), C.double(angle))
 	return mw.GetLastError()
@@ -1493,7 +1650,9 @@ func (mw *MagickWand) MotionBlurImageChannel(channel ChannelType, radius, sigma,
 // Negates the colors in the reference image. The Grayscale option means that
 // only grayscale values within the image are negated. You can also reduce the
 // influence of a particular channel with a gamma value of 0.
+//
 // gray: If true, only negate grayscale pixels within the image.
+//
 func (mw *MagickWand) NegateImage(gray bool) error {
 	C.MagickNegateImage(mw.wand, b2i(gray))
 	return mw.GetLastError()
@@ -1502,7 +1661,9 @@ func (mw *MagickWand) NegateImage(gray bool) error {
 // Negates the colors in the reference image. The Grayscale option means that
 // only grayscale values within the image are negated. You can also reduce the
 // influence of a particular channel with a gamma value of 0.
+//
 // gray: If true, only negate grayscale pixels within the image.
+//
 func (mw *MagickWand) NegateImageChannel(channel ChannelType, gray bool) error {
 	C.MagickNegateImageChannel(mw.wand, C.ChannelType(channel), b2i(gray))
 	return mw.GetLastError()
@@ -1547,37 +1708,49 @@ func (mw *MagickWand) NormalizeImageChannel(channel ChannelType) error {
 // Applies a special effect filter that simulates an oil painting. Each pixel
 // is replaced by the most frequent color occurring in a circular region
 // defined by radius.
+//
 // radius: the radius of the circular neighborhood.
+//
 func (mw *MagickWand) OilPaintImage(radius float64) error {
 	C.MagickOilPaintImage(mw.wand, C.double(radius))
 	return mw.GetLastError()
 }
 
 // Changes any pixel that matches color with the color defined by fill.
+//
 // target: Change this target color to the fill color within the image.
+//
 // fill: the fill pixel wand.
+//
 // fuzz: By default target must match a particular pixel color exactly.
 // However, in many cases two colors may differ by a small amount. The fuzz
 // member of image defines how much tolerance is acceptable to consider two
 // colors as the same. For example, set fuzz to 10 and the color red at
 // intensities of 100 and 102 respectively are now interpreted as the same
 // color for the purposes of the floodfill.
+//
 // invert: paint any pixel that does not match the target color.
+//
 func (mw *MagickWand) OpaquePaintImage(target, fill *PixelWand, fuzz float64, invert bool) error {
 	C.MagickOpaquePaintImage(mw.wand, target.pixel, fill.pixel, C.double(fuzz), b2i(invert))
 	return mw.GetLastError()
 }
 
 // Changes any pixel that matches color with the color defined by fill.
+//
 // target: Change this target color to the fill color within the image.
+//
 // fill: the fill pixel wand.
+//
 // fuzz: By default target must match a particular pixel color exactly.
 // However, in many cases two colors may differ by a small amount. The fuzz
 // member of image defines how much tolerance is acceptable to consider two
 // colors as the same. For example, set fuzz to 10 and the color red at
 // intensities of 100 and 102 respectively are now interpreted as the same
 // color for the purposes of the floodfill.
+//
 // invert: paint any pixel that does not match the target color.
+//
 func (mw *MagickWand) OpaquePaintImageChannel(channel ChannelType, target, fill *PixelWand, fuzz float64, invert bool) error {
 	C.MagickOpaquePaintImageChannel(mw.wand, C.ChannelType(channel), target.pixel, fill.pixel, C.double(fuzz), b2i(invert))
 	return mw.GetLastError()
@@ -1679,10 +1852,13 @@ func (mw *MagickWand) PolaroidImage(dw *DrawingWand, angle float64) error {
 }
 
 // Reduces the image to a limited number of color level.
+//
 // levels: Number of color levels allowed in each channel. Very low values
 // (2, 3, or 4) have the most visible effect.
+//
 // dither: Set this integer value to something other than zero to dither the
 // mapped image.
+//
 func (mw *MagickWand) PosterizeImage(levels uint, dither bool) error {
 	C.MagickPosterizeImage(mw.wand, C.size_t(levels), b2i(dither))
 	return mw.GetLastError()
@@ -1713,9 +1889,12 @@ func (mw *MagickWand) PreviousImage() bool {
 // colors to represent the image. The goal of the algorithm is to minimize the
 // color difference between the input and output image while minimizing the
 // processing time.
+//
 // numColors: the number of colors.
+//
 // colorspace: Perform color reduction in this colorspace, typically
 // RGBColorspace.
+//
 // treedepth: Normally, this integer value is zero or one. A zero or one tells
 // Quantize to choose a optimal tree depth of Log4(number_colors). A tree of
 // this depth generally allows the best representation of the reference image
@@ -1723,14 +1902,17 @@ func (mw *MagickWand) PreviousImage() bool {
 // some cases, such as an image with low color dispersion (a few number of
 // colors), a value other than Log4(number_colors) is required. To expand the
 // color tree completely, use a value of 8.
+//
 // dither: A value other than zero distributes the difference between an
 // original image and the corresponding color reduced image to neighboring
 // pixels along a Hilbert curve.
+//
 // measureError: A value other than zero measures the difference between the
 // original and quantized images. This difference is the total quantization
 // error. The error is computed by summing over all pixels in an image the
 // distance squared in RGB space between each reference pixel value and its
 // quantized value.
+//
 func (mw *MagickWand) QuantizeImage(numColors uint, colorspace ColorspaceType, treedepth uint, dither bool, measureError bool) error {
 	C.MagickQuantizeImage(mw.wand, C.size_t(numColors), C.ColorspaceType(colorspace), C.size_t(treedepth), b2i(dither), b2i(measureError))
 	return mw.GetLastError()
@@ -1740,9 +1922,12 @@ func (mw *MagickWand) QuantizeImage(numColors uint, colorspace ColorspaceType, t
 // of colors to represent the image. The goal of the algorithm is to minimize
 // the color difference between the input and output image while minimizing the
 // processing time.
+//
 // numColors: the number of colors.
+//
 // colorspace: Perform color reduction in this colorspace, typically
 // RGBColorspace.
+//
 // treedepth: Normally, this integer value is zero or one. A zero or one tells
 // Quantize to choose a optimal tree depth of Log4(number_colors). A tree of
 // this depth generally allows the best representation of the reference image
@@ -1750,28 +1935,35 @@ func (mw *MagickWand) QuantizeImage(numColors uint, colorspace ColorspaceType, t
 // some cases, such as an image with low color dispersion (a few number of
 // colors), a value other than Log4(number_colors) is required. To expand the
 // color tree completely, use a value of 8.
+//
 // dither: A value other than zero distributes the difference between an
 // original image and the corresponding color reduced image to neighboring
 // pixels along a Hilbert curve.
+//
 // measureError: A value other than zero measures the difference between the
 // original and quantized images. This difference is the total quantization
 // error. The error is computed by summing over all pixels in an image the
 // distance squared in RGB space between each reference pixel value and its
 // quantized value.
+//
 func (mw *MagickWand) QuantizeImages(numColors uint, colorspace ColorspaceType, treedepth uint, dither bool, measureError bool) error {
 	C.MagickQuantizeImages(mw.wand, C.size_t(numColors), C.ColorspaceType(colorspace), C.size_t(treedepth), b2i(dither), b2i(measureError))
 	return mw.GetLastError()
 }
 
 // Radial blurs an image.
+//
 // angle: the angle of the blur in degrees.
+//
 func (mw *MagickWand) RadialBlurImage(angle float64) error {
 	C.MagickRadialBlurImage(mw.wand, C.double(angle))
 	return mw.GetLastError()
 }
 
 // Radial blurs an image's channel
+//
 // angle: the angle of the blur in degrees.
+//
 func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle float64) error {
 	C.MagickRadialBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(angle))
 	return mw.GetLastError()
@@ -1780,9 +1972,12 @@ func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle float64)
 // Creates a simulated three-dimensional button-like effect by lightening and
 // darkening the edges of the image. Members width and height of raise_info
 // define the width of the vertical and horizontal edge of the effect. width,
+//
 // height, x, y: Define the dimensions of the area to raise.
+//
 // raise: A value other than zero creates a 3-D raise effect, otherwise it has
 // a lowered effect.
+//
 func (mw *MagickWand) RaiseImage(width uint, height uint, x int, y int, raise bool) error {
 	C.MagickRaiseImage(mw.wand, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y), b2i(raise))
 	return mw.GetLastError()
@@ -1790,8 +1985,10 @@ func (mw *MagickWand) RaiseImage(width uint, height uint, x int, y int, raise bo
 
 // Changes the value of individual pixels based on the intensity of each pixel
 // compared to threshold. The result is a high-contrast, two color image.
+//
 // low, high: Specify the high and low thresholds. These values range from 0
 // to QuantumRange.
+//
 func (mw *MagickWand) RandomThresholdImage(low, high float64) error {
 	C.MagickRandomThresholdImage(mw.wand, C.double(low), C.double(high))
 	return mw.GetLastError()
@@ -1799,8 +1996,10 @@ func (mw *MagickWand) RandomThresholdImage(low, high float64) error {
 
 // Changes the value of individual pixels based on the intensity of each pixel
 // compared to threshold. The result is a high-contrast, two color image.
+//
 // low, high: Specify the high and low thresholds. These values range from 0
 // to QuantumRange.
+//
 func (mw *MagickWand) RandomThresholdImageChannel(channel ChannelType, low, high float64) error {
 	C.MagickRandomThresholdImageChannel(mw.wand, C.ChannelType(channel), C.double(low), C.double(high))
 	return mw.GetLastError()
@@ -1834,7 +2033,9 @@ func (mw *MagickWand) ReadImageFile(img *os.File) error {
 }
 
 // Replaces the colors of an image with the closest color from a reference image.
+//
 // method: choose from these dither methods: NoDitherMethod, RiemersmaDitherMethod, or FloydSteinbergDitherMethod.
+//
 func (mw *MagickWand) RemapImage(remap *MagickWand, method DitherMethod) error {
 	C.MagickRemapImage(mw.wand, remap.wand, C.DitherMethod(method))
 	return mw.GetLastError()
@@ -1847,9 +2048,13 @@ func (mw *MagickWand) RemoveImage() error {
 }
 
 // Resample image to desired resolution.
+//
 // xRes/yRes: the new image x/y resolution.
+//
 // filter: Image filter to use.
+//
 // blur: the blur factor where > 1 is blurry, < 1 is sharp.
+//
 func (mw *MagickWand) ResampleImage(xRes, yRes float64, filter FilterType, blur float64) error {
 	C.MagickResampleImage(mw.wand, C.double(xRes), C.double(yRes), C.FilterTypes(filter), C.double(blur))
 	return mw.GetLastError()
@@ -1865,18 +2070,26 @@ func (mw *MagickWand) ResetImagePage(page string) error {
 }
 
 // Scales an image to the desired dimensions
+//
 // cols: the number of cols in the scaled image.
+//
 // rows: the number of rows in the scaled image.
+//
 // filter: Image filter to use.
+//
 // blur: the blur factor where > 1 is blurry, < 1 is sharp.
+//
 func (mw *MagickWand) ResizeImage(cols, rows uint, filter FilterType, blur float64) error {
 	C.MagickResizeImage(mw.wand, C.size_t(cols), C.size_t(rows), C.FilterTypes(filter), C.double(blur))
 	return mw.GetLastError()
 }
 
 // Offsets an image as defined by x and y.
+//
 // x: the x offset.
+//
 // y: the y offset.
+//
 func (mw *MagickWand) RollImage(x, y int) error {
 	C.MagickRollImage(mw.wand, C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -1884,8 +2097,11 @@ func (mw *MagickWand) RollImage(x, y int) error {
 
 // Rotates an image the specified number of degrees. Empty triangles left over
 // from rotating the image are filled with the background color.
+//
 // background: the background pixel wand.
+//
 // degrees: the number of degrees to rotate the image.
+//
 func (mw *MagickWand) RotateImage(background *PixelWand, degrees float64) error {
 	C.MagickRotateImage(mw.wand, background.pixel, C.double(degrees))
 	return mw.GetLastError()
@@ -1907,13 +2123,17 @@ func (mw *MagickWand) ScaleImage(cols, rows uint) error {
 
 // Segments an image by analyzing the histograms of the color components and
 // identifying units that are homogeneous with the fuzzy C-means technique.
-// verbose: set to MagickTrue to print detailed information about the
-// identified classes.
+//
+// verbose: set to true to print detailed information about the identified
+// classes.
+//
 // clusterThreshold: this represents the minimum number of pixels contained in
 // a hexahedra before it can be considered valid (expressed as a percentage).
+//
 // smoothThreshold: the smoothing threshold eliminates noise in the second
 // derivative of the histogram. As the value is increased, you can expect a
 // smoother second derivative.
+//
 func (mw *MagickWand) SegmentImage(colorspace ColorspaceType, verbose bool, clusterThreshold, smoothThreshold float64) error {
 	C.MagickSegmentImage(mw.wand, C.ColorspaceType(colorspace), b2i(verbose), C.double(clusterThreshold), C.double(smoothThreshold))
 	return mw.GetLastError()
@@ -1922,10 +2142,14 @@ func (mw *MagickWand) SegmentImage(colorspace ColorspaceType, verbose bool, clus
 // Selectively blur an image within a contrast threshold. It is similar to the
 // unsharpen mask that sharpens everything with contrast above a certain
 // threshold.
+//
 // radius: the radius of the gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the gaussian, in pixels.
+//
 // threshold: only pixels within this contrast threshold are included in the
 // blur operation.
+//
 func (mw *MagickWand) SelectiveBlurImage(radius, sigma, threshold float64) error {
 	C.MagickSelectiveBlurImage(mw.wand, C.double(radius), C.double(sigma), C.double(threshold))
 	return mw.GetLastError()
@@ -1934,10 +2158,14 @@ func (mw *MagickWand) SelectiveBlurImage(radius, sigma, threshold float64) error
 // Selectively blur an image's channel within a contrast threshold. It is
 // similar to the unsharpen mask that sharpens everything with contrast above
 // a certain threshold.
+//
 // radius: the radius of the gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the gaussian, in pixels.
+//
 // threshold: only pixels within this contrast threshold are included in the
 // blur operation.
+//
 func (mw *MagickWand) SelectiveBlurImageChannel(channel ChannelType, radius, sigma, threshold float64) error {
 	C.MagickSelectiveBlurImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma), C.double(threshold))
 	return mw.GetLastError()
@@ -1954,7 +2182,9 @@ func (mw *MagickWand) SeparateImageChannel(channel ChannelType) error {
 // photo darkroom by sepia toning. Threshold ranges from 0 to QuantumRange and
 // is a measure of the extent of the sepia toning. A threshold of 80 is a good
 // starting point for a reasonable tone.
+//
 // threshold: Define the extent of the sepia toning.
+//
 func (mw *MagickWand) SepiaToneImage(threshold float64) error {
 	C.MagickSepiaToneImage(mw.wand, C.double(threshold))
 	return mw.GetLastError()
@@ -1999,7 +2229,9 @@ func (mw *MagickWand) SetImageBorderColor(border *PixelWand) error {
 }
 
 // Sets the depth of a particular image channel.
+//
 // depth: the image depth in bits.
+//
 func (mw *MagickWand) SetImageChannelDepth(channel ChannelType, depth uint) error {
 	C.MagickSetImageChannelDepth(mw.wand, C.ChannelType(channel), C.size_t(depth))
 	return mw.GetLastError()
@@ -2018,8 +2250,11 @@ func (mw *MagickWand) SetImageColor(color *PixelWand) error {
 }
 
 // Sets the color of the specified colormap index.
+//
 // index: the offset into the image colormap.
+//
 // color: return the colormap color in this wand.
+//
 func (mw *MagickWand) SetImageColormapColor(index uint, color *PixelWand) error {
 	C.MagickSetImageColormapColor(mw.wand, C.size_t(index), color.pixel)
 	return mw.GetLastError()
@@ -2051,14 +2286,18 @@ func (mw *MagickWand) SetImageCompressionQuality(quality uint) error {
 }
 
 // Sets the image delay.
+//
 // delay: the image delay in ticks-per-second units.
+//
 func (mw *MagickWand) SetImageDelay(delay uint) error {
 	C.MagickSetImageDelay(mw.wand, C.size_t(delay))
 	return mw.GetLastError()
 }
 
 // Sets the image depth.
+//
 // depth: the image depth in bits: 8, 16, or 32.
+//
 func (mw *MagickWand) SetImageDepth(depth uint) error {
 	C.MagickSetImageDepth(mw.wand, C.size_t(depth))
 	return mw.GetLastError()
@@ -2077,8 +2316,11 @@ func (mw *MagickWand) SetImageEndian(endian EndianType) error {
 }
 
 // Sets the image size (i.e. cols & rows).
+//
 // cols: The image width in pixels.
+//
 // rows: The image height in pixels.
+//
 func (mw *MagickWand) SetImageExtent(cols, rows uint) error {
 	C.MagickSetImageExtent(mw.wand, C.size_t(cols), C.size_t(rows))
 	return mw.GetLastError()
@@ -2093,7 +2335,9 @@ func (mw *MagickWand) SetImageFilename(filename string) error {
 }
 
 // Sets the format of a particular image in a sequence.
+//
 // format: the image format.
+//
 func (mw *MagickWand) SetImageFormat(format string) error {
 	csformat := C.CString(format)
 	defer C.free(unsafe.Pointer(csformat))
@@ -2156,8 +2400,10 @@ func (mw *MagickWand) SetImageMatteColor(matte *PixelWand) error {
 }
 
 // Sets the image to the specified opacity level.
+//
 // alpha: the level of transparency: 1.0 is fully opaque and 0.0 is fully
 // transparent.
+//
 func (mw *MagickWand) SetImageOpacity(alpha float64) error {
 	C.MagickSetImageOpacity(mw.wand, C.double(alpha))
 	return mw.GetLastError()
@@ -2178,9 +2424,12 @@ func (mw *MagickWand) SetImagePage(width, height uint, x, y int) error {
 // Sets the wand image progress monitor to the specified method and returns
 // the previous progress monitor if any. If the progress monitor returns false,
 // the current operation is interrupted.
+//
 // method: Specifies a pointer to a method to monitor progress of an
 // image operation.
+//
 // clientData: Specifies a pointer to any client data.
+//
 func (mw *MagickWand) SetImageProgressMonitor(method ProgressMonitor, data string) error {
 	// not implemented - wip: progress_monitor.go
 	return nil
@@ -2243,18 +2492,26 @@ func (mw *MagickWand) SetImageWhitePoint(x, y float64) error {
 // You control the positioning of the light with azimuth and elevation;
 // azimuth is measured in degrees off the x axis and elevation is measured in
 // pixels above the Z axis.
+//
 // gray: if true, shades the intensity of each pixel.
+//
 // azimuth, elevation: define the light source direction.
+//
 func (mw *MagickWand) ShadeImage(gray bool, azimuth, elevation float64) error {
 	C.MagickShadeImage(mw.wand, b2i(gray), C.double(azimuth), C.double(elevation))
 	return mw.GetLastError()
 }
 
 // Simulates an image shadow.
+//
 // opacity: percentage transparency.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // x: the shadow x-offset.
+//
 // y: the shadow y-offset.
+//
 func (mw *MagickWand) ShadowImage(opacity, sigma float64, x, y int) error {
 	C.MagickShadowImage(mw.wand, C.double(opacity), C.double(sigma), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -2264,8 +2521,11 @@ func (mw *MagickWand) ShadowImage(opacity, sigma float64, x, y int) error {
 // given radius and standard deviation (sigma). For reasonable results, the
 // radius should be larger than sigma. Use a radius of 0 and SharpenImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) SharpenImage(radius, sigma float64) error {
 	C.MagickSharpenImage(mw.wand, C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -2275,8 +2535,11 @@ func (mw *MagickWand) SharpenImage(radius, sigma float64) error {
 // of the given radius and standard deviation (sigma). For reasonable results,
 // the radius should be larger than sigma. Use a radius of 0 and SharpenImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 func (mw *MagickWand) SharpenImageChannel(channel ChannelType, radius, sigma float64) error {
 	C.MagickSharpenImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma))
 	return mw.GetLastError()
@@ -2308,9 +2571,14 @@ func (mw *MagickWand) ShearImage(background *PixelWand, xShear, yShear float64) 
 // mid-point indicates where midtones fall in the resultant image (0 is white;
 // 50 is middle-gray; 100 is black). Set sharpen to true to increase the image
 // contrast otherwise the contrast is reduced.
+//
 // sharpen: Increase or decrease image contrast.
-// alpha: strength of the contrast, the larger the number the more 'threshold-like' it becomes.
+//
+// alpha: strength of the contrast, the larger the number the more
+// 'threshold-like' it becomes.
+//
 // beta: midpoint of the function as a color value 0 to QuantumRange.
+//
 func (mw *MagickWand) SigmoidalContrastImage(sharpen bool, alpha, beta float64) error {
 	C.MagickSigmoidalContrastImage(mw.wand, b2i(sharpen), C.double(alpha), C.double(beta))
 	return mw.GetLastError()
@@ -2323,9 +2591,14 @@ func (mw *MagickWand) SigmoidalContrastImage(sharpen bool, alpha, beta float64) 
 // pushing it); mid-point indicates where midtones fall in the resultant image
 // (0 is white; 50 is middle-gray; 100 is black). Set sharpen to true to
 // increase the image contrast otherwise the contrast is reduced.
+//
 // sharpen: Increase or decrease image contrast.
-// alpha: strength of the contrast, the larger the number the more 'threshold-like' it becomes.
+//
+// alpha: strength of the contrast, the larger the number the more
+// 'threshold-like' it becomes.
+//
 // beta: midpoint of the function as a color value 0 to QuantumRange.
+//
 func (mw *MagickWand) SigmoidalContrastImageChannel(channel ChannelType, sharpen bool, alpha, beta float64) error {
 	C.MagickSigmoidalContrastImageChannel(mw.wand, C.ChannelType(channel), b2i(sharpen), C.double(alpha), C.double(beta))
 	return mw.GetLastError()
@@ -2335,9 +2608,13 @@ func (mw *MagickWand) SigmoidalContrastImageChannel(channel ChannelType, sharpen
 // In addition, it returns a similarity image such that an exact match location
 // is completely white and if none of the pixels match, black, otherwise some
 // gray level in-between.
+//
 // reference: the reference wand.
+//
 // offset: the best match offset of the reference image within the image.
+//
 // similarity: the computed similarity between the images.
+//
 func (mw *MagickWand) SimilarityImage(reference *MagickWand) (offset *RectangleInfo, similarity float64, area *MagickWand) {
 	var rectInfo C.RectangleInfo
 	mwarea := C.MagickSimilarityImage(mw.wand, reference.wand, &rectInfo, (*C.double)(&similarity))
@@ -2349,9 +2626,13 @@ func (mw *MagickWand) SimilarityImage(reference *MagickWand) (offset *RectangleI
 // radius should be larger than sigma. Use a radius of 0 and SketchImage()
 // selects a suitable radius for you. Angle gives the angle of the blurring
 // motion.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // angle: Apply the effect along this angle.
+//
 func (mw *MagickWand) SketchImage(radius, sigma, angle float64) error {
 	C.MagickSketchImage(mw.wand, C.double(radius), C.double(sigma), C.double(angle))
 	return mw.GetLastError()
@@ -2360,8 +2641,12 @@ func (mw *MagickWand) SketchImage(radius, sigma, angle float64) error {
 // Takes all images from the current image pointer to the end of the image
 // list and smushs them to each other top-to-bottom if the stack parameter is
 // true, otherwise left-to-right.
-// stack: by default, images are stacked left-to-right. Set stack to MagickTrue to stack them top-to-bottom.
+//
+// stack: by default, images are stacked left-to-right. Set stack to true to
+// stack them top-to-bottom.
+//
 // offset: minimum distance in pixels between images.
+//
 func (mw *MagickWand) SmushImages(stack bool, offset int) *MagickWand {
 	return &MagickWand{C.MagickSmushImages(mw.wand, b2i(stack), C.ssize_t(offset))}
 }
@@ -2370,7 +2655,9 @@ func (mw *MagickWand) SmushImages(stack bool, offset int) *MagickWand {
 // photo darkroom by selectively exposing areas of photo sensitive paper to
 // light. Threshold ranges from 0 to QuantumRange and is a measure of the
 // extent of the solarization.
+//
 // threshold: define the extent of the solarization.
+//
 func (mw *MagickWand) SolarizeImage(threshold float64) error {
 	C.MagickSolarizeImage(mw.wand, C.double(threshold))
 	return mw.GetLastError()
@@ -2380,7 +2667,9 @@ func (mw *MagickWand) SolarizeImage(threshold float64) error {
 // achieved in a photo darkroom by selectively exposing areas of photo
 // sensitive paper to light. Threshold ranges from 0 to QuantumRange and is a
 // measure of the extent of the solarization.
+//
 // threshold: define the extent of the solarization.
+//
 func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float64) error {
 	C.MagickSolarizeImageChannel(mw.wand, C.ChannelType(channel), C.double(threshold))
 	return mw.GetLastError()
@@ -2388,6 +2677,7 @@ func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float6
 
 // Given a set of coordinates, interpolates the colors found at those
 // coordinates, across the whole image, using various methods.
+//
 // method: the method of image sparseion. ArcSparseColorion will always ignore
 // source image offset, and always 'bestfit' the destination image with the top
 // left corner offset relative to the polar mapping center. Bilinear has no
@@ -2399,7 +2689,9 @@ func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float6
 // will let you use any number of control point pairs, that is Zero pairs is a
 // No-Op (viewport only) distortion, one pair is a translation and two pairs
 // of control points will do a scale-rotate-translate, without any shearing.
+//
 // arguments: the arguments for this sparseion method.
+//
 func (mw *MagickWand) SparseColorImage(channel ChannelType, method SparseColorMethod, arguments []float64) error {
 	C.MagickSparseColorImage(mw.wand, C.ChannelType(channel), C.SparseColorMethod(method), C.size_t(len(arguments)), (*C.double)(&arguments[0]))
 	return mw.GetLastError()
@@ -2413,7 +2705,9 @@ func (mw *MagickWand) SpliceImage(width, height uint, x, y int) error {
 
 // Is a special effects method that randomly displaces each pixel in a block
 // defined by the radius parameter.
+//
 // radius: Choose a random pixel in a neighborhood of this extent.
+//
 func (mw *MagickWand) SpreadImage(radius float64) error {
 	C.MagickSpreadImage(mw.wand, C.double(radius))
 	return mw.GetLastError()
@@ -2421,9 +2715,13 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
+//
 // type: the statistic type (e.g. median, mode, etc.).
+//
 // width: the width of the pixel neighborhood.
+//
 // height: the height of the pixel neighborhood.
+//
 func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
 	C.MagickStatisticImage(mw.wand, C.StatisticType(stype), C.size_t(width), C.size_t(height))
 	return mw.GetLastError()
@@ -2431,9 +2729,13 @@ func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) er
 
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
+//
 // type: the statistic type (e.g. median, mode, etc.).
+//
 // width: the width of the pixel neighborhood.
+//
 // height: the height of the pixel neighborhood.
+//
 func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
 	C.MagickStatisticImageChannel(mw.wand, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
 	return mw.GetLastError()
@@ -2442,7 +2744,9 @@ func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype Statistic
 // Hides a digital watermark within the image. Recover the hidden watermark
 // later to prove that the authenticity of an image. Offset defines the start
 // position within the image to hide the watermark.
+//
 // offset: start hiding at this offset into the image.
+//
 func (mw *MagickWand) SteganoImage(watermark *MagickWand, offset int) *MagickWand {
 	return &MagickWand{C.MagickSteganoImage(mw.wand, watermark.wand, C.ssize_t(offset))}
 }
@@ -2462,7 +2766,9 @@ func (mw *MagickWand) StripImage() error {
 // Swirls the pixels about the center of the image, where degrees indicates the
 // sweep of the arc through which each pixel is moved. You get a more dramatic
 // effect as the degrees move from 1 to 360.
+//
 // degrees: define the tightness of the swirling effect.
+//
 func (mw *MagickWand) SwirlImage(degrees float64) error {
 	C.MagickSwirlImage(mw.wand, C.double(degrees))
 	return mw.GetLastError()
@@ -2475,7 +2781,9 @@ func (mw *MagickWand) TextureImage(texture *MagickWand) *MagickWand {
 
 // Changes the value of individual pixels based on the intensity of each pixel
 // compared to threshold. The result is a high-contrast, two color image.
+//
 // threshold: define the threshold value.
+//
 func (mw *MagickWand) ThresholdImage(threshold float64) error {
 	C.MagickThresholdImage(mw.wand, C.double(threshold))
 	return mw.GetLastError()
@@ -2483,7 +2791,9 @@ func (mw *MagickWand) ThresholdImage(threshold float64) error {
 
 // Changes the value of individual pixels based on the intensity of each pixel
 // compared to threshold. The result is a high-contrast, two color image.
+//
 // threshold: define the threshold value.
+//
 func (mw *MagickWand) ThresholdImageChannel(channel ChannelType, threshold float64) error {
 	C.MagickThresholdImageChannel(mw.wand, C.ChannelType(channel), C.double(threshold))
 	return mw.GetLastError()
@@ -2500,8 +2810,11 @@ func (mw *MagickWand) ThumbnailImage(cols, rows uint) error {
 // Applies a color vector to each pixel in the image. The length of the vector
 // is 0 for black and white and at its maximum for the midtones. The vector
 // weighting function is f(x)=(1-(4.0*((x-0.5)*(x-0.5)))).
+//
 // tint: the tint pixel wand.
+//
 // opacity: the opacity pixel wand.
+//
 func (mw *MagickWand) TintImage(tint, opacity *PixelWand) error {
 	C.MagickTintImage(mw.wand, tint.pixel, opacity.pixel)
 	return mw.GetLastError()
@@ -2529,15 +2842,19 @@ func (mw *MagickWand) TransformImageColorspace(colorspace ColorspaceType) error 
 }
 
 // Changes any pixel that matches color with the color defined by fill.
+//
 // alpha: the level of transparency: 1.0 is fully opaque and 0.0 is fully
 // transparent.
+//
 // fuzz: by default target must match a particular pixel color exactly.
 // However, in many cases two colors may differ by a small amount. The fuzz
 // member of image defines how much tolerance is acceptable to consider two
 // colors as the same. For example, set fuzz to 10 and the color red at
 // intensities of 100 and 102 respectively are now interpreted as the same
 // color for the purposes of the floodfill.
+//
 // invert: paint any pixel that does not match the target color.
+//
 func (mw *MagickWand) TransparentPaintImage(target *PixelWand, alpha, fuzz float64, invert bool) error {
 	C.MagickTransparentPaintImage(mw.wand, target.pixel, C.double(alpha), C.double(fuzz), b2i(invert))
 	return mw.GetLastError()
@@ -2558,6 +2875,7 @@ func (mw *MagickWand) TransverseImage() error {
 }
 
 // Remove edges that are the background color from the image.
+//
 // fuzz: by default target must match a particular pixel color exactly.
 // However, in many cases two colors may differ by a small amount. The fuzz
 // member of image defines how much tolerance is acceptable to consider two
@@ -2579,11 +2897,16 @@ func (mw *MagickWand) UniqueImageColors() error {
 // given radius and standard deviation (sigma). For reasonable results, radius
 // should be larger than sigma. Use a radius of 0 and UnsharpMaskImage()
 // selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // amount: the percentage of the difference between the original and the blur
 // image that is added back into the original.
+//
 // threshold: the threshold in pixels needed to apply the diffence amount.
+//
 func (mw *MagickWand) UnsharpMaskImage(radius, sigma, amount, threshold float64) error {
 	C.MagickUnsharpMaskImage(mw.wand, C.double(radius), C.double(sigma), C.double(amount), C.double(threshold))
 	return mw.GetLastError()
@@ -2593,18 +2916,25 @@ func (mw *MagickWand) UnsharpMaskImage(radius, sigma, amount, threshold float64)
 // operator of the given radius and standard deviation (sigma). For reasonable
 // results, radius should be larger than sigma. Use a radius of 0 and
 // UnsharpMaskImage() selects a suitable radius for you.
+//
 // radius: the radius of the Gaussian, in pixels, not counting the center pixel.
+//
 // sigma: the standard deviation of the Gaussian, in pixels.
+//
 // amount: the percentage of the difference between the original and the blur
 // image that is added back into the original.
+//
 // threshold: the threshold in pixels needed to apply the diffence amount.
+//
 func (mw *MagickWand) UnsharpMaskImageChannel(channel ChannelType, radius, sigma, amount, threshold float64) error {
 	C.MagickUnsharpMaskImageChannel(mw.wand, C.ChannelType(channel), C.double(radius), C.double(sigma), C.double(amount), C.double(threshold))
 	return mw.GetLastError()
 }
 
 // Softens the edges of the image in vignette style.
+//
 // x, y: define the x and y ellipse offset.
+//
 func (mw *MagickWand) VignetteImage(blackPoint, whitePoint float64, x, y int) error {
 	C.MagickVignetteImage(mw.wand, C.double(blackPoint), C.double(whitePoint), C.ssize_t(x), C.ssize_t(y))
 	return mw.GetLastError()
@@ -2613,7 +2943,9 @@ func (mw *MagickWand) VignetteImage(blackPoint, whitePoint float64, x, y int) er
 // Creates a "ripple" effect in the image by shifting the pixels vertically
 // along a sine wave whose amplitude and wavelength is specified by the given
 // parameters.
+//
 // amplitude, wavelength: Define the amplitude and wave length of the sine wave.
+//
 func (mw *MagickWand) WaveImage(amplitude, wavelength float64) error {
 	C.MagickWaveImage(mw.wand, C.double(amplitude), C.double(wavelength))
 	return mw.GetLastError()
