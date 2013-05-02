@@ -13,28 +13,11 @@ import (
 type SparseColorMethod int
 
 const (
-	UndefinedColorInterpolate   SparseColorMethod = C.UndefinedColorInterpolate
-	BarycentricColorInterpolate SparseColorMethod = C.BarycentricColorInterpolate
-	BilinearColorInterpolate    SparseColorMethod = C.BilinearColorInterpolate
-	PolynomialColorInterpolate  SparseColorMethod = C.PolynomialColorInterpolate
-	ShepardsColorInterpolate    SparseColorMethod = C.ShepardsColorInterpolate
-	VoronoiColorInterpolate     SparseColorMethod = C.VoronoiColorInterpolate
-	InverseColorInterpolate     SparseColorMethod = C.InverseColorInterpolate
+	INTERPOLATE_UNDEFINED_COLOR   SparseColorMethod = C.UndefinedColorInterpolate
+	INTERPOLATE_BARYCENTRIC_COLOR SparseColorMethod = C.BarycentricColorInterpolate
+	INTERPOLATE_BILINEAR_COLOR    SparseColorMethod = C.BilinearColorInterpolate
+	INTERPOLATE_POLYNOMIAL_COLOR  SparseColorMethod = C.PolynomialColorInterpolate
+	INTERPOLATE_SHEPARDS_COLOR    SparseColorMethod = C.ShepardsColorInterpolate
+	INTERPOLATE_VORONOI_COLOR     SparseColorMethod = C.VoronoiColorInterpolate
+	INTERPOLATE_INVERSE_COLOR     SparseColorMethod = C.InverseColorInterpolate
 )
-
-var sparseColorMethodStrings = map[SparseColorMethod]string{
-	UndefinedColorInterpolate:   "UndefinedColorInterpolate",
-	BarycentricColorInterpolate: "BarycentricColorInterpolate",
-	BilinearColorInterpolate:    "BilinearColorInterpolate",
-	PolynomialColorInterpolate:  "PolynomialColorInterpolate",
-	ShepardsColorInterpolate:    "ShepardsColorInterpolate",
-	VoronoiColorInterpolate:     "VoronoiColorInterpolate",
-	InverseColorInterpolate:     "InverseColorInterpolate",
-}
-
-func (ct *SparseColorMethod) String() string {
-	if v, ok := sparseColorMethodStrings[SparseColorMethod(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

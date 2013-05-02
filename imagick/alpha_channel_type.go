@@ -13,40 +13,17 @@ import (
 type AlphaChannelType int
 
 const (
-	UndefinedAlphaChannel   AlphaChannelType = C.UndefinedAlphaChannel
-	ActivateAlphaChannel    AlphaChannelType = C.ActivateAlphaChannel
-	BackgroundAlphaChannel  AlphaChannelType = C.BackgroundAlphaChannel
-	CopyAlphaChannel        AlphaChannelType = C.CopyAlphaChannel
-	DeactivateAlphaChannel  AlphaChannelType = C.DeactivateAlphaChannel
-	ExtractAlphaChannel     AlphaChannelType = C.ExtractAlphaChannel
-	OpaqueAlphaChannel      AlphaChannelType = C.OpaqueAlphaChannel
-	ResetAlphaChannel       AlphaChannelType = C.ResetAlphaChannel
-	SetAlphaChannel         AlphaChannelType = C.SetAlphaChannel
-	ShapeAlphaChannel       AlphaChannelType = C.ShapeAlphaChannel
-	TransparentAlphaChannel AlphaChannelType = C.TransparentAlphaChannel
-	FlattenAlphaChannel     AlphaChannelType = C.FlattenAlphaChannel
-	RemoveAlphaChannel      AlphaChannelType = C.RemoveAlphaChannel
+	ALPHA_CHANNEL_UNDEFINED   AlphaChannelType = C.UndefinedAlphaChannel
+	ALPHA_CHANNEL_ACTIVATE    AlphaChannelType = C.ActivateAlphaChannel
+	ALPHA_CHANNEL_BACKGROUND  AlphaChannelType = C.BackgroundAlphaChannel
+	ALPHA_CHANNEL_COPY        AlphaChannelType = C.CopyAlphaChannel
+	ALPHA_CHANNEL_DEACTIVATE  AlphaChannelType = C.DeactivateAlphaChannel
+	ALPHA_CHANNEL_EXTRACT     AlphaChannelType = C.ExtractAlphaChannel
+	ALPHA_CHANNEL_OPAQUE      AlphaChannelType = C.OpaqueAlphaChannel
+	ALPHA_CHANNEL_RESET       AlphaChannelType = C.ResetAlphaChannel
+	ALPHA_CHANNEL_SET         AlphaChannelType = C.SetAlphaChannel
+	ALPHA_CHANNEL_SHAPE       AlphaChannelType = C.ShapeAlphaChannel
+	ALPHA_CHANNEL_TRANSPARENT AlphaChannelType = C.TransparentAlphaChannel
+	ALPHA_CHANNEL_FLATTEN     AlphaChannelType = C.FlattenAlphaChannel
+	ALPHA_CHANNEL_REMOVE      AlphaChannelType = C.RemoveAlphaChannel
 )
-
-var alphaChannelTypeStrings = map[AlphaChannelType]string{
-	UndefinedAlphaChannel:   "UndefinedAlphaChannel",
-	ActivateAlphaChannel:    "ActivateAlphaChannel",
-	BackgroundAlphaChannel:  "BackgroundAlphaChannel",
-	CopyAlphaChannel:        "CopyAlphaChannel",
-	DeactivateAlphaChannel:  "DeactivateAlphaChannel",
-	ExtractAlphaChannel:     "ExtractAlphaChannel",
-	OpaqueAlphaChannel:      "OpaqueAlphaChannel",
-	ResetAlphaChannel:       "ResetAlphaChannel",
-	SetAlphaChannel:         "SetAlphaChannel",
-	ShapeAlphaChannel:       "ShapeAlphaChannel",
-	TransparentAlphaChannel: "TransparentAlphaChannel",
-	FlattenAlphaChannel:     "FlattenAlphaChannel",
-	RemoveAlphaChannel:      "RemoveAlphaChannel",
-}
-
-func (ct *AlphaChannelType) String() string {
-	if v, ok := alphaChannelTypeStrings[AlphaChannelType(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

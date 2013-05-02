@@ -13,38 +13,16 @@ import (
 type ImageType int
 
 const (
-	UndefinedType            ImageType = C.UndefinedType
-	BilevelType              ImageType = C.BilevelType
-	GrayscaleType            ImageType = C.GrayscaleType
-	GrayscaleMatteType       ImageType = C.GrayscaleMatteType
-	PaletteType              ImageType = C.PaletteType
-	PaletteMatteType         ImageType = C.PaletteMatteType
-	TrueColorType            ImageType = C.TrueColorType
-	TrueColorMatteType       ImageType = C.TrueColorMatteType
-	ColorSeparationType      ImageType = C.ColorSeparationType
-	ColorSeparationMatteType ImageType = C.ColorSeparationMatteType
-	OptimizeType             ImageType = C.OptimizeType
-	PaletteBilevelMatteType  ImageType = C.PaletteBilevelMatteType
+	IMAGE_TYPE_UNDEFINED              ImageType = C.UndefinedType
+	IMAGE_TYPE_BILEVEL                ImageType = C.BilevelType
+	IMAGE_TYPE_GRAYSCALE              ImageType = C.GrayscaleType
+	IMAGE_TYPE_GRAYSCALE_MATTE        ImageType = C.GrayscaleMatteType
+	IMAGE_TYPE_PALETTE                ImageType = C.PaletteType
+	IMAGE_TYPE_PALETTE_MATTE          ImageType = C.PaletteMatteType
+	IMAGE_TYPE_TRUE_COLOR             ImageType = C.TrueColorType
+	IMAGE_TYPE_TRUE_COLOR_MATTE       ImageType = C.TrueColorMatteType
+	IMAGE_TYPE_COLOR_SEPARATION       ImageType = C.ColorSeparationType
+	IMAGE_TYPE_COLOR_SEPARATION_MATTE ImageType = C.ColorSeparationMatteType
+	IMAGE_TYPE_OPTIMIZE               ImageType = C.OptimizeType
+	IMAGE_TYPE_PALETTE_BILEVEL_MATTE  ImageType = C.PaletteBilevelMatteType
 )
-
-var imageTypeStrings = map[ImageType]string{
-	UndefinedType:            "UndefinedType",
-	BilevelType:              "BilevelType",
-	GrayscaleType:            "GrayscaleType",
-	GrayscaleMatteType:       "GrayscaleMatteType",
-	PaletteType:              "PaletteType",
-	PaletteMatteType:         "PaletteMatteType",
-	TrueColorType:            "TrueColorType",
-	TrueColorMatteType:       "TrueColorMatteType",
-	ColorSeparationType:      "ColorSeparationType",
-	ColorSeparationMatteType: "ColorSeparationMatteType",
-	OptimizeType:             "OptimizeType",
-	PaletteBilevelMatteType:  "PaletteBilevelMatteType",
-}
-
-func (ct *ImageType) String() string {
-	if v, ok := imageTypeStrings[ImageType(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

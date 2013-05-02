@@ -13,23 +13,9 @@ import (
 type DisposeType int
 
 const (
-	UnrecognizedDispose DisposeType = C.UnrecognizedDispose
-	UndefinedDispose    DisposeType = C.UndefinedDispose
-	NoneDispose         DisposeType = C.NoneDispose
-	BackgroundDispose   DisposeType = C.BackgroundDispose
-	PreviousDispose     DisposeType = C.PreviousDispose
+	DISPOSE_UNRECOGNIZED DisposeType = C.UnrecognizedDispose
+	DISPOSE_UNDEFINED    DisposeType = C.UndefinedDispose
+	DISPOSE_NONE         DisposeType = C.NoneDispose
+	DISPOSE_BACKGROUND   DisposeType = C.BackgroundDispose
+	DISPOSE_PREVIOUS     DisposeType = C.PreviousDispose
 )
-
-var disposeTypeStrings = map[DisposeType]string{
-	UndefinedDispose:  "UndefinedDispose",
-	NoneDispose:       "NoneDispose",
-	BackgroundDispose: "BackgroundDispose",
-	PreviousDispose:   "PreviousDispose",
-}
-
-func (cst *DisposeType) String() string {
-	if v, ok := disposeTypeStrings[DisposeType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownDisposeType[%d]", *cst)
-}

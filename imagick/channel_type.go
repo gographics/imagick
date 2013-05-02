@@ -13,45 +13,23 @@ import (
 type ChannelType int
 
 const (
-	UndefinedChannel  ChannelType = C.UndefinedChannel
-	RedChannel        ChannelType = C.RedChannel
-	GrayChannel       ChannelType = C.GrayChannel
-	CyanChannel       ChannelType = C.CyanChannel
-	GreenChannel      ChannelType = C.GreenChannel
-	MagentaChannel    ChannelType = C.MagentaChannel
-	BlueChannel       ChannelType = C.BlueChannel
-	YellowChannel     ChannelType = C.YellowChannel
-	AlphaChannel      ChannelType = C.AlphaChannel
-	OpacityChannel    ChannelType = C.OpacityChannel
-	BlackChannel      ChannelType = C.BlackChannel
-	IndexChannel      ChannelType = C.IndexChannel
-	CompositeChannels ChannelType = C.CompositeChannels
-	AllChannels       ChannelType = C.AllChannels
-	TrueAlphaChannel  ChannelType = C.TrueAlphaChannel
-	RGBChannels       ChannelType = C.RGBChannels
-	GrayChannels      ChannelType = C.GrayChannels
-	SyncChannels      ChannelType = C.SyncChannels
-	DefaultChannels   ChannelType = C.DefaultChannels
+	CHANNEL_UNDEFINED  ChannelType = C.UndefinedChannel
+	CHANNEL_RED        ChannelType = C.RedChannel
+	CHANNEL_GRAY       ChannelType = C.GrayChannel
+	CHANNEL_CYAN       ChannelType = C.CyanChannel
+	CHANNEL_GREEN      ChannelType = C.GreenChannel
+	CHANNEL_MAGENTA    ChannelType = C.MagentaChannel
+	CHANNEL_BLUE       ChannelType = C.BlueChannel
+	CHANNEL_YELLOW     ChannelType = C.YellowChannel
+	CHANNEL_ALPHA      ChannelType = C.AlphaChannel
+	CHANNEL_OPACITY    ChannelType = C.OpacityChannel
+	CHANNEL_BLACK      ChannelType = C.BlackChannel
+	CHANNEL_INDEX      ChannelType = C.IndexChannel
+	CHANNEL_TRUE_ALPHA ChannelType = C.TrueAlphaChannel
+	CHANNELS_COMPOSITE ChannelType = C.CompositeChannels
+	CHANNELS_ALL       ChannelType = C.AllChannels
+	CHANNELS_RGB       ChannelType = C.RGBChannels
+	CHANNELS_GRAY      ChannelType = C.GrayChannels
+	CHANNELS_SYNC      ChannelType = C.SyncChannels
+	CHANNELS_DEFAULT   ChannelType = C.DefaultChannels
 )
-
-var channelTypeStrings = map[ChannelType]string{
-	UndefinedChannel:  "UndefinedChannel",
-	RedChannel:        "RedOrGrayOrCyanChannel",
-	GreenChannel:      "GreenOrMagentaChannel",
-	BlueChannel:       "BlueOrYellowChannel",
-	AlphaChannel:      "AlphaOrOpacityChannel",
-	BlackChannel:      "BlackOrIndexChannel",
-	CompositeChannels: "CompositeChannels",
-	AllChannels:       "AllChannels",
-	TrueAlphaChannel:  "TrueAlphaChannel",
-	RGBChannels:       "RGBOrGrayChannels",
-	SyncChannels:      "SyncChannels",
-	DefaultChannels:   "DefaultChannels",
-}
-
-func (cst *ChannelType) String() string {
-	if v, ok := channelTypeStrings[ChannelType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownChannel[%d]", *cst)
-}

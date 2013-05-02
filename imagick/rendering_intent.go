@@ -13,24 +13,9 @@ import (
 type RenderingIntent int
 
 const (
-	UndefinedIntent  RenderingIntent = C.UndefinedIntent
-	SaturationIntent RenderingIntent = C.SaturationIntent
-	PerceptualIntent RenderingIntent = C.PerceptualIntent
-	AbsoluteIntent   RenderingIntent = C.AbsoluteIntent
-	RelativeIntent   RenderingIntent = C.RelativeIntent
+	RENDERING_INTENT_UNDEFINED  RenderingIntent = C.UndefinedIntent
+	RENDERING_INTENT_SATURATION RenderingIntent = C.SaturationIntent
+	RENDERING_INTENT_PERCEPTUAL RenderingIntent = C.PerceptualIntent
+	RENDERING_INTENT_ABSOLUTE   RenderingIntent = C.AbsoluteIntent
+	RENDERING_INTENT_RELATIVE   RenderingIntent = C.RelativeIntent
 )
-
-var renderingIntentStrings = map[RenderingIntent]string{
-	UndefinedIntent:  "UndefinedIntent",
-	SaturationIntent: "SaturationIntent",
-	PerceptualIntent: "PerceptualIntent",
-	AbsoluteIntent:   "AbsoluteIntent",
-	RelativeIntent:   "RelativeIntent",
-}
-
-func (ct *RenderingIntent) String() string {
-	if v, ok := renderingIntentStrings[RenderingIntent(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

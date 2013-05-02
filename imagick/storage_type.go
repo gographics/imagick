@@ -13,30 +13,12 @@ import (
 type StorageType int
 
 const (
-	UndefinedPixel StorageType = C.UndefinedPixel
-	CharPixel      StorageType = C.CharPixel
-	DoublePixel    StorageType = C.DoublePixel
-	FloatPixel     StorageType = C.FloatPixel
-	IntegerPixel   StorageType = C.IntegerPixel
-	LongPixel      StorageType = C.LongPixel
-	QuantumPixel   StorageType = C.QuantumPixel
-	ShortPixel     StorageType = C.ShortPixel
+	PIXEL_UNDEFINED StorageType = C.UndefinedPixel
+	PIXEL_CHAR      StorageType = C.CharPixel
+	PIXEL_DOUBLE    StorageType = C.DoublePixel
+	PIXEL_FLOAT     StorageType = C.FloatPixel
+	PIXEL_INTEGER   StorageType = C.IntegerPixel
+	PIXEL_LONG      StorageType = C.LongPixel
+	PIXEL_QUANTUM   StorageType = C.QuantumPixel
+	PIXEL_SHORT     StorageType = C.ShortPixel
 )
-
-var storageTypeStrings = map[StorageType]string{
-	UndefinedPixel: "UndefinedPixel",
-	CharPixel:      "CharPixel",
-	DoublePixel:    "DoublePixel",
-	FloatPixel:     "FloatPixel",
-	IntegerPixel:   "IntegerPixel",
-	LongPixel:      "LongPixel",
-	QuantumPixel:   "QuantumPixel",
-	ShortPixel:     "ShortPixel",
-}
-
-func (cst *StorageType) String() string {
-	if v, ok := storageTypeStrings[StorageType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownStorage[%d]", *cst)
-}

@@ -13,22 +13,8 @@ import (
 type DitherMethod int
 
 const (
-	UndefinedDitherMethod      DitherMethod = C.UndefinedDitherMethod
-	NoDitherMethod             DitherMethod = C.NoDitherMethod
-	RiemersmaDitherMethod      DitherMethod = C.RiemersmaDitherMethod
-	FloydSteinbergDitherMethod DitherMethod = C.FloydSteinbergDitherMethod
+	DITHER_METHOD_UNDEFINED       DitherMethod = C.UndefinedDitherMethod
+	DITHER_METHOD_NO              DitherMethod = C.NoDitherMethod
+	DITHER_METHOD_RIEMERSMA       DitherMethod = C.RiemersmaDitherMethod
+	DITHER_METHOD_FLOYD_STEINBERG DitherMethod = C.FloydSteinbergDitherMethod
 )
-
-var ditherMethodStrings = map[DitherMethod]string{
-	UndefinedDitherMethod:      "UndefinedDitherMethod",
-	NoDitherMethod:             "NoDitherMethod",
-	RiemersmaDitherMethod:      "RiemersmaDitherMethod",
-	FloydSteinbergDitherMethod: "FloydSteinbergDitherMethod",
-}
-
-func (ct *DitherMethod) String() string {
-	if v, ok := ditherMethodStrings[DitherMethod(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

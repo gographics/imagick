@@ -22,13 +22,13 @@ func (mwe *MagickWandException) Error() string {
 
 // Clears any exceptions associated with the wand
 func (mw *MagickWand) clearException() bool {
-	return 1 == C.int(C.MagickClearException(mw.wand))
+	return 1 == C.int(C.MagickClearException(mw.mw))
 }
 
 // Returns the kind, reason and description of any error that occurs when using other methods in this API
 func (mw *MagickWand) GetLastError() error {
 	var et C.ExceptionType
-	csdescription := C.MagickGetException(mw.wand, &et)
+	csdescription := C.MagickGetException(mw.mw, &et)
 	defer mw.relinquishMemory(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != UndefinedException {
 		mw.clearException()

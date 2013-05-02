@@ -13,30 +13,12 @@ import (
 type InterlaceType int
 
 const (
-	UndefinedInterlace InterlaceType = C.UndefinedInterlace
-	NoInterlace        InterlaceType = C.NoInterlace
-	LineInterlace      InterlaceType = C.LineInterlace
-	PlaneInterlace     InterlaceType = C.PlaneInterlace
-	PartitionInterlace InterlaceType = C.PartitionInterlace
-	GIFInterlace       InterlaceType = C.GIFInterlace
-	JPEGInterlace      InterlaceType = C.JPEGInterlace
-	PNGInterlace       InterlaceType = C.PNGInterlace
+	INTERLACE_UNDEFINED InterlaceType = C.UndefinedInterlace
+	INTERLACE_NO        InterlaceType = C.NoInterlace
+	INTERLACE_LINE      InterlaceType = C.LineInterlace
+	INTERLACE_PLANE     InterlaceType = C.PlaneInterlace
+	INTERLACE_PARTITION InterlaceType = C.PartitionInterlace
+	INTERLACE_GIF       InterlaceType = C.GIFInterlace
+	INTERLACE_JPEG      InterlaceType = C.JPEGInterlace
+	INTERLACE_PNG       InterlaceType = C.PNGInterlace
 )
-
-var interlaceTypeStrings = map[InterlaceType]string{
-	UndefinedInterlace: "UndefinedInterlace",
-	NoInterlace:        "NoInterlace",
-	LineInterlace:      "LineInterlace",
-	PlaneInterlace:     "PlaneInterlace",
-	PartitionInterlace: "PartitionInterlace",
-	GIFInterlace:       "GIFInterlace",
-	JPEGInterlace:      "JPEGInterlace",
-	PNGInterlace:       "PNGInterlace",
-}
-
-func (cst *InterlaceType) String() string {
-	if v, ok := interlaceTypeStrings[InterlaceType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownInterlaceType[%d]", *cst)
-}

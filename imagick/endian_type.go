@@ -13,20 +13,7 @@ import (
 type EndianType int
 
 const (
-	UndefinedEndian EndianType = C.UndefinedEndian
-	LSBEndian       EndianType = C.LSBEndian
-	MSBEndian       EndianType = C.MSBEndian
+	ENDIAN_UNDEFINED EndianType = C.UndefinedEndian
+	ENDIAN_LSB       EndianType = C.LSBEndian
+	ENDIAN_MSB       EndianType = C.MSBEndian
 )
-
-var endianTypeStrings = map[EndianType]string{
-	UndefinedEndian: "UndefinedEndian",
-	LSBEndian:       "LSBEndian",
-	MSBEndian:       "MSBEndian",
-}
-
-func (cst *EndianType) String() string {
-	if v, ok := endianTypeStrings[EndianType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownEndianType[%d]", *cst)
-}

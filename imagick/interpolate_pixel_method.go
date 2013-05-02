@@ -13,42 +13,18 @@ import (
 type InterpolatePixelMethod int
 
 const (
-	UndefinedInterpolatePixel       InterpolatePixelMethod = C.UndefinedInterpolatePixel
-	AverageInterpolatePixel         InterpolatePixelMethod = C.AverageInterpolatePixel         // Average 4 nearest neighbours
-	BicubicInterpolatePixel         InterpolatePixelMethod = C.BicubicInterpolatePixel         // Catmull-Rom interpolation
-	BilinearInterpolatePixel        InterpolatePixelMethod = C.BilinearInterpolatePixel        // Triangular filter interpolation
-	FilterInterpolatePixel          InterpolatePixelMethod = C.FilterInterpolatePixel          // Use resize filter - (very slow)
-	IntegerInterpolatePixel         InterpolatePixelMethod = C.IntegerInterpolatePixel         // Integer (floor) interpolation
-	MeshInterpolatePixel            InterpolatePixelMethod = C.MeshInterpolatePixel            // Triangular mesh interpolation
-	NearestNeighborInterpolatePixel InterpolatePixelMethod = C.NearestNeighborInterpolatePixel // Nearest neighbour only
-	SplineInterpolatePixel          InterpolatePixelMethod = C.SplineInterpolatePixel          // Cubic Spline (blurred) interpolation
-	Average9InterpolatePixel        InterpolatePixelMethod = C.Average9InterpolatePixel        // Average 9 nearest neighbours
-	Average16InterpolatePixel       InterpolatePixelMethod = C.Average16InterpolatePixel       // Average 16 nearest neighbours
-	BlendInterpolatePixel           InterpolatePixelMethod = C.BlendInterpolatePixel           // blend of nearest 1, 2 or 4 pixels
-	BackgroundInterpolatePixel      InterpolatePixelMethod = C.BackgroundInterpolatePixel      // just return background color
-	CatromInterpolatePixel          InterpolatePixelMethod = C.CatromInterpolatePixel          // Catmull-Rom interpolation
+	INTERPOLATE_PIXEL_UNDEFINED        InterpolatePixelMethod = C.UndefinedInterpolatePixel
+	INTERPOLATE_PIXEL_AVERAGE          InterpolatePixelMethod = C.AverageInterpolatePixel         // Average 4 nearest neighbours
+	INTERPOLATE_PIXEL_BICUBIC          InterpolatePixelMethod = C.BicubicInterpolatePixel         // Catmull-Rom interpolation
+	INTERPOLATE_PIXEL_BILINEAR         InterpolatePixelMethod = C.BilinearInterpolatePixel        // Triangular filter interpolation
+	INTERPOLATE_PIXEL_FILTER           InterpolatePixelMethod = C.FilterInterpolatePixel          // Use resize filter - (very slow)
+	INTERPOLATE_PIXEL_INTEGER          InterpolatePixelMethod = C.IntegerInterpolatePixel         // Integer (floor) interpolation
+	INTERPOLATE_PIXEL_MESH             InterpolatePixelMethod = C.MeshInterpolatePixel            // Triangular mesh interpolation
+	INTERPOLATE_PIXEL_NEAREST_NEIGHBOR InterpolatePixelMethod = C.NearestNeighborInterpolatePixel // Nearest neighbour only
+	INTERPOLATE_PIXEL_SPLINE           InterpolatePixelMethod = C.SplineInterpolatePixel          // Cubic Spline (blurred) interpolation
+	INTERPOLATE_PIXEL_AVERAGE9         InterpolatePixelMethod = C.Average9InterpolatePixel        // Average 9 nearest neighbours
+	INTERPOLATE_PIXEL_AVERAGE16        InterpolatePixelMethod = C.Average16InterpolatePixel       // Average 16 nearest neighbours
+	INTERPOLATE_PIXEL_BLEND            InterpolatePixelMethod = C.BlendInterpolatePixel           // blend of nearest 1, 2 or 4 pixels
+	INTERPOLATE_PIXEL_BACKGROUND       InterpolatePixelMethod = C.BackgroundInterpolatePixel      // just return background color
+	INTERPOLATE_PIXEL_CATROM           InterpolatePixelMethod = C.CatromInterpolatePixel          // Catmull-Rom interpolation
 )
-
-var interpolatePixelMethodStrings = map[InterpolatePixelMethod]string{
-	UndefinedInterpolatePixel:       "UndefinedInterpolatePixel",
-	AverageInterpolatePixel:         "AverageInterpolatePixel",
-	BicubicInterpolatePixel:         "BicubicInterpolatePixel",
-	BilinearInterpolatePixel:        "BilinearInterpolatePixel",
-	FilterInterpolatePixel:          "FilterInterpolatePixel",
-	IntegerInterpolatePixel:         "IntegerInterpolatePixel",
-	MeshInterpolatePixel:            "MeshInterpolatePixel",
-	NearestNeighborInterpolatePixel: "NearestNeighborInterpolatePixel",
-	SplineInterpolatePixel:          "SplineInterpolatePixel",
-	Average9InterpolatePixel:        "Average9InterpolatePixel",
-	Average16InterpolatePixel:       "Average16InterpolatePixel",
-	BlendInterpolatePixel:           "BlendInterpolatePixel",
-	BackgroundInterpolatePixel:      "BackgroundInterpolatePixel",
-	CatromInterpolatePixel:          "CatromInterpolatePixel",
-}
-
-func (cst *InterpolatePixelMethod) String() string {
-	if v, ok := interpolatePixelMethodStrings[InterpolatePixelMethod(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownInterpolatePixelMethod[%d]", *cst)
-}

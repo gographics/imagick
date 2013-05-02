@@ -13,58 +13,26 @@ import (
 type CompressionType int
 
 const (
-	UndefinedCompression    CompressionType = C.UndefinedCompression
-	NoCompression           CompressionType = C.NoCompression
-	BZipCompression         CompressionType = C.BZipCompression
-	DXT1Compression         CompressionType = C.DXT1Compression
-	DXT3Compression         CompressionType = C.DXT3Compression
-	DXT5Compression         CompressionType = C.DXT5Compression
-	FaxCompression          CompressionType = C.FaxCompression
-	Group4Compression       CompressionType = C.Group4Compression
-	JPEGCompression         CompressionType = C.JPEGCompression
-	JPEG2000Compression     CompressionType = C.JPEG2000Compression
-	LosslessJPEGCompression CompressionType = C.LosslessJPEGCompression
-	LZWCompression          CompressionType = C.LZWCompression
-	RLECompression          CompressionType = C.RLECompression
-	ZipCompression          CompressionType = C.ZipCompression
-	ZipSCompression         CompressionType = C.ZipSCompression
-	PizCompression          CompressionType = C.PizCompression
-	Pxr24Compression        CompressionType = C.Pxr24Compression
-	B44Compression          CompressionType = C.B44Compression
-	B44ACompression         CompressionType = C.B44ACompression
-	LZMACompression         CompressionType = C.LZMACompression
-	JBIG1Compression        CompressionType = C.JBIG1Compression
-	JBIG2Compression        CompressionType = C.JBIG2Compression
+	COMPRESSION_UNDEFINED     CompressionType = C.UndefinedCompression
+	COMPRESSION_NO            CompressionType = C.NoCompression
+	COMPRESSION_BZIP          CompressionType = C.BZipCompression
+	COMPRESSION_DXT1          CompressionType = C.DXT1Compression
+	COMPRESSION_DXT3          CompressionType = C.DXT3Compression
+	COMPRESSION_DXT5          CompressionType = C.DXT5Compression
+	COMPRESSION_FAX           CompressionType = C.FaxCompression
+	COMPRESSION_GROUP4        CompressionType = C.Group4Compression
+	COMPRESSION_JPEG          CompressionType = C.JPEGCompression
+	COMPRESSION_JPEG2000      CompressionType = C.JPEG2000Compression
+	COMPRESSION_LOSSLESS_JPEG CompressionType = C.LosslessJPEGCompression
+	COMPRESSION_LZW           CompressionType = C.LZWCompression
+	COMPRESSION_RLE           CompressionType = C.RLECompression
+	COMPRESSION_ZIP           CompressionType = C.ZipCompression
+	COMPRESSION_ZIPS          CompressionType = C.ZipSCompression
+	COMPRESSION_PIZ           CompressionType = C.PizCompression
+	COMPRESSION_PXR24         CompressionType = C.Pxr24Compression
+	COMPRESSION_B44           CompressionType = C.B44Compression
+	COMPRESSION_B44A          CompressionType = C.B44ACompression
+	COMPRESSION_LZMA          CompressionType = C.LZMACompression
+	COMPRESSION_JBIG1         CompressionType = C.JBIG1Compression
+	COMPRESSION_JBIG2         CompressionType = C.JBIG2Compression
 )
-
-var compressionTypeStrings = map[CompressionType]string{
-	UndefinedCompression:    "UndefinedCompression",
-	NoCompression:           "NoCompression",
-	BZipCompression:         "BZipCompression",
-	DXT1Compression:         "DXT1Compression",
-	DXT3Compression:         "DXT3Compression",
-	DXT5Compression:         "DXT5Compression",
-	FaxCompression:          "FaxCompression",
-	Group4Compression:       "Group4Compression",
-	JPEGCompression:         "JPEGCompression",
-	JPEG2000Compression:     "JPEG2000Compression",
-	LosslessJPEGCompression: "LosslessJPEGCompression",
-	LZWCompression:          "LZWCompression",
-	RLECompression:          "RLECompression",
-	ZipCompression:          "ZipCompression",
-	ZipSCompression:         "ZipSCompression",
-	PizCompression:          "PizCompression",
-	Pxr24Compression:        "Pxr24Compression",
-	B44Compression:          "B44Compression",
-	B44ACompression:         "B44ACompression",
-	LZMACompression:         "LZMACompression",
-	JBIG1Compression:        "JBIG1Compression",
-	JBIG2Compression:        "JBIG2Compression",
-}
-
-func (ct *CompressionType) String() string {
-	if v, ok := compressionTypeStrings[CompressionType(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

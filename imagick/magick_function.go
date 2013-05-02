@@ -13,24 +13,9 @@ import (
 type MagickFunction int
 
 const (
-	UndefinedFunction  MagickFunction = C.UndefinedFunction
-	PolynomialFunction MagickFunction = C.PolynomialFunction
-	SinusoidFunction   MagickFunction = C.SinusoidFunction
-	ArcsinFunction     MagickFunction = C.ArcsinFunction
-	ArctanFunction     MagickFunction = C.ArctanFunction
+	FUNCTION_UNDEFINED  MagickFunction = C.UndefinedFunction
+	FUNCTION_POLYNOMIAL MagickFunction = C.PolynomialFunction
+	FUNCTION_SINUSOID   MagickFunction = C.SinusoidFunction
+	FUNCTION_ARCSIN     MagickFunction = C.ArcsinFunction
+	FUNCTION_ARCTAN     MagickFunction = C.ArctanFunction
 )
-
-var magickFunctionStrings = map[MagickFunction]string{
-	UndefinedFunction:  "UndefinedFunction",
-	PolynomialFunction: "PolynomialFunction",
-	SinusoidFunction:   "SinusoidFunction",
-	ArcsinFunction:     "ArcsinFunction",
-	ArctanFunction:     "ArctanFunction",
-}
-
-func (cst *MagickFunction) String() string {
-	if v, ok := magickFunctionStrings[MagickFunction(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownFunction[%d]", *cst)
-}

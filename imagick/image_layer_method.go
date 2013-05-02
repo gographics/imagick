@@ -13,48 +13,21 @@ import (
 type ImageLayerMethod int
 
 const (
-	UndefinedLayer      ImageLayerMethod = C.UndefinedLayer
-	CoalesceLayer       ImageLayerMethod = C.CoalesceLayer
-	CompareAnyLayer     ImageLayerMethod = C.CompareAnyLayer
-	CompareClearLayer   ImageLayerMethod = C.CompareClearLayer
-	CompareOverlayLayer ImageLayerMethod = C.CompareOverlayLayer
-	DisposeLayer        ImageLayerMethod = C.DisposeLayer
-	OptimizeLayer       ImageLayerMethod = C.OptimizeLayer
-	OptimizeImageLayer  ImageLayerMethod = C.OptimizeImageLayer
-	OptimizePlusLayer   ImageLayerMethod = C.OptimizePlusLayer
-	OptimizeTransLayer  ImageLayerMethod = C.OptimizeTransLayer
-	RemoveDupsLayer     ImageLayerMethod = C.RemoveDupsLayer
-	RemoveZeroLayer     ImageLayerMethod = C.RemoveZeroLayer
-	CompositeLayer      ImageLayerMethod = C.CompositeLayer
-	MergeLayer          ImageLayerMethod = C.MergeLayer
-	FlattenLayer        ImageLayerMethod = C.FlattenLayer
-	MosaicLayer         ImageLayerMethod = C.MosaicLayer
-	TrimBoundsLayer     ImageLayerMethod = C.TrimBoundsLayer
+	IMAGE_LAYER_UNDEFINED       ImageLayerMethod = C.UndefinedLayer
+	IMAGE_LAYER_COALESCE        ImageLayerMethod = C.CoalesceLayer
+	IMAGE_LAYER_COMPARE_ANY     ImageLayerMethod = C.CompareAnyLayer
+	IMAGE_LAYER_COMPARE_CLEAR   ImageLayerMethod = C.CompareClearLayer
+	IMAGE_LAYER_COMPARE_OVERLAY ImageLayerMethod = C.CompareOverlayLayer
+	IMAGE_LAYER_DISPOSE         ImageLayerMethod = C.DisposeLayer
+	IMAGE_LAYER_OPTIMIZE        ImageLayerMethod = C.OptimizeLayer
+	IMAGE_LAYER_OPTIMIZE_IMAGE  ImageLayerMethod = C.OptimizeImageLayer
+	IMAGE_LAYER_OPTIMIZE_PLUS   ImageLayerMethod = C.OptimizePlusLayer
+	IMAGE_LAYER_OPTIMIZE_TRANS  ImageLayerMethod = C.OptimizeTransLayer
+	IMAGE_LAYER_REMOVE_DUPS     ImageLayerMethod = C.RemoveDupsLayer
+	IMAGE_LAYER_REMOVE_ZERO     ImageLayerMethod = C.RemoveZeroLayer
+	IMAGE_LAYER_COMPOSITE       ImageLayerMethod = C.CompositeLayer
+	IMAGE_LAYER_MERGE           ImageLayerMethod = C.MergeLayer
+	IMAGE_LAYER_FLATTEN         ImageLayerMethod = C.FlattenLayer
+	IMAGE_LAYER_MOSAIC          ImageLayerMethod = C.MosaicLayer
+	IMAGE_LAYER_TRIM_BOUNDS     ImageLayerMethod = C.TrimBoundsLayer
 )
-
-var imageLayerMethodStrings = map[ImageLayerMethod]string{
-	UndefinedLayer:      "UndefinedLayer",
-	CoalesceLayer:       "CoalesceLayer",
-	CompareAnyLayer:     "CompareAnyLayer",
-	CompareClearLayer:   "CompareClearLayer",
-	CompareOverlayLayer: "CompareOverlayLayer",
-	DisposeLayer:        "DisposeLayer",
-	OptimizeLayer:       "OptimizeLayer",
-	OptimizeImageLayer:  "OptimizeImageLayer",
-	OptimizePlusLayer:   "OptimizePlusLayer",
-	OptimizeTransLayer:  "OptimizeTransLayer",
-	RemoveDupsLayer:     "RemoveDupsLayer",
-	RemoveZeroLayer:     "RemoveZeroLayer",
-	CompositeLayer:      "CompositeLayer",
-	MergeLayer:          "MergeLayer",
-	FlattenLayer:        "FlattenLayer",
-	MosaicLayer:         "MosaicLayer",
-	TrimBoundsLayer:     "TrimBoundsLayer",
-}
-
-func (cst *ImageLayerMethod) String() string {
-	if v, ok := imageLayerMethodStrings[ImageLayerMethod(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownImageLayerMethod[%d]", *cst)
-}

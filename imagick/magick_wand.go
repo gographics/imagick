@@ -13,49 +13,49 @@ import (
 
 // This struct represents the MagickWand C API of ImageMagick
 type MagickWand struct {
-	wand *C.MagickWand
+	mw *C.MagickWand
 }
 
 // Returns a wand required for all other methods in the API. A fatal exception is thrown if there is not enough memory to allocate the wand.
 // Use Destroy() to dispose of the wand then it is no longer needed.
 func NewMagickWand() *MagickWand {
-	return &MagickWand{wand: C.NewMagickWand()}
+	return &MagickWand{C.NewMagickWand()}
 }
 
 // Returns a wand with an image/
 func NewMagickWandFromImage(img *Image) *MagickWand {
-	return &MagickWand{wand: C.NewMagickWandFromImage(img.img)}
+	return &MagickWand{C.NewMagickWandFromImage(img.img)}
 }
 
 // Clear resources associated with the wand, leaving the wand blank, and ready to be used for a new set of images.
 func (mw *MagickWand) Clear() {
-	C.ClearMagickWand(mw.wand)
+	C.ClearMagickWand(mw.mw)
 }
 
 // Makes an exact copy of the MagickWand object
 func (mw *MagickWand) Clone() *MagickWand {
-	clone := C.CloneMagickWand(mw.wand)
+	clone := C.CloneMagickWand(mw.mw)
 	return &MagickWand{wand: clone}
 }
 
 // Deallocates memory associated with an MagickWand
 func (mw *MagickWand) Destroy() {
-	mw.wand = C.DestroyMagickWand(mw.wand)
-	C.free(unsafe.Pointer(mw.wand))
-	mw.wand = nil
+	mw.mw = C.DestroyMagickWand(mw.mw)
+	C.free(unsafe.Pointer(mw.mw))
+	mw.mw = nil
 }
 
 // Returns true if the wand is a verified magick wand
 func (mw *MagickWand) IsVerified() bool {
-	if mw.wand != nil {
-		return 1 == C.int(C.IsMagickWand(mw.wand))
+	if mw.mw != nil {
+		return 1 == C.int(C.IsMagickWand(mw.mw))
 	}
 	return false
 }
 
 // Returns the position of the iterator in the image list
 func (mw *MagickWand) GetIteratorIndex() uint {
-	return uint(C.MagickGetIteratorIndex(mw.wand))
+	return uint(C.MagickGetIteratorIndex(mw.mw))
 }
 
 // Returns the value associated with the specified configure option
@@ -94,7 +94,7 @@ func (mw *MagickWand) QueryConfigureOptions(pattern string) []string {
 func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMetrics {
 	cstext := C.CString(textLine)
 	defer C.free(unsafe.Pointer(cstext))
-	cdoubles := C.MagickQueryFontMetrics(mw.wand, dw.draw, cstext)
+	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.draw, cstext)
 	var doubles [13]float64
 	q := uintptr(unsafe.Pointer(cdoubles))
 	for i := uint(0); i < uint(13); i++ {
@@ -112,7 +112,7 @@ func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMe
 func (mw *MagickWand) QueryMultilineFontMetrics(dw *DrawingWand, textParagraph string) *FontMetrics {
 	cstext := C.CString(textParagraph)
 	defer C.free(unsafe.Pointer(cstext))
-	cdoubles := C.MagickQueryMultilineFontMetrics(mw.wand, dw.draw, cstext)
+	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.draw, cstext)
 	var doubles [13]float64
 	q := uintptr(unsafe.Pointer(cdoubles))
 	for i := uint(0); i < uint(13); i++ {
@@ -175,7 +175,7 @@ func (mw *MagickWand) relinquishMemory(ptr unsafe.Pointer) {
 // Afterward you can use NextImage() to iterate over all the images in a wand container, starting with the first image.
 // Using this before AddImages() or ReadImages() will cause new images to be inserted between the first and second image.
 func (mw *MagickWand) ResetIterator() {
-	C.MagickResetIterator(mw.wand)
+	C.MagickResetIterator(mw.mw)
 }
 
 // This method sets the wand iterator to the first image.
@@ -184,7 +184,7 @@ func (mw *MagickWand) ResetIterator() {
 // current image to the second image in the list (if present).
 // This operation is similar to ResetIterator() but differs in how AddImage(), ReadImage(), and NextImage() behaves afterward.
 func (mw *MagickWand) SetFirstIterator() {
-	C.MagickSetFirstIterator(mw.wand)
+	C.MagickSetFirstIterator(mw.mw)
 }
 
 // This method set the iterator to the given position in the image list specified with the index parameter.
@@ -196,7 +196,7 @@ func (mw *MagickWand) SetFirstIterator() {
 // regardless of if a zero (first image in list) or negative index (from end) is used.
 // Jumping to index 0 is similar to ResetIterator() but differs in how NextImage() behaves afterward.
 func (mw *MagickWand) SetIteratorIndex(index int) bool {
-	return 1 == C.int(C.MagickSetIteratorIndex(mw.wand, C.ssize_t(index)))
+	return 1 == C.int(C.MagickSetIteratorIndex(mw.mw, C.ssize_t(index)))
 }
 
 // SetLastIterator() sets the wand iterator to the last image.
@@ -204,5 +204,5 @@ func (mw *MagickWand) SetIteratorIndex(index int) bool {
 // to be used to iterate over the images in the reverse direction. In this sense it is more like ResetIterator() than SetFirstIterator().
 // Typically this function is used before AddImage(), ReadImage() functions to ensure new images are appended to the very end of wand's image list.
 func (mw *MagickWand) SetLastIterator() {
-	C.MagickSetLastIterator(mw.wand)
+	C.MagickSetLastIterator(mw.mw)
 }

@@ -13,34 +13,14 @@ import (
 type MetricType int
 
 const (
-	UndefinedMetric                       MetricType = C.UndefinedMetric
-	AbsoluteErrorMetric                   MetricType = C.AbsoluteErrorMetric
-	MeanAbsoluteErrorMetric               MetricType = C.MeanAbsoluteErrorMetric
-	MeanErrorPerPixelMetric               MetricType = C.MeanErrorPerPixelMetric
-	MeanSquaredErrorMetric                MetricType = C.MeanSquaredErrorMetric
-	PeakAbsoluteErrorMetric               MetricType = C.PeakAbsoluteErrorMetric
-	PeakSignalToNoiseRatioMetric          MetricType = C.PeakSignalToNoiseRatioMetric
-	RootMeanSquaredErrorMetric            MetricType = C.RootMeanSquaredErrorMetric
-	NormalizedCrossCorrelationErrorMetric MetricType = C.NormalizedCrossCorrelationErrorMetric
-	FuzzErrorMetric                       MetricType = C.FuzzErrorMetric
+	METRIC_UNDEFINED                          MetricType = C.UndefinedMetric
+	METRIC_ABSOLUTE_ERROR                     MetricType = C.AbsoluteErrorMetric
+	METRIC_MEAN_ABSOLUTE_ERROR                MetricType = C.MeanAbsoluteErrorMetric
+	METRIC_MEAN_ERROR_PER_PIXEL               MetricType = C.MeanErrorPerPixelMetric
+	METRIC_MEAN_SQUARED_ERROR                 MetricType = C.MeanSquaredErrorMetric
+	METRIC_PEAK_ABSOLUTE_ERROR                MetricType = C.PeakAbsoluteErrorMetric
+	METRIC_PEAK_SIGNAL_TO_NOISE_RATIO         MetricType = C.PeakSignalToNoiseRatioMetric
+	METRIC_ROOT_MEAN_SQUARED_ERROR            MetricType = C.RootMeanSquaredErrorMetric
+	METRIC_NORMALIZED_CROSS_CORRELATION_ERROR MetricType = C.NormalizedCrossCorrelationErrorMetric
+	METRIC_FUZZ_ERROR                         MetricType = C.FuzzErrorMetric
 )
-
-var metricTypeStrings = map[MetricType]string{
-	UndefinedMetric:                       "UndefinedMetric",
-	AbsoluteErrorMetric:                   "AbsoluteErrorMetric",
-	MeanAbsoluteErrorMetric:               "MeanAbsoluteErrorMetric",
-	MeanErrorPerPixelMetric:               "MeanErrorPerPixelMetric",
-	MeanSquaredErrorMetric:                "MeanSquaredErrorMetric",
-	PeakAbsoluteErrorMetric:               "PeakAbsoluteErrorMetric",
-	PeakSignalToNoiseRatioMetric:          "PeakSignalToNoiseRatioMetric",
-	RootMeanSquaredErrorMetric:            "RootMeanSquaredErrorMetric",
-	NormalizedCrossCorrelationErrorMetric: "NormalizedCrossCorrelationErrorMetric",
-	FuzzErrorMetric:                       "FuzzErrorMetric",
-}
-
-func (cst *MetricType) String() string {
-	if v, ok := metricTypeStrings[MetricType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownNoise[%d]", *cst)
-}

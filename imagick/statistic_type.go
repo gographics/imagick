@@ -13,32 +13,13 @@ import (
 type StatisticType int
 
 const (
-	UndefinedStatistic         StatisticType = C.UndefinedStatistic
-	GradientStatistic          StatisticType = C.GradientStatistic
-	MaximumStatistic           StatisticType = C.MaximumStatistic
-	MeanStatistic              StatisticType = C.MeanStatistic
-	MedianStatistic            StatisticType = C.MedianStatistic
-	MinimumStatistic           StatisticType = C.MinimumStatistic
-	ModeStatistic              StatisticType = C.ModeStatistic
-	NonpeakStatistic           StatisticType = C.NonpeakStatistic
-	StandardDeviationStatistic StatisticType = C.StandardDeviationStatistic
+	STATISTIC_UNDEFINED          StatisticType = C.UndefinedStatistic
+	STATISTIC_GRADIENT           StatisticType = C.GradientStatistic
+	STATISTIC_MAXIMUM            StatisticType = C.MaximumStatistic
+	STATISTIC_MEAN               StatisticType = C.MeanStatistic
+	STATISTIC_MEDIAN             StatisticType = C.MedianStatistic
+	STATISTIC_MINIMUM            StatisticType = C.MinimumStatistic
+	STATISTIC_MODE               StatisticType = C.ModeStatistic
+	STATISTIC_NONPEAK            StatisticType = C.NonpeakStatistic
+	STATISTIC_STANDARD_DEVIATION StatisticType = C.StandardDeviationStatistic
 )
-
-var statisticTypeStrings = map[StatisticType]string{
-	UndefinedStatistic:         "UndefinedStatistic",
-	GradientStatistic:          "GradientStatistic",
-	MaximumStatistic:           "MaximumStatistic",
-	MeanStatistic:              "MeanStatistic",
-	MedianStatistic:            "MedianStatistic",
-	MinimumStatistic:           "MinimumStatistic",
-	ModeStatistic:              "ModeStatistic",
-	NonpeakStatistic:           "NonpeakStatistic",
-	StandardDeviationStatistic: "StandardDeviationStatistic",
-}
-
-func (ct *StatisticType) String() string {
-	if v, ok := statisticTypeStrings[StatisticType(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

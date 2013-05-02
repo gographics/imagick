@@ -13,20 +13,7 @@ import (
 type ResolutionType int
 
 const (
-	UndefinedResolution           ResolutionType = C.UndefinedResolution
-	PixelsPerInchResolution       ResolutionType = C.PixelsPerInchResolution
-	PixelsPerCentimeterResolution ResolutionType = C.PixelsPerCentimeterResolution
+	RESOLUTION_UNDEFINED             ResolutionType = C.UndefinedResolution
+	RESOLUTION_PIXELS_PER_INCH       ResolutionType = C.PixelsPerInchResolution
+	RESOLUTION_PIXELS_PER_CENTIMETER ResolutionType = C.PixelsPerCentimeterResolution
 )
-
-var resolutionTypeStrings = map[ResolutionType]string{
-	UndefinedResolution:           "UndefinedResolution",
-	PixelsPerInchResolution:       "PixelsPerInchResolution",
-	PixelsPerCentimeterResolution: "PixelsPerCentimeterResolution",
-}
-
-func (ct *ResolutionType) String() string {
-	if v, ok := resolutionTypeStrings[ResolutionType(*ct)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownCompression[%d]", *ct)
-}

@@ -13,146 +13,149 @@ import (
 type ExceptionType int
 
 const (
-	UndefinedException        ExceptionType = C.UndefinedException
-	WarningException          ExceptionType = C.WarningException
-	ResourceLimitWarning      ExceptionType = C.ResourceLimitWarning
-	TypeWarning               ExceptionType = C.TypeWarning
-	OptionWarning             ExceptionType = C.OptionWarning
-	DelegateWarning           ExceptionType = C.DelegateWarning
-	MissingDelegateWarning    ExceptionType = C.MissingDelegateWarning
-	CorruptImageWarning       ExceptionType = C.CorruptImageWarning
-	FileOpenWarning           ExceptionType = C.FileOpenWarning
-	BlobWarning               ExceptionType = C.BlobWarning
-	StreamWarning             ExceptionType = C.StreamWarning
-	CacheWarning              ExceptionType = C.CacheWarning
-	CoderWarning              ExceptionType = C.CoderWarning
-	FilterWarning             ExceptionType = C.FilterWarning
-	ModuleWarning             ExceptionType = C.ModuleWarning
-	DrawWarning               ExceptionType = C.DrawWarning
-	ImageWarning              ExceptionType = C.ImageWarning
-	WandWarning               ExceptionType = C.WandWarning
-	RandomWarning             ExceptionType = C.RandomWarning
-	XServerWarning            ExceptionType = C.XServerWarning
-	MonitorWarning            ExceptionType = C.MonitorWarning
-	RegistryWarning           ExceptionType = C.RegistryWarning
-	ConfigureWarning          ExceptionType = C.ConfigureWarning
-	PolicyWarning             ExceptionType = C.PolicyWarning
-	ErrorException            ExceptionType = C.ErrorException
-	ResourceLimitError        ExceptionType = C.ResourceLimitError
-	TypeError                 ExceptionType = C.TypeError
-	OptionError               ExceptionType = C.OptionError
-	DelegateError             ExceptionType = C.DelegateError
-	MissingDelegateError      ExceptionType = C.MissingDelegateError
-	CorruptImageError         ExceptionType = C.CorruptImageError
-	FileOpenError             ExceptionType = C.FileOpenError
-	BlobError                 ExceptionType = C.BlobError
-	StreamError               ExceptionType = C.StreamError
-	CacheError                ExceptionType = C.CacheError
-	CoderError                ExceptionType = C.CoderError
-	FilterError               ExceptionType = C.FilterError
-	ModuleError               ExceptionType = C.ModuleError
-	DrawError                 ExceptionType = C.DrawError
-	ImageError                ExceptionType = C.ImageError
-	WandError                 ExceptionType = C.WandError
-	RandomError               ExceptionType = C.RandomError
-	XServerError              ExceptionType = C.XServerError
-	MonitorError              ExceptionType = C.MonitorError
-	RegistryError             ExceptionType = C.RegistryError
-	ConfigureError            ExceptionType = C.ConfigureError
-	PolicyError               ExceptionType = C.PolicyError
-	FatalErrorException       ExceptionType = C.FatalErrorException
-	ResourceLimitFatalError   ExceptionType = C.ResourceLimitFatalError
-	TypeFatalError            ExceptionType = C.TypeFatalError
-	OptionFatalError          ExceptionType = C.OptionFatalError
-	DelegateFatalError        ExceptionType = C.DelegateFatalError
-	MissingDelegateFatalError ExceptionType = C.MissingDelegateFatalError
-	CorruptImageFatalError    ExceptionType = C.CorruptImageFatalError
-	FileOpenFatalError        ExceptionType = C.FileOpenFatalError
-	BlobFatalError            ExceptionType = C.BlobFatalError
-	StreamFatalError          ExceptionType = C.StreamFatalError
-	CacheFatalError           ExceptionType = C.CacheFatalError
-	CoderFatalError           ExceptionType = C.CoderFatalError
-	FilterFatalError          ExceptionType = C.FilterFatalError
-	ModuleFatalError          ExceptionType = C.ModuleFatalError
-	DrawFatalError            ExceptionType = C.DrawFatalError
-	ImageFatalError           ExceptionType = C.ImageFatalError
-	WandFatalError            ExceptionType = C.WandFatalError
-	RandomFatalError          ExceptionType = C.RandomFatalError
-	XServerFatalError         ExceptionType = C.XServerFatalError
-	MonitorFatalError         ExceptionType = C.MonitorFatalError
-	RegistryFatalError        ExceptionType = C.RegistryFatalError
-	ConfigureFatalError       ExceptionType = C.ConfigureFatalError
-	PolicyFatalError          ExceptionType = C.PolicyFatalError
+	EXCEPTION_UNDEFINED          ExceptionType = C.UndefinedException
+	EXCEPTION_WARNING            ExceptionType = C.WarningException
+	WARNING_RESOURCE_LIMIT       ExceptionType = C.ResourceLimitWarning
+	WARNING_TYPE                 ExceptionType = C.TypeWarning
+	WARNING_OPTION               ExceptionType = C.OptionWarning
+	WARNING_DELEGATE             ExceptionType = C.DelegateWarning
+	WARNING_MISSING_DELEGATE     ExceptionType = C.MissingDelegateWarning
+	WARNING_CORRUPT_IMAGE        ExceptionType = C.CorruptImageWarning
+	WARNING_FILE_OPEN            ExceptionType = C.FileOpenWarning
+	WARNING_BLOB                 ExceptionType = C.BlobWarning
+	WARNING_STREAM               ExceptionType = C.StreamWarning
+	WARNING_CACHE                ExceptionType = C.CacheWarning
+	WARNING_CODER                ExceptionType = C.CoderWarning
+	WARNING_FILTER               ExceptionType = C.FilterWarning
+	WARNING_MODULE               ExceptionType = C.ModuleWarning
+	WARNING_DRAW                 ExceptionType = C.DrawWarning
+	WARNING_IMAGE                ExceptionType = C.ImageWarning
+	WARNING_WAND                 ExceptionType = C.WandWarning
+	WARNING_RANDOM               ExceptionType = C.RandomWarning
+	WARNING_XSERVER              ExceptionType = C.XServerWarning
+	WARNING_MONITOR              ExceptionType = C.MonitorWarning
+	WARNING_REGISTRY             ExceptionType = C.RegistryWarning
+	WARNING_CONFIGURE            ExceptionType = C.ConfigureWarning
+	WARNING_POLICY               ExceptionType = C.PolicyWarning
+	EXCEPTION_ERROR              ExceptionType = C.ErrorException
+	ERROR_RESOURCE_LIMIT         ExceptionType = C.ResourceLimitError
+	ERROR_TYPE                   ExceptionType = C.TypeError
+	ERROR_OPTION                 ExceptionType = C.OptionError
+	ERROR_DELEGATE               ExceptionType = C.DelegateError
+	ERROR_MISSING_DELEGATE       ExceptionType = C.MissingDelegateError
+	ERROR_CORRUPT_IMAGE          ExceptionType = C.CorruptImageError
+	ERROR_FILE_OPEN              ExceptionType = C.FileOpenError
+	ERROR_BLOB                   ExceptionType = C.BlobError
+	ERROR_STREAM                 ExceptionType = C.StreamError
+	ERROR_CACHE                  ExceptionType = C.CacheError
+	ERROR_CODER                  ExceptionType = C.CoderError
+	ERROR_FILTER                 ExceptionType = C.FilterError
+	ERROR_MODULE                 ExceptionType = C.ModuleError
+	ERROR_DRAW                   ExceptionType = C.DrawError
+	ERROR_IMAGE                  ExceptionType = C.ImageError
+	ERROR_WAND                   ExceptionType = C.WandError
+	ERROR_RANDOM                 ExceptionType = C.RandomError
+	ERROR_XSERVER                ExceptionType = C.XServerError
+	ERROR_MONITOR                ExceptionType = C.MonitorError
+	ERROR_REGISTRY               ExceptionType = C.RegistryError
+	ERROR_CONFIGURE              ExceptionType = C.ConfigureError
+	ERROR_POLICY                 ExceptionType = C.PolicyError
+	EXCEPTION_FATAL_ERROR        ExceptionType = C.FatalErrorException
+	FATAL_ERROR_RESOURCE_LIMIT   ExceptionType = C.ResourceLimitFatalError
+	FATAL_ERROR_TYPE             ExceptionType = C.TypeFatalError
+	FATAL_ERROR_OPTION           ExceptionType = C.OptionFatalError
+	FATAL_ERROR_DELEGATE         ExceptionType = C.DelegateFatalError
+	FATAL_ERROR_MISSING_DELEGATE ExceptionType = C.MissingDelegateFatalError
+	FATAL_ERROR_CORRUPT_IMAGE    ExceptionType = C.CorruptImageFatalError
+	FATAL_ERROR_FILE_OPEN        ExceptionType = C.FileOpenFatalError
+	FATAL_ERROR_BLOB             ExceptionType = C.BlobFatalError
+	FATAL_ERROR_STREAM           ExceptionType = C.StreamFatalError
+	FATAL_ERROR_CACHE            ExceptionType = C.CacheFatalError
+	FATAL_ERROR_CODER            ExceptionType = C.CoderFatalError
+	FATAL_ERROR_FILTER           ExceptionType = C.FilterFatalError
+	FATAL_ERROR_MODULE           ExceptionType = C.ModuleFatalError
+	FATAL_ERROR_DRAW             ExceptionType = C.DrawFatalError
+	FATAL_ERROR_IMAGE            ExceptionType = C.ImageFatalError
+	FATAL_ERROR_WAND             ExceptionType = C.WandFatalError
+	FATAL_ERROR_RANDOM           ExceptionType = C.RandomFatalError
+	FATAL_ERROR_XSERVER          ExceptionType = C.XServerFatalError
+	FATAL_ERROR_MONITOR          ExceptionType = C.MonitorFatalError
+	FATAL_ERROR_REGISTRY         ExceptionType = C.RegistryFatalError
+	FATAL_ERROR_CONFIGURE        ExceptionType = C.ConfigureFatalError
+	FATAL_ERROR_POLICY           ExceptionType = C.PolicyFatalError
 )
 
 var exceptionTypeStrings = map[ExceptionType]string{
-	UndefinedException:        "UndefinedException",
-	WarningException:          "WarningExceptionOrResourceLimitWarning",
-	TypeWarning:               "TypeWarning",
-	OptionWarning:             "OptionWarning",
-	DelegateWarning:           "DelegateWarning",
-	MissingDelegateWarning:    "MissingDelegateWarning",
-	CorruptImageWarning:       "CorruptImageWarning",
-	FileOpenWarning:           "FileOpenWarning",
-	BlobWarning:               "BlobWarning",
-	StreamWarning:             "StreamWarning",
-	CacheWarning:              "CacheWarning",
-	CoderWarning:              "CoderWarning",
-	FilterWarning:             "FilterWarning",
-	ModuleWarning:             "ModuleWarning",
-	DrawWarning:               "DrawWarning",
-	ImageWarning:              "ImageWarning",
-	WandWarning:               "WandWarning",
-	RandomWarning:             "RandomWarning",
-	XServerWarning:            "XServerWarning",
-	MonitorWarning:            "MonitorWarning",
-	RegistryWarning:           "RegistryWarning",
-	ConfigureWarning:          "ConfigureWarning",
-	PolicyWarning:             "PolicyWarning",
-	ErrorException:            "ErrorExceptionOrResourceLimitError",
-	TypeError:                 "TypeError",
-	OptionError:               "OptionError",
-	DelegateError:             "DelegateError",
-	MissingDelegateError:      "MissingDelegateError",
-	CorruptImageError:         "CorruptImageError",
-	FileOpenError:             "FileOpenError",
-	BlobError:                 "BlobError",
-	StreamError:               "StreamError",
-	CacheError:                "CacheError",
-	CoderError:                "CoderError",
-	FilterError:               "FilterError",
-	ModuleError:               "ModuleError",
-	DrawError:                 "DrawError",
-	ImageError:                "ImageError",
-	WandError:                 "WandError",
-	RandomError:               "RandomError",
-	XServerError:              "XServerError",
-	MonitorError:              "MonitorError",
-	RegistryError:             "RegistryError",
-	ConfigureError:            "ConfigureError",
-	PolicyError:               "PolicyError",
-	FatalErrorException:       "FatalErrorExceptionOrResourceLimitFatalError",
-	TypeFatalError:            "TypeFatalError",
-	OptionFatalError:          "OptionFatalError",
-	DelegateFatalError:        "DelegateFatalError",
-	MissingDelegateFatalError: "MissingDelegateFatalError",
-	CorruptImageFatalError:    "CorruptImageFatalError",
-	FileOpenFatalError:        "FileOpenFatalError",
-	BlobFatalError:            "BlobFatalError",
-	StreamFatalError:          "StreamFatalError",
-	CacheFatalError:           "CacheFatalError",
-	CoderFatalError:           "CoderFatalError",
-	FilterFatalError:          "FilterFatalError",
-	ModuleFatalError:          "ModuleFatalError",
-	DrawFatalError:            "DrawFatalError",
-	ImageFatalError:           "ImageFatalError",
-	WandFatalError:            "WandFatalError",
-	RandomFatalError:          "RandomFatalError",
-	XServerFatalError:         "XServerFatalError",
-	MonitorFatalError:         "MonitorFatalError",
-	RegistryFatalError:        "RegistryFatalError",
-	ConfigureFatalError:       "ConfigureFatalError",
-	PolicyFatalError:          "PolicyFatalError",
+	EXCEPTION_UNDEFINED:          "EXCEPTION_UNDEFINED",
+	EXCEPTION_WARNING:            "EXCEPTION_WARNING",
+	WARNING_RESOURCE_LIMIT:       "WARNING_RESOURCE_LIMIT",
+	WARNING_TYPE:                 "WARNING_TYPE",
+	WARNING_OPTION:               "WARNING_OPTION",
+	WARNING_DELEGATE:             "WARNING_DELEGATE",
+	WARNING_MISSING_DELEGATE:     "WARNING_MISSING_DELEGATE",
+	WARNING_CORRUPT_IMAGE:        "WARNING_CORRUPT_IMAGE",
+	WARNING_FILE_OPEN:            "WARNING_FILE_OPEN",
+	WARNING_BLOB:                 "WARNING_BLOB",
+	WARNING_STREAM:               "WARNING_STREAM",
+	WARNING_CACHE:                "WARNING_CACHE",
+	WARNING_CODER:                "WARNING_CODER",
+	WARNING_FILTER:               "WARNING_FILTER",
+	WARNING_MODULE:               "WARNING_MODULE",
+	WARNING_DRAW:                 "WARNING_DRAW",
+	WARNING_IMAGE:                "WARNING_IMAGE",
+	WARNING_WAND:                 "WARNING_WAND",
+	WARNING_RANDOM:               "WARNING_RANDOM",
+	WARNING_XSERVER:              "WARNING_XSERVER",
+	WARNING_MONITOR:              "WARNING_MONITOR",
+	WARNING_REGISTRY:             "WARNING_REGISTRY",
+	WARNING_CONFIGURE:            "WARNING_CONFIGURE",
+	WARNING_POLICY:               "WARNING_POLICY",
+	EXCEPTION_ERROR:              "EXCEPTION_ERROR",
+	ERROR_RESOURCE_LIMIT:         "ERROR_RESOURCE_LIMIT",
+	ERROR_TYPE:                   "ERROR_TYPE",
+	ERROR_OPTION:                 "ERROR_OPTION",
+	ERROR_DELEGATE:               "ERROR_DELEGATE",
+	ERROR_MISSING_DELEGATE:       "ERROR_MISSING_DELEGATE",
+	ERROR_CORRUPT_IMAGE:          "ERROR_CORRUPT_IMAGE",
+	ERROR_FILE_OPEN:              "ERROR_FILE_OPEN",
+	ERROR_BLOB:                   "ERROR_BLOB",
+	ERROR_STREAM:                 "ERROR_STREAM",
+	ERROR_CACHE:                  "ERROR_CACHE",
+	ERROR_CODER:                  "ERROR_CODER",
+	ERROR_FILTER:                 "ERROR_FILTER",
+	ERROR_MODULE:                 "ERROR_MODULE",
+	ERROR_DRAW:                   "ERROR_DRAW",
+	ERROR_IMAGE:                  "ERROR_IMAGE",
+	ERROR_WAND:                   "ERROR_WAND",
+	ERROR_RANDOM:                 "ERROR_RANDOM",
+	ERROR_XSERVER:                "ERROR_XSERVER",
+	ERROR_MONITOR:                "ERROR_MONITOR",
+	ERROR_REGISTRY:               "ERROR_REGISTRY",
+	ERROR_CONFIGURE:              "ERROR_CONFIGURE",
+	ERROR_POLICY:                 "ERROR_POLICY",
+	EXCEPTION_FATAL_ERROR:        "EXCEPTION_FATAL_ERROR",
+	FATAL_ERROR_RESOURCE_LIMIT:   "FATAL_ERROR_RESOURCE_LIMIT",
+	FATAL_ERROR_TYPE:             "FATAL_ERROR_TYPE",
+	FATAL_ERROR_OPTION:           "FATAL_ERROR_OPTION",
+	FATAL_ERROR_DELEGATE:         "FATAL_ERROR_DELEGATE",
+	FATAL_ERROR_MISSING_DELEGATE: "FATAL_ERROR_MISSING_DELEGATE",
+	FATAL_ERROR_CORRUPT_IMAGE:    "FATAL_ERROR_CORRUPT_IMAGE",
+	FATAL_ERROR_FILE_OPEN:        "FATAL_ERROR_FILE_OPEN",
+	FATAL_ERROR_BLOB:             "FATAL_ERROR_BLOB",
+	FATAL_ERROR_STREAM:           "FATAL_ERROR_STREAM",
+	FATAL_ERROR_CACHE:            "FATAL_ERROR_CACHE",
+	FATAL_ERROR_CODER:            "FATAL_ERROR_CODER",
+	FATAL_ERROR_FILTER:           "FATAL_ERROR_FILTER",
+	FATAL_ERROR_MODULE:           "FATAL_ERROR_MODULE",
+	FATAL_ERROR_DRAW:             "FATAL_ERROR_DRAW",
+	FATAL_ERROR_IMAGE:            "FATAL_ERROR_IMAGE",
+	FATAL_ERROR_WAND:             "FATAL_ERROR_WAND",
+	FATAL_ERROR_RANDOM:           "FATAL_ERROR_RANDOM",
+	FATAL_ERROR_XSERVER:          "FATAL_ERROR_XSERVER",
+	FATAL_ERROR_MONITOR:          "FATAL_ERROR_MONITOR",
+	FATAL_ERROR_REGISTRY:         "FATAL_ERROR_REGISTRY",
+	FATAL_ERROR_CONFIGURE:        "FATAL_ERROR_CONFIGURE",
+	FATAL_ERROR_POLICY:           "FATAL_ERROR_POLICY",
 }
 
 func (et *ExceptionType) String() string {

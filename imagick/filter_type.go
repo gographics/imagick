@@ -13,78 +13,36 @@ import (
 type FilterType int
 
 const (
-	UndefinedFilter     FilterType = C.UndefinedFilter
-	PointFilter         FilterType = C.PointFilter
-	BoxFilter           FilterType = C.BoxFilter
-	TriangleFilter      FilterType = C.TriangleFilter
-	HermiteFilter       FilterType = C.HermiteFilter
-	HanningFilter       FilterType = C.HanningFilter
-	HammingFilter       FilterType = C.HammingFilter
-	BlackmanFilter      FilterType = C.BlackmanFilter
-	GaussianFilter      FilterType = C.GaussianFilter
-	QuadraticFilter     FilterType = C.QuadraticFilter
-	CubicFilter         FilterType = C.CubicFilter
-	CatromFilter        FilterType = C.CatromFilter
-	MitchellFilter      FilterType = C.MitchellFilter
-	JincFilter          FilterType = C.JincFilter
-	SincFilter          FilterType = C.SincFilter
-	SincFastFilter      FilterType = C.SincFastFilter
-	KaiserFilter        FilterType = C.KaiserFilter
-	WelshFilter         FilterType = C.WelshFilter
-	ParzenFilter        FilterType = C.ParzenFilter
-	BohmanFilter        FilterType = C.BohmanFilter
-	BartlettFilter      FilterType = C.BartlettFilter
-	LagrangeFilter      FilterType = C.LagrangeFilter
-	LanczosFilter       FilterType = C.LanczosFilter
-	LanczosSharpFilter  FilterType = C.LanczosSharpFilter
-	Lanczos2Filter      FilterType = C.Lanczos2Filter
-	Lanczos2SharpFilter FilterType = C.Lanczos2SharpFilter
-	RobidouxFilter      FilterType = C.RobidouxFilter
-	RobidouxSharpFilter FilterType = C.RobidouxSharpFilter
-	CosineFilter        FilterType = C.CosineFilter
-	SplineFilter        FilterType = C.SplineFilter
-	LanczosRadiusFilter FilterType = C.LanczosRadiusFilter
-	SentinelFilter      FilterType = C.SentinelFilter
+	FILTER_UNDEFINED      FilterType = C.UndefinedFilter
+	FILTER_POINT          FilterType = C.PointFilter
+	FILTER_BOX            FilterType = C.BoxFilter
+	FILTER_TRIANGLE       FilterType = C.TriangleFilter
+	FILTER_HERMITE        FilterType = C.HermiteFilter
+	FILTER_HANNING        FilterType = C.HanningFilter
+	FILTER_HAMMING        FilterType = C.HammingFilter
+	FILTER_BLACKMAN       FilterType = C.BlackmanFilter
+	FILTER_GAUSSIAN       FilterType = C.GaussianFilter
+	FILTER_QUADRATIC      FilterType = C.QuadraticFilter
+	FILTER_CUBIC          FilterType = C.CubicFilter
+	FILTER_CATROM         FilterType = C.CatromFilter
+	FILTER_MITCHELL       FilterType = C.MitchellFilter
+	FILTER_JINC           FilterType = C.JincFilter
+	FILTER_SINC           FilterType = C.SincFilter
+	FILTER_SINC_FAST      FilterType = C.SincFastFilter
+	FILTER_KAISER         FilterType = C.KaiserFilter
+	FILTER_WELSH          FilterType = C.WelshFilter
+	FILTER_PARZEN         FilterType = C.ParzenFilter
+	FILTER_BOHMAN         FilterType = C.BohmanFilter
+	FILTER_BARTLETT       FilterType = C.BartlettFilter
+	FILTER_LAGRANGE       FilterType = C.LagrangeFilter
+	FILTER_LANCZOS        FilterType = C.LanczosFilter
+	FILTER_LANCZOS_SHARP  FilterType = C.LanczosSharpFilter
+	FILTER_LANCZOS2       FilterType = C.Lanczos2Filter
+	FILTER_LANCZOS2_SHARP FilterType = C.Lanczos2SharpFilter
+	FILTER_ROBIDOUX       FilterType = C.RobidouxFilter
+	FILTER_ROBIDOUX_SHARP FilterType = C.RobidouxSharpFilter
+	FILTER_COSINE         FilterType = C.CosineFilter
+	FILTER_SPLINE         FilterType = C.SplineFilter
+	FILTER_LANCZOS_RADIUS FilterType = C.LanczosRadiusFilter
+	FILTER_SENTINEL       FilterType = C.SentinelFilter
 )
-
-var filterTypeStrings = map[FilterType]string{
-	UndefinedFilter:     "UndefinedFilter",
-	PointFilter:         "PointFilter",
-	BoxFilter:           "BoxFilter",
-	TriangleFilter:      "TriangleFilter",
-	HermiteFilter:       "HermiteFilter",
-	HanningFilter:       "HanningFilter",
-	HammingFilter:       "HammingFilter",
-	BlackmanFilter:      "BlackmanFilter",
-	GaussianFilter:      "GaussianFilter",
-	QuadraticFilter:     "QuadraticFilter",
-	CubicFilter:         "CubicFilter",
-	CatromFilter:        "CatromFilter",
-	MitchellFilter:      "MitchellFilter",
-	JincFilter:          "JincFilter",
-	SincFilter:          "SincFilter",
-	SincFastFilter:      "SincFastFilter",
-	KaiserFilter:        "KaiserFilter",
-	WelshFilter:         "WelshFilter",
-	ParzenFilter:        "ParzenFilter",
-	BohmanFilter:        "BohmanFilter",
-	BartlettFilter:      "BartlettFilter",
-	LagrangeFilter:      "LagrangeFilter",
-	LanczosFilter:       "LanczosFilter",
-	LanczosSharpFilter:  "LanczosSharpFilter",
-	Lanczos2Filter:      "Lanczos2Filter",
-	Lanczos2SharpFilter: "Lanczos2SharpFilter",
-	RobidouxFilter:      "RobidouxFilter",
-	RobidouxSharpFilter: "RobidouxSharpFilter",
-	CosineFilter:        "CosineFilter",
-	SplineFilter:        "SplineFilter",
-	LanczosRadiusFilter: "LanczosRadiusFilter",
-	SentinelFilter:      "SentinelFilter",
-}
-
-func (cst *FilterType) String() string {
-	if v, ok := filterTypeStrings[FilterType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownFilterType[%d]", *cst)
-}

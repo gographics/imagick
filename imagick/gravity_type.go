@@ -13,37 +13,16 @@ import (
 type GravityType int
 
 const (
-	UndefinedGravity GravityType = C.UndefinedGravity
-	ForgetGravity    GravityType = C.ForgetGravity
-	NorthWestGravity GravityType = C.NorthWestGravity
-	NorthGravity     GravityType = C.NorthGravity
-	NorthEastGravity GravityType = C.NorthEastGravity
-	WestGravity      GravityType = C.WestGravity
-	CenterGravity    GravityType = C.CenterGravity
-	EastGravity      GravityType = C.EastGravity
-	SouthWestGravity GravityType = C.SouthWestGravity
-	SouthGravity     GravityType = C.SouthGravity
-	SouthEastGravity GravityType = C.SouthEastGravity
-	StaticGravity    GravityType = C.StaticGravity
+	GRAVITY_UNDEFINED  GravityType = C.UndefinedGravity
+	GRAVITY_FORGET     GravityType = C.ForgetGravity
+	GRAVITY_NORTH_WEST GravityType = C.NorthWestGravity
+	GRAVITY_NORTH      GravityType = C.NorthGravity
+	GRAVITY_NORTH_EAST GravityType = C.NorthEastGravity
+	GRAVITY_WEST       GravityType = C.WestGravity
+	GRAVITY_CENTER     GravityType = C.CenterGravity
+	GRAVITY_EAST       GravityType = C.EastGravity
+	GRAVITY_SOUTH_WEST GravityType = C.SouthWestGravity
+	GRAVITY_SOUTH      GravityType = C.SouthGravity
+	GRAVITY_SOUTH_EAST GravityType = C.SouthEastGravity
+	GRAVITY_STATIC     GravityType = C.StaticGravity
 )
-
-var gravityTypeStrings = map[GravityType]string{
-	UndefinedGravity: "UndefinedGravity",
-	NorthWestGravity: "NorthWestGravity",
-	NorthGravity:     "NorthGravity",
-	NorthEastGravity: "NorthEastGravity",
-	WestGravity:      "WestGravity",
-	CenterGravity:    "CenterGravity",
-	EastGravity:      "EastGravity",
-	SouthWestGravity: "SouthWestGravity",
-	SouthGravity:     "SouthGravity",
-	SouthEastGravity: "SouthEastGravity",
-	StaticGravity:    "StaticGravity",
-}
-
-func (cst *GravityType) String() string {
-	if v, ok := gravityTypeStrings[GravityType(*cst)]; ok {
-		return v
-	}
-	return fmt.Sprintf("UnknownGravityType[%d]", *cst)
-}
