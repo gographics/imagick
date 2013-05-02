@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gobinds/imagick/imagick"
+	"os"
 )
 
 func main() {
@@ -40,8 +41,7 @@ func main() {
 		panic(err)
 	}
 
-	// Write the new image
-	err = mw.WriteImage("logo_resize.jpg")
+	mw.DisplayImage(os.Getenv("DYSPLAY"))
 	if err != nil {
 		panic(err)
 	}
