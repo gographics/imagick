@@ -6,10 +6,6 @@ package imagick
 */
 import "C"
 
-import (
-	"fmt"
-)
-
 type EvaluateOperator int
 
 const (

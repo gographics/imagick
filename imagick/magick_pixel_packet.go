@@ -6,11 +6,6 @@ package imagick
 */
 import "C"
 
-import (
-//"fmt"
-//"unsafe"
-)
-
 type MagickPixelPacket struct {
 	mpp *C.MagickPixelPacket
 }

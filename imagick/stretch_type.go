@@ -6,11 +6,7 @@ package imagick
 */
 import "C"
 
-import (
-	"fmt"
-)
-
-type StatisticType int
+type StretchType int
 
 const (
 	STRETCH_UNDEFINED       StretchType = C.UndefinedStretch

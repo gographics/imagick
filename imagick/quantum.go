@@ -6,10 +6,5 @@ package imagick
 */
 import "C"
 
-import (
-//"fmt"
-//"unsafe"
-)
-
 // TODO how to map the different types of Quantum?
 type Quantum uint16
