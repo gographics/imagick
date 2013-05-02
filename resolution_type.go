@@ -13,9 +13,9 @@ import (
 type ResolutionType int
 
 const (
-	UndefinedResolution ResolutionType = iota
-	PixelsPerInchResolution
-	PixelsPerCentimeterResolution
+	UndefinedResolution           ResolutionType = C.UndefinedResolution
+	PixelsPerInchResolution       ResolutionType = C.PixelsPerInchResolution
+	PixelsPerCentimeterResolution ResolutionType = C.PixelsPerCentimeterResolution
 )
 
 var resolutionTypeStrings = map[ResolutionType]string{

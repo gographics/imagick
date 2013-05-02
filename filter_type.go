@@ -13,38 +13,38 @@ import (
 type FilterType int
 
 const (
-	UndefinedFilter FilterType = iota
-	PointFilter
-	BoxFilter
-	TriangleFilter
-	HermiteFilter
-	HanningFilter
-	HammingFilter
-	BlackmanFilter
-	GaussianFilter
-	QuadraticFilter
-	CubicFilter
-	CatromFilter
-	MitchellFilter
-	JincFilter
-	SincFilter
-	SincFastFilter
-	KaiserFilter
-	WelshFilter
-	ParzenFilter
-	BohmanFilter
-	BartlettFilter
-	LagrangeFilter
-	LanczosFilter
-	LanczosSharpFilter
-	Lanczos2Filter
-	Lanczos2SharpFilter
-	RobidouxFilter
-	RobidouxSharpFilter
-	CosineFilter
-	SplineFilter
-	LanczosRadiusFilter
-	SentinelFilter // a count of all the filters, not a real filter
+	UndefinedFilter     FilterType = C.UndefinedFilter
+	PointFilter         FilterType = C.PointFilter
+	BoxFilter           FilterType = C.BoxFilter
+	TriangleFilter      FilterType = C.TriangleFilter
+	HermiteFilter       FilterType = C.HermiteFilter
+	HanningFilter       FilterType = C.HanningFilter
+	HammingFilter       FilterType = C.HammingFilter
+	BlackmanFilter      FilterType = C.BlackmanFilter
+	GaussianFilter      FilterType = C.GaussianFilter
+	QuadraticFilter     FilterType = C.QuadraticFilter
+	CubicFilter         FilterType = C.CubicFilter
+	CatromFilter        FilterType = C.CatromFilter
+	MitchellFilter      FilterType = C.MitchellFilter
+	JincFilter          FilterType = C.JincFilter
+	SincFilter          FilterType = C.SincFilter
+	SincFastFilter      FilterType = C.SincFastFilter
+	KaiserFilter        FilterType = C.KaiserFilter
+	WelshFilter         FilterType = C.WelshFilter
+	ParzenFilter        FilterType = C.ParzenFilter
+	BohmanFilter        FilterType = C.BohmanFilter
+	BartlettFilter      FilterType = C.BartlettFilter
+	LagrangeFilter      FilterType = C.LagrangeFilter
+	LanczosFilter       FilterType = C.LanczosFilter
+	LanczosSharpFilter  FilterType = C.LanczosSharpFilter
+	Lanczos2Filter      FilterType = C.Lanczos2Filter
+	Lanczos2SharpFilter FilterType = C.Lanczos2SharpFilter
+	RobidouxFilter      FilterType = C.RobidouxFilter
+	RobidouxSharpFilter FilterType = C.RobidouxSharpFilter
+	CosineFilter        FilterType = C.CosineFilter
+	SplineFilter        FilterType = C.SplineFilter
+	LanczosRadiusFilter FilterType = C.LanczosRadiusFilter
+	SentinelFilter      FilterType = C.SentinelFilter
 )
 
 var filterTypeStrings = map[FilterType]string{

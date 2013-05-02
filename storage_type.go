@@ -13,14 +13,14 @@ import (
 type StorageType int
 
 const (
-	UndefinedPixel StorageType = iota
-	CharPixel
-	DoublePixel
-	FloatPixel
-	IntegerPixel
-	LongPixel
-	QuantumPixel
-	ShortPixel
+	UndefinedPixel StorageType = C.UndefinedPixel
+	CharPixel      StorageType = C.CharPixel
+	DoublePixel    StorageType = C.DoublePixel
+	FloatPixel     StorageType = C.FloatPixel
+	IntegerPixel   StorageType = C.IntegerPixel
+	LongPixel      StorageType = C.LongPixel
+	QuantumPixel   StorageType = C.QuantumPixel
+	ShortPixel     StorageType = C.ShortPixel
 )
 
 var storageTypeStrings = map[StorageType]string{

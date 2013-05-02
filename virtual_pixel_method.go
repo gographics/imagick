@@ -13,24 +13,24 @@ import (
 type VirtualPixelMethod int
 
 const (
-	UndefinedVirtualPixelMethod VirtualPixelMethod = iota
-	BackgroundVirtualPixelMethod
-	ConstantVirtualPixelMethod // deprecated
-	DitherVirtualPixelMethod
-	EdgeVirtualPixelMethod
-	MirrorVirtualPixelMethod
-	RandomVirtualPixelMethod
-	TileVirtualPixelMethod
-	TransparentVirtualPixelMethod
-	MaskVirtualPixelMethod
-	BlackVirtualPixelMethod
-	GrayVirtualPixelMethod
-	WhiteVirtualPixelMethod
-	HorizontalTileVirtualPixelMethod
-	VerticalTileVirtualPixelMethod
-	HorizontalTileEdgeVirtualPixelMethod
-	VerticalTileEdgeVirtualPixelMethod
-	CheckerTileVirtualPixelMethod
+	UndefinedVirtualPixelMethod          VirtualPixelMethod = C.UndefinedVirtualPixelMethod
+	BackgroundVirtualPixelMethod         VirtualPixelMethod = C.BackgroundVirtualPixelMethod
+	ConstantVirtualPixelMethod           VirtualPixelMethod = C.ConstantVirtualPixelMethod
+	DitherVirtualPixelMethod             VirtualPixelMethod = C.DitherVirtualPixelMethod
+	EdgeVirtualPixelMethod               VirtualPixelMethod = C.EdgeVirtualPixelMethod
+	MirrorVirtualPixelMethod             VirtualPixelMethod = C.MirrorVirtualPixelMethod
+	RandomVirtualPixelMethod             VirtualPixelMethod = C.RandomVirtualPixelMethod
+	TileVirtualPixelMethod               VirtualPixelMethod = C.TileVirtualPixelMethod
+	TransparentVirtualPixelMethod        VirtualPixelMethod = C.TransparentVirtualPixelMethod
+	MaskVirtualPixelMethod               VirtualPixelMethod = C.MaskVirtualPixelMethod
+	BlackVirtualPixelMethod              VirtualPixelMethod = C.BlackVirtualPixelMethod
+	GrayVirtualPixelMethod               VirtualPixelMethod = C.GrayVirtualPixelMethod
+	WhiteVirtualPixelMethod              VirtualPixelMethod = C.WhiteVirtualPixelMethod
+	HorizontalTileVirtualPixelMethod     VirtualPixelMethod = C.HorizontalTileVirtualPixelMethod
+	VerticalTileVirtualPixelMethod       VirtualPixelMethod = C.VerticalTileVirtualPixelMethod
+	HorizontalTileEdgeVirtualPixelMethod VirtualPixelMethod = C.HorizontalTileEdgeVirtualPixelMethod
+	VerticalTileEdgeVirtualPixelMethod   VirtualPixelMethod = C.VerticalTileEdgeVirtualPixelMethod
+	CheckerTileVirtualPixelMethod        VirtualPixelMethod = C.CheckerTileVirtualPixelMethod
 )
 
 var virtualPixelMethodStrings = map[VirtualPixelMethod]string{

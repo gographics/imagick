@@ -13,15 +13,15 @@ import (
 type StatisticType int
 
 const (
-	UndefinedStatistic StatisticType = iota
-	GradientStatistic
-	MaximumStatistic
-	MeanStatistic
-	MedianStatistic
-	MinimumStatistic
-	ModeStatistic
-	NonpeakStatistic
-	StandardDeviationStatistic
+	UndefinedStatistic         StatisticType = C.UndefinedStatistic
+	GradientStatistic          StatisticType = C.GradientStatistic
+	MaximumStatistic           StatisticType = C.MaximumStatistic
+	MeanStatistic              StatisticType = C.MeanStatistic
+	MedianStatistic            StatisticType = C.MedianStatistic
+	MinimumStatistic           StatisticType = C.MinimumStatistic
+	ModeStatistic              StatisticType = C.ModeStatistic
+	NonpeakStatistic           StatisticType = C.NonpeakStatistic
+	StandardDeviationStatistic StatisticType = C.StandardDeviationStatistic
 )
 
 var statisticTypeStrings = map[StatisticType]string{

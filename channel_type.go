@@ -13,25 +13,25 @@ import (
 type ChannelType int
 
 const (
-	UndefinedChannel  ChannelType = iota
-	RedChannel                    = 0x0001
-	GrayChannel                   = 0x0001
-	CyanChannel                   = 0x0001
-	GreenChannel                  = 0x0002
-	MagentaChannel                = 0x0002
-	BlueChannel                   = 0x0004
-	YellowChannel                 = 0x0004
-	AlphaChannel                  = 0x0008
-	OpacityChannel                = 0x0008
-	BlackChannel                  = 0x0020
-	IndexChannel                  = 0x0020
-	CompositeChannels             = 0x002F
-	AllChannels                   = 0x7ffffff
-	TrueAlphaChannel              = 0x0040
-	RGBChannels                   = 0x0080
-	GrayChannels                  = 0x0080
-	SyncChannels                  = 0x0100
-	DefaultChannels               = ((AllChannels | SyncChannels) &^ OpacityChannel)
+	UndefinedChannel  ChannelType = C.UndefinedChannel
+	RedChannel        ChannelType = C.RedChannel
+	GrayChannel       ChannelType = C.GrayChannel
+	CyanChannel       ChannelType = C.CyanChannel
+	GreenChannel      ChannelType = C.GreenChannel
+	MagentaChannel    ChannelType = C.MagentaChannel
+	BlueChannel       ChannelType = C.BlueChannel
+	YellowChannel     ChannelType = C.YellowChannel
+	AlphaChannel      ChannelType = C.AlphaChannel
+	OpacityChannel    ChannelType = C.OpacityChannel
+	BlackChannel      ChannelType = C.BlackChannel
+	IndexChannel      ChannelType = C.IndexChannel
+	CompositeChannels ChannelType = C.CompositeChannels
+	AllChannels       ChannelType = C.AllChannels
+	TrueAlphaChannel  ChannelType = C.TrueAlphaChannel
+	RGBChannels       ChannelType = C.RGBChannels
+	GrayChannels      ChannelType = C.GrayChannels
+	SyncChannels      ChannelType = C.SyncChannels
+	DefaultChannels   ChannelType = C.DefaultChannels
 )
 
 var channelTypeStrings = map[ChannelType]string{

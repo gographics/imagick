@@ -13,38 +13,38 @@ import (
 type EvaluateOperator int
 
 const (
-	UndefinedEvaluateOperator EvaluateOperator = iota
-	AddEvaluateOperator
-	AndEvaluateOperator
-	DivideEvaluateOperator
-	LeftShiftEvaluateOperator
-	MaxEvaluateOperator
-	MinEvaluateOperator
-	MultiplyEvaluateOperator
-	OrEvaluateOperator
-	RightShiftEvaluateOperator
-	SetEvaluateOperator
-	SubtractEvaluateOperator
-	XorEvaluateOperator
-	PowEvaluateOperator
-	LogEvaluateOperator
-	ThresholdEvaluateOperator
-	ThresholdBlackEvaluateOperator
-	ThresholdWhiteEvaluateOperator
-	GaussianNoiseEvaluateOperator
-	ImpulseNoiseEvaluateOperator
-	LaplacianNoiseEvaluateOperator
-	MultiplicativeNoiseEvaluateOperator
-	PoissonNoiseEvaluateOperator
-	UniformNoiseEvaluateOperator
-	CosineEvaluateOperator
-	SineEvaluateOperator
-	AddModulusEvaluateOperator
-	MeanEvaluateOperator
-	AbsEvaluateOperator
-	ExponentialEvaluateOperator
-	MedianEvaluateOperator
-	SumEvaluateOperator
+	UndefinedEvaluateOperator           EvaluateOperator = C.UndefinedEvaluateOperator
+	AddEvaluateOperator                 EvaluateOperator = C.AddEvaluateOperator
+	AndEvaluateOperator                 EvaluateOperator = C.AndEvaluateOperator
+	DivideEvaluateOperator              EvaluateOperator = C.DivideEvaluateOperator
+	LeftShiftEvaluateOperator           EvaluateOperator = C.LeftShiftEvaluateOperator
+	MaxEvaluateOperator                 EvaluateOperator = C.MaxEvaluateOperator
+	MinEvaluateOperator                 EvaluateOperator = C.MinEvaluateOperator
+	MultiplyEvaluateOperator            EvaluateOperator = C.MultiplyEvaluateOperator
+	OrEvaluateOperator                  EvaluateOperator = C.OrEvaluateOperator
+	RightShiftEvaluateOperator          EvaluateOperator = C.RightShiftEvaluateOperator
+	SetEvaluateOperator                 EvaluateOperator = C.SetEvaluateOperator
+	SubtractEvaluateOperator            EvaluateOperator = C.SubtractEvaluateOperator
+	XorEvaluateOperator                 EvaluateOperator = C.XorEvaluateOperator
+	PowEvaluateOperator                 EvaluateOperator = C.PowEvaluateOperator
+	LogEvaluateOperator                 EvaluateOperator = C.LogEvaluateOperator
+	ThresholdEvaluateOperator           EvaluateOperator = C.ThresholdEvaluateOperator
+	ThresholdBlackEvaluateOperator      EvaluateOperator = C.ThresholdBlackEvaluateOperator
+	ThresholdWhiteEvaluateOperator      EvaluateOperator = C.ThresholdWhiteEvaluateOperator
+	GaussianNoiseEvaluateOperator       EvaluateOperator = C.GaussianNoiseEvaluateOperator
+	ImpulseNoiseEvaluateOperator        EvaluateOperator = C.ImpulseNoiseEvaluateOperator
+	LaplacianNoiseEvaluateOperator      EvaluateOperator = C.LaplacianNoiseEvaluateOperator
+	MultiplicativeNoiseEvaluateOperator EvaluateOperator = C.MultiplicativeNoiseEvaluateOperator
+	PoissonNoiseEvaluateOperator        EvaluateOperator = C.PoissonNoiseEvaluateOperator
+	UniformNoiseEvaluateOperator        EvaluateOperator = C.UniformNoiseEvaluateOperator
+	CosineEvaluateOperator              EvaluateOperator = C.CosineEvaluateOperator
+	SineEvaluateOperator                EvaluateOperator = C.SineEvaluateOperator
+	AddModulusEvaluateOperator          EvaluateOperator = C.AddModulusEvaluateOperator
+	MeanEvaluateOperator                EvaluateOperator = C.MeanEvaluateOperator
+	AbsEvaluateOperator                 EvaluateOperator = C.AbsEvaluateOperator
+	ExponentialEvaluateOperator         EvaluateOperator = C.ExponentialEvaluateOperator
+	MedianEvaluateOperator              EvaluateOperator = C.MedianEvaluateOperator
+	SumEvaluateOperator                 EvaluateOperator = C.SumEvaluateOperator
 )
 
 var magickEvaluateOperatorStrings = map[EvaluateOperator]string{

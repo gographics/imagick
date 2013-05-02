@@ -13,26 +13,26 @@ import (
 type DistortImageMethod int
 
 const (
-	UndefinedDistortion DistortImageMethod = iota
-	AffineDistortion
-	AffineProjectionDistortion
-	ScaleRotateTranslateDistortion
-	PerspectiveDistortion
-	PerspectiveProjectionDistortion
-	BilinearForwardDistortion
-	BilinearDistortion DistortImageMethod = iota - 1
-	BilinearReverseDistortion
-	PolynomialDistortion
-	ArcDistortion
-	PolarDistortion
-	DePolarDistortion
-	Cylinder2PlaneDistortion
-	Plane2CylinderDistortion
-	BarrelDistortion
-	BarrelInverseDistortion
-	ShepardsDistortion
-	ResizeDistortion
-	SentinelDistortion
+	UndefinedDistortion             DistortImageMethod = C.UndefinedDistortion
+	AffineDistortion                DistortImageMethod = C.AffineDistortion
+	AffineProjectionDistortion      DistortImageMethod = C.AffineProjectionDistortion
+	ScaleRotateTranslateDistortion  DistortImageMethod = C.ScaleRotateTranslateDistortion
+	PerspectiveDistortion           DistortImageMethod = C.PerspectiveDistortion
+	PerspectiveProjectionDistortion DistortImageMethod = C.PerspectiveProjectionDistortion
+	BilinearForwardDistortion       DistortImageMethod = C.BilinearForwardDistortion
+	BilinearDistortion              DistortImageMethod = C.BilinearDistortion
+	BilinearReverseDistortion       DistortImageMethod = C.BilinearReverseDistortion
+	PolynomialDistortion            DistortImageMethod = C.PolynomialDistortion
+	ArcDistortion                   DistortImageMethod = C.ArcDistortion
+	PolarDistortion                 DistortImageMethod = C.PolarDistortion
+	DePolarDistortion               DistortImageMethod = C.DePolarDistortion
+	Cylinder2PlaneDistortion        DistortImageMethod = C.Cylinder2PlaneDistortion
+	Plane2CylinderDistortion        DistortImageMethod = C.Plane2CylinderDistortion
+	BarrelDistortion                DistortImageMethod = C.BarrelDistortion
+	BarrelInverseDistortion         DistortImageMethod = C.BarrelInverseDistortion
+	ShepardsDistortion              DistortImageMethod = C.ShepardsDistortion
+	ResizeDistortion                DistortImageMethod = C.ResizeDistortion
+	SentinelDistortion              DistortImageMethod = C.SentinelDistortion
 )
 
 var distortImageMethodStrings = map[DistortImageMethod]string{

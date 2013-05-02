@@ -13,15 +13,15 @@ import (
 type OrientationType int
 
 const (
-	UndefinedOrientation OrientationType = iota
-	TopLeftOrientation
-	TopRightOrientation
-	BottomRightOrientation
-	BottomLeftOrientation
-	LeftTopOrientation
-	RightTopOrientation
-	RightBottomOrientation
-	LeftBottomOrientation
+	UndefinedOrientation   OrientationType = C.UndefinedOrientation
+	TopLeftOrientation     OrientationType = C.TopLeftOrientation
+	TopRightOrientation    OrientationType = C.TopRightOrientation
+	BottomRightOrientation OrientationType = C.BottomRightOrientation
+	BottomLeftOrientation  OrientationType = C.BottomLeftOrientation
+	LeftTopOrientation     OrientationType = C.LeftTopOrientation
+	RightTopOrientation    OrientationType = C.RightTopOrientation
+	RightBottomOrientation OrientationType = C.RightBottomOrientation
+	LeftBottomOrientation  OrientationType = C.LeftBottomOrientation
 )
 
 var orientationTypeStrings = map[OrientationType]string{

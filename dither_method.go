@@ -13,10 +13,10 @@ import (
 type DitherMethod int
 
 const (
-	UndefinedDitherMethod DitherMethod = iota
-	NoDitherMethod
-	RiemersmaDitherMethod
-	FloydSteinbergDitherMethod
+	UndefinedDitherMethod      DitherMethod = C.UndefinedDitherMethod
+	NoDitherMethod             DitherMethod = C.NoDitherMethod
+	RiemersmaDitherMethod      DitherMethod = C.RiemersmaDitherMethod
+	FloydSteinbergDitherMethod DitherMethod = C.FloydSteinbergDitherMethod
 )
 
 var ditherMethodStrings = map[DitherMethod]string{

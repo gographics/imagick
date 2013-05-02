@@ -13,11 +13,11 @@ import (
 type MagickFunction int
 
 const (
-	UndefinedFunction MagickFunction = iota
-	PolynomialFunction
-	SinusoidFunction
-	ArcsinFunction
-	ArctanFunction
+	UndefinedFunction  MagickFunction = C.UndefinedFunction
+	PolynomialFunction MagickFunction = C.PolynomialFunction
+	SinusoidFunction   MagickFunction = C.SinusoidFunction
+	ArcsinFunction     MagickFunction = C.ArcsinFunction
+	ArctanFunction     MagickFunction = C.ArctanFunction
 )
 
 var magickFunctionStrings = map[MagickFunction]string{

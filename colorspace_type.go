@@ -13,29 +13,29 @@ import (
 type ColorspaceType int
 
 const (
-	UndefinedColorspace ColorspaceType = iota
-	RGBColorspace
-	GRAYColorspace
-	TransparentColorspace
-	OHTAColorspace
-	LabColorspace
-	XYZColorspace
-	YCbCrColorspace
-	YCCColorspace
-	YIQColorspace
-	YPbPrColorspace
-	YUVColorspace
-	CMYKColorspace
-	SRGBColorspace
-	HSBColorspace
-	HSLColorspace
-	HWBColorspace
-	Rec601LumaColorspace
-	Rec601YCbCrColorspace
-	Rec709LumaColorspace
-	Rec709YCbCrColorspace
-	LogColorspace
-	CMYColorspace
+	UndefinedColorspace   ColorspaceType = C.UndefinedColorspace
+	RGBColorspace         ColorspaceType = C.RGBColorspace
+	GRAYColorspace        ColorspaceType = C.GRAYColorspace
+	TransparentColorspace ColorspaceType = C.TransparentColorspace
+	OHTAColorspace        ColorspaceType = C.OHTAColorspace
+	LabColorspace         ColorspaceType = C.LabColorspace
+	XYZColorspace         ColorspaceType = C.XYZColorspace
+	YCbCrColorspace       ColorspaceType = C.YCbCrColorspace
+	YCCColorspace         ColorspaceType = C.YCCColorspace
+	YIQColorspace         ColorspaceType = C.YIQColorspace
+	YPbPrColorspace       ColorspaceType = C.YPbPrColorspace
+	YUVColorspace         ColorspaceType = C.YUVColorspace
+	CMYKColorspace        ColorspaceType = C.CMYKColorspace
+	SRGBColorspace        ColorspaceType = C.sRGBColorspace
+	HSBColorspace         ColorspaceType = C.HSBColorspace
+	HSLColorspace         ColorspaceType = C.HSLColorspace
+	HWBColorspace         ColorspaceType = C.HWBColorspace
+	Rec601LumaColorspace  ColorspaceType = C.Rec601LumaColorspace
+	Rec601YCbCrColorspace ColorspaceType = C.Rec601YCbCrColorspace
+	Rec709LumaColorspace  ColorspaceType = C.Rec709LumaColorspace
+	Rec709YCbCrColorspace ColorspaceType = C.Rec709YCbCrColorspace
+	LogColorspace         ColorspaceType = C.LogColorspace
+	CMYColorspace         ColorspaceType = C.CMYColorspace
 )
 
 var colorspaceTypeStrings = map[ColorspaceType]string{

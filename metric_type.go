@@ -13,16 +13,16 @@ import (
 type MetricType int
 
 const (
-	UndefinedMetric MetricType = iota
-	AbsoluteErrorMetric
-	MeanAbsoluteErrorMetric
-	MeanErrorPerPixelMetric
-	MeanSquaredErrorMetric
-	PeakAbsoluteErrorMetric
-	PeakSignalToNoiseRatioMetric
-	RootMeanSquaredErrorMetric
-	NormalizedCrossCorrelationErrorMetric
-	FuzzErrorMetric
+	UndefinedMetric                       MetricType = C.UndefinedMetric
+	AbsoluteErrorMetric                   MetricType = C.AbsoluteErrorMetric
+	MeanAbsoluteErrorMetric               MetricType = C.MeanAbsoluteErrorMetric
+	MeanErrorPerPixelMetric               MetricType = C.MeanErrorPerPixelMetric
+	MeanSquaredErrorMetric                MetricType = C.MeanSquaredErrorMetric
+	PeakAbsoluteErrorMetric               MetricType = C.PeakAbsoluteErrorMetric
+	PeakSignalToNoiseRatioMetric          MetricType = C.PeakSignalToNoiseRatioMetric
+	RootMeanSquaredErrorMetric            MetricType = C.RootMeanSquaredErrorMetric
+	NormalizedCrossCorrelationErrorMetric MetricType = C.NormalizedCrossCorrelationErrorMetric
+	FuzzErrorMetric                       MetricType = C.FuzzErrorMetric
 )
 
 var metricTypeStrings = map[MetricType]string{

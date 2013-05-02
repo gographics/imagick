@@ -13,18 +13,18 @@ import (
 type ImageType int
 
 const (
-	UndefinedType ImageType = iota
-	BilevelType
-	GrayscaleType
-	GrayscaleMatteType
-	PaletteType
-	PaletteMatteType
-	TrueColorType
-	TrueColorMatteType
-	ColorSeparationType
-	ColorSeparationMatteType
-	OptimizeType
-	PaletteBilevelMatteType
+	UndefinedType            ImageType = C.UndefinedType
+	BilevelType              ImageType = C.BilevelType
+	GrayscaleType            ImageType = C.GrayscaleType
+	GrayscaleMatteType       ImageType = C.GrayscaleMatteType
+	PaletteType              ImageType = C.PaletteType
+	PaletteMatteType         ImageType = C.PaletteMatteType
+	TrueColorType            ImageType = C.TrueColorType
+	TrueColorMatteType       ImageType = C.TrueColorMatteType
+	ColorSeparationType      ImageType = C.ColorSeparationType
+	ColorSeparationMatteType ImageType = C.ColorSeparationMatteType
+	OptimizeType             ImageType = C.OptimizeType
+	PaletteBilevelMatteType  ImageType = C.PaletteBilevelMatteType
 )
 
 var imageTypeStrings = map[ImageType]string{

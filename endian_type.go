@@ -13,9 +13,9 @@ import (
 type EndianType int
 
 const (
-	UndefinedEndian EndianType = iota
-	LSBEndian
-	MSBEndian
+	UndefinedEndian EndianType = C.UndefinedEndian
+	LSBEndian       EndianType = C.LSBEndian
+	MSBEndian       EndianType = C.MSBEndian
 )
 
 var endianTypeStrings = map[EndianType]string{

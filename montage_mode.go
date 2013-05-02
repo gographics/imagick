@@ -13,10 +13,10 @@ import (
 type MontageMode int
 
 const (
-	UndefinedMode MontageMode = iota
-	FrameMode
-	UnframeMode
-	ConcatenateMode
+	UndefinedMode   MontageMode = C.UndefinedMode
+	FrameMode       MontageMode = C.FrameMode
+	UnframeMode     MontageMode = C.UnframeMode
+	ConcatenateMode MontageMode = C.ConcatenateMode
 )
 
 var montageModeStrings = map[MontageMode]string{

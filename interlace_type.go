@@ -13,14 +13,14 @@ import (
 type InterlaceType int
 
 const (
-	UndefinedInterlace InterlaceType = iota
-	NoInterlace
-	LineInterlace
-	PlaneInterlace
-	PartitionInterlace
-	GIFInterlace
-	JPEGInterlace
-	PNGInterlace
+	UndefinedInterlace InterlaceType = C.UndefinedInterlace
+	NoInterlace        InterlaceType = C.NoInterlace
+	LineInterlace      InterlaceType = C.LineInterlace
+	PlaneInterlace     InterlaceType = C.PlaneInterlace
+	PartitionInterlace InterlaceType = C.PartitionInterlace
+	GIFInterlace       InterlaceType = C.GIFInterlace
+	JPEGInterlace      InterlaceType = C.JPEGInterlace
+	PNGInterlace       InterlaceType = C.PNGInterlace
 )
 
 var interlaceTypeStrings = map[InterlaceType]string{

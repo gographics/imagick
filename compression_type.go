@@ -13,28 +13,28 @@ import (
 type CompressionType int
 
 const (
-	UndefinedCompression CompressionType = iota
-	NoCompression
-	BZipCompression
-	DXT1Compression
-	DXT3Compression
-	DXT5Compression
-	FaxCompression
-	Group4Compression
-	JPEGCompression
-	JPEG2000Compression
-	LosslessJPEGCompression
-	LZWCompression
-	RLECompression
-	ZipCompression
-	ZipSCompression
-	PizCompression
-	Pxr24Compression
-	B44Compression
-	B44ACompression
-	LZMACompression
-	JBIG1Compression
-	JBIG2Compression
+	UndefinedCompression    CompressionType = C.UndefinedCompression
+	NoCompression           CompressionType = C.NoCompression
+	BZipCompression         CompressionType = C.BZipCompression
+	DXT1Compression         CompressionType = C.DXT1Compression
+	DXT3Compression         CompressionType = C.DXT3Compression
+	DXT5Compression         CompressionType = C.DXT5Compression
+	FaxCompression          CompressionType = C.FaxCompression
+	Group4Compression       CompressionType = C.Group4Compression
+	JPEGCompression         CompressionType = C.JPEGCompression
+	JPEG2000Compression     CompressionType = C.JPEG2000Compression
+	LosslessJPEGCompression CompressionType = C.LosslessJPEGCompression
+	LZWCompression          CompressionType = C.LZWCompression
+	RLECompression          CompressionType = C.RLECompression
+	ZipCompression          CompressionType = C.ZipCompression
+	ZipSCompression         CompressionType = C.ZipSCompression
+	PizCompression          CompressionType = C.PizCompression
+	Pxr24Compression        CompressionType = C.Pxr24Compression
+	B44Compression          CompressionType = C.B44Compression
+	B44ACompression         CompressionType = C.B44ACompression
+	LZMACompression         CompressionType = C.LZMACompression
+	JBIG1Compression        CompressionType = C.JBIG1Compression
+	JBIG2Compression        CompressionType = C.JBIG2Compression
 )
 
 var compressionTypeStrings = map[CompressionType]string{

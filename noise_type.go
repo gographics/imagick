@@ -13,14 +13,14 @@ import (
 type NoiseType int
 
 const (
-	UndefinedNoise NoiseType = iota
-	UniformNoise
-	GaussianNoise
-	MultiplicativeGaussianNoise
-	ImpulseNoise
-	LaplacianNoise
-	PoissonNoise
-	RandomNoise
+	UndefinedNoise              NoiseType = C.UndefinedNoise
+	UniformNoise                NoiseType = C.UniformNoise
+	GaussianNoise               NoiseType = C.GaussianNoise
+	MultiplicativeGaussianNoise NoiseType = C.MultiplicativeGaussianNoise
+	ImpulseNoise                NoiseType = C.ImpulseNoise
+	LaplacianNoise              NoiseType = C.LaplacianNoise
+	PoissonNoise                NoiseType = C.PoissonNoise
+	RandomNoise                 NoiseType = C.RandomNoise
 )
 
 var noiseTypeStrings = map[NoiseType]string{

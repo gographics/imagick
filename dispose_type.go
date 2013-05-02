@@ -13,14 +13,11 @@ import (
 type DisposeType int
 
 const (
-	UnrecognizedDispose DisposeType = iota
-)
-
-const (
-	UndefinedDispose DisposeType = iota
-	NoneDispose
-	BackgroundDispose
-	PreviousDispose
+	UnrecognizedDispose DisposeType = C.UnrecognizedDispose
+	UndefinedDispose    DisposeType = C.UndefinedDispose
+	NoneDispose         DisposeType = C.NoneDispose
+	BackgroundDispose   DisposeType = C.BackgroundDispose
+	PreviousDispose     DisposeType = C.PreviousDispose
 )
 
 var disposeTypeStrings = map[DisposeType]string{

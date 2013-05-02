@@ -13,19 +13,19 @@ import (
 type AlphaChannelType int
 
 const (
-	UndefinedAlphaChannel AlphaChannelType = iota
-	ActivateAlphaChannel
-	BackgroundAlphaChannel
-	CopyAlphaChannel
-	DeactivateAlphaChannel
-	ExtractAlphaChannel
-	OpaqueAlphaChannel
-	ResetAlphaChannel // Deprecated
-	SetAlphaChannel
-	ShapeAlphaChannel
-	TransparentAlphaChannel
-	FlattenAlphaChannel
-	RemoveAlphaChannel
+	UndefinedAlphaChannel   AlphaChannelType = C.UndefinedAlphaChannel
+	ActivateAlphaChannel    AlphaChannelType = C.ActivateAlphaChannel
+	BackgroundAlphaChannel  AlphaChannelType = C.BackgroundAlphaChannel
+	CopyAlphaChannel        AlphaChannelType = C.CopyAlphaChannel
+	DeactivateAlphaChannel  AlphaChannelType = C.DeactivateAlphaChannel
+	ExtractAlphaChannel     AlphaChannelType = C.ExtractAlphaChannel
+	OpaqueAlphaChannel      AlphaChannelType = C.OpaqueAlphaChannel
+	ResetAlphaChannel       AlphaChannelType = C.ResetAlphaChannel
+	SetAlphaChannel         AlphaChannelType = C.SetAlphaChannel
+	ShapeAlphaChannel       AlphaChannelType = C.ShapeAlphaChannel
+	TransparentAlphaChannel AlphaChannelType = C.TransparentAlphaChannel
+	FlattenAlphaChannel     AlphaChannelType = C.FlattenAlphaChannel
+	RemoveAlphaChannel      AlphaChannelType = C.RemoveAlphaChannel
 )
 
 var alphaChannelTypeStrings = map[AlphaChannelType]string{

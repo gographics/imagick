@@ -13,11 +13,11 @@ import (
 type RenderingIntent int
 
 const (
-	UndefinedIntent RenderingIntent = iota
-	SaturationIntent
-	PerceptualIntent
-	AbsoluteIntent
-	RelativeIntent
+	UndefinedIntent  RenderingIntent = C.UndefinedIntent
+	SaturationIntent RenderingIntent = C.SaturationIntent
+	PerceptualIntent RenderingIntent = C.PerceptualIntent
+	AbsoluteIntent   RenderingIntent = C.AbsoluteIntent
+	RelativeIntent   RenderingIntent = C.RelativeIntent
 )
 
 var renderingIntentStrings = map[RenderingIntent]string{

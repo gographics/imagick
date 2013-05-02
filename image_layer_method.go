@@ -13,23 +13,23 @@ import (
 type ImageLayerMethod int
 
 const (
-	UndefinedLayer ImageLayerMethod = iota
-	CoalesceLayer
-	CompareAnyLayer
-	CompareClearLayer
-	CompareOverlayLayer
-	DisposeLayer
-	OptimizeLayer
-	OptimizeImageLayer
-	OptimizePlusLayer
-	OptimizeTransLayer
-	RemoveDupsLayer
-	RemoveZeroLayer
-	CompositeLayer
-	MergeLayer
-	FlattenLayer
-	MosaicLayer
-	TrimBoundsLayer
+	UndefinedLayer      ImageLayerMethod = C.UndefinedLayer
+	CoalesceLayer       ImageLayerMethod = C.CoalesceLayer
+	CompareAnyLayer     ImageLayerMethod = C.CompareAnyLayer
+	CompareClearLayer   ImageLayerMethod = C.CompareClearLayer
+	CompareOverlayLayer ImageLayerMethod = C.CompareOverlayLayer
+	DisposeLayer        ImageLayerMethod = C.DisposeLayer
+	OptimizeLayer       ImageLayerMethod = C.OptimizeLayer
+	OptimizeImageLayer  ImageLayerMethod = C.OptimizeImageLayer
+	OptimizePlusLayer   ImageLayerMethod = C.OptimizePlusLayer
+	OptimizeTransLayer  ImageLayerMethod = C.OptimizeTransLayer
+	RemoveDupsLayer     ImageLayerMethod = C.RemoveDupsLayer
+	RemoveZeroLayer     ImageLayerMethod = C.RemoveZeroLayer
+	CompositeLayer      ImageLayerMethod = C.CompositeLayer
+	MergeLayer          ImageLayerMethod = C.MergeLayer
+	FlattenLayer        ImageLayerMethod = C.FlattenLayer
+	MosaicLayer         ImageLayerMethod = C.MosaicLayer
+	TrimBoundsLayer     ImageLayerMethod = C.TrimBoundsLayer
 )
 
 var imageLayerMethodStrings = map[ImageLayerMethod]string{
