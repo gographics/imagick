@@ -2421,20 +2421,6 @@ func (mw *MagickWand) SetImagePage(width, height uint, x, y int) error {
 	return mw.GetLastError()
 }
 
-// Sets the wand image progress monitor to the specified method and returns
-// the previous progress monitor if any. If the progress monitor returns false,
-// the current operation is interrupted.
-//
-// method: Specifies a pointer to a method to monitor progress of an
-// image operation.
-//
-// clientData: Specifies a pointer to any client data.
-//
-func (mw *MagickWand) SetImageProgressMonitor(method ProgressMonitor, data string) error {
-	// not implemented - wip: progress_monitor.go
-	return nil
-}
-
 // Sets the image chromaticity red primary point.
 func (mw *MagickWand) SetImageRedPrimary(x, y float64) error {
 	C.MagickSetImageRedPrimary(mw.mw, C.double(x), C.double(y))

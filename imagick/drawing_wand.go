@@ -265,17 +265,11 @@ func (dw *DrawingWand) GetStrokeColor() (pw *PixelWand) {
 // Returns an array representing the pattern of dashes and gaps used to stroke
 // paths (see SetStrokeDashArray). The array must be freed once it is no longer
 // required by the user.
-func (dw *DrawingWand) GetStrokeDashArray() []float64 {
+func (dw *DrawingWand) GetStrokeDashArray() (nums []float64) {
 	count := C.size_t(0)
 	p := C.DrawGetStrokeDashArray(dw.dw, &count)
-	var nums []float64
-	q := uintptr(unsafe.Pointer(p))
-	for i := 0; i < int(count); i++ {
-		p = (*C.double)(unsafe.Pointer(q))
-		nums = append(nums, float64(*p))
-		q += unsafe.Sizeof(q)
-	}
-	return nums
+	nums = sizedDoubleArrayToFloat64Slice(p, count)
+	return
 }
 
 // Returns the offset into the dash pattern to start the dash.

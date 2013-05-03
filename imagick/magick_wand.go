@@ -72,22 +72,14 @@ func (mw *MagickWand) QueryConfigureOption(option string) (string, error) {
 }
 
 // Returns any configure options that match the specified pattern (e.g. "*" for all). Options include NAME, VERSION, LIB_VERSION, etc
-func (mw *MagickWand) QueryConfigureOptions(pattern string) []string {
+func (mw *MagickWand) QueryConfigureOptions(pattern string) (options []string) {
 	cspattern := C.CString(pattern)
 	defer C.free(unsafe.Pointer(cspattern))
-	var num_opts C.size_t
-	copts := C.MagickQueryConfigureOptions(cspattern, &num_opts)
-	var strings []string
-	q := uintptr(unsafe.Pointer(copts))
-	for i := uint(0); i < uint(num_opts); i++ {
-		copts = (**C.char)(unsafe.Pointer(q))
-		if *copts == nil {
-			break
-		}
-		strings = append(strings, C.GoString(*copts))
-		q += unsafe.Sizeof(q)
-	}
-	return strings
+	var num C.size_t
+	copts := C.MagickQueryConfigureOptions(cspattern, &num)
+	defer C.free(unsafe.Pointer(copts))
+	options = sizedCStringArrayToStringSlice(copts, num)
+	return
 }
 
 // Returns a FontMetrics struct
@@ -95,16 +87,8 @@ func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMe
 	cstext := C.CString(textLine)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.dw, cstext)
-	var doubles [13]float64
-	q := uintptr(unsafe.Pointer(cdoubles))
-	for i := uint(0); i < uint(13); i++ {
-		cdoubles = (*C.double)(unsafe.Pointer(q))
-		if cdoubles == nil {
-			break
-		}
-		doubles[i] = float64(*cdoubles)
-		q += unsafe.Sizeof(q)
-	}
+	defer C.free(unsafe.Pointer(cdoubles))
+	doubles := sizedDoubleArrayToFloat64Slice(cdoubles, 13)
 	return NewFontMetricsFromArray(doubles)
 }
 
@@ -113,55 +97,29 @@ func (mw *MagickWand) QueryMultilineFontMetrics(dw *DrawingWand, textParagraph s
 	cstext := C.CString(textParagraph)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.dw, cstext)
-	var doubles [13]float64
-	q := uintptr(unsafe.Pointer(cdoubles))
-	for i := uint(0); i < uint(13); i++ {
-		cdoubles = (*C.double)(unsafe.Pointer(q))
-		if cdoubles == nil {
-			break
-		}
-		doubles[i] = float64(*cdoubles)
-		q += unsafe.Sizeof(q)
-	}
+	doubles := sizedDoubleArrayToFloat64Slice(cdoubles, 13)
+	defer C.free(unsafe.Pointer(cdoubles))
 	return NewFontMetricsFromArray(doubles)
 }
 
 // Returns any font that match the specified pattern (e.g. "*" for all)
-func (mw *MagickWand) QueryFonts(pattern string) []string {
+func (mw *MagickWand) QueryFonts(pattern string) (fonts []string) {
 	cspattern := C.CString(pattern)
 	defer C.free(unsafe.Pointer(cspattern))
-	var num_opts C.size_t
-	copts := C.MagickQueryFonts(cspattern, &num_opts)
-	var strings []string
-	q := uintptr(unsafe.Pointer(copts))
-	for i := uint(0); i < uint(num_opts); i++ {
-		copts = (**C.char)(unsafe.Pointer(q))
-		if *copts == nil {
-			break
-		}
-		strings = append(strings, C.GoString(*copts))
-		q += unsafe.Sizeof(q)
-	}
-	return strings
+	var num C.size_t
+	copts := C.MagickQueryFonts(cspattern, &num)
+	fonts = sizedCStringArrayToStringSlice(copts, num)
+	return
 }
 
 // Returns any supported image format that match the specified pattern (e.g. "*" for all)
-func (mw *MagickWand) QueryFormats(pattern string) []string {
+func (mw *MagickWand) QueryFormats(pattern string) (formats []string) {
 	cspattern := C.CString(pattern)
 	defer C.free(unsafe.Pointer(cspattern))
-	var num_opts C.size_t
-	copts := C.MagickQueryFormats(cspattern, &num_opts)
-	var strings []string
-	q := uintptr(unsafe.Pointer(copts))
-	for i := uint(0); i < uint(num_opts); i++ {
-		copts = (**C.char)(unsafe.Pointer(q))
-		if *copts == nil {
-			break
-		}
-		strings = append(strings, C.GoString(*copts))
-		q += unsafe.Sizeof(q)
-	}
-	return strings
+	var num C.size_t
+	copts := C.MagickQueryFormats(cspattern, &num)
+	formats = sizedCStringArrayToStringSlice(copts, num)
+	return
 }
 
 // Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc
