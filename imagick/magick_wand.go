@@ -35,7 +35,7 @@ func (mw *MagickWand) Clear() {
 // Makes an exact copy of the MagickWand object
 func (mw *MagickWand) Clone() *MagickWand {
 	clone := C.CloneMagickWand(mw.mw)
-	return &MagickWand{wand: clone}
+	return &MagickWand{clone}
 }
 
 // Deallocates memory associated with an MagickWand
@@ -94,7 +94,7 @@ func (mw *MagickWand) QueryConfigureOptions(pattern string) []string {
 func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMetrics {
 	cstext := C.CString(textLine)
 	defer C.free(unsafe.Pointer(cstext))
-	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.draw, cstext)
+	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.dw, cstext)
 	var doubles [13]float64
 	q := uintptr(unsafe.Pointer(cdoubles))
 	for i := uint(0); i < uint(13); i++ {
@@ -112,7 +112,7 @@ func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMe
 func (mw *MagickWand) QueryMultilineFontMetrics(dw *DrawingWand, textParagraph string) *FontMetrics {
 	cstext := C.CString(textParagraph)
 	defer C.free(unsafe.Pointer(cstext))
-	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.draw, cstext)
+	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.dw, cstext)
 	var doubles [13]float64
 	q := uintptr(unsafe.Pointer(cdoubles))
 	for i := uint(0); i < uint(13); i++ {

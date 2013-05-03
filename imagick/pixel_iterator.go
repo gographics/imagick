@@ -5,6 +5,7 @@ package imagick
 #include <wand/MagickWand.h>
 */
 import "C"
+import "unsafe"
 
 type PixelIterator struct {
 	pi *C.PixelIterator
@@ -15,7 +16,7 @@ type PixelIterator struct {
 // mw: the magick wand to iterate on
 //
 func NewPixelIterator(mw *MagickWand) *PixelIterator {
-	return &PixelIterator{C.NewPixelIterator(mw.wand)}
+	return &PixelIterator{C.NewPixelIterator(mw.mw)}
 }
 
 // Returns a new pixel iterator
@@ -24,7 +25,7 @@ func NewPixelIterator(mw *MagickWand) *PixelIterator {
 // x, y, cols, rows: there values define the perimeter of a region of pixels
 //
 func NewPixelRegionIterator(mw *MagickWand, x, y int, width, height uint) *PixelIterator {
-	return &PixelIterator{C.NewPixelRegionIterator(mw.wand, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
+	return &PixelIterator{C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
 }
 
 // Clear resources associated with a PixelIterator.
@@ -52,20 +53,15 @@ func (pi *PixelIterator) IsVerified() bool {
 }
 
 // Returns the current row as an array of pixel wands from the pixel iterator.
-func (pi *PixelIterator) GetCurrentIteratorRow() []*PixelWand {
-	numWands := C.size_t
-	pis := C.PixelGetCurrentIteratorRow(pi.pi, &numWands)
-	var pixWands []*PixelWand
-	q := uintptr(unsafe.Pointer(p))
-	for i := 0; i < numWands; i++ {
-		p = (**C.PixelWand)(unsafe.Pointer(q))
-		if *p == nil {
-			break
-		}
-		pixWands = append(pixWands, &PixelWand(*p))
-		q += unsafe.Sizeof(q)
+func (pi *PixelIterator) GetCurrentIteratorRow() (pws []PixelWand) {
+	num := C.size_t(0)
+	pp := C.PixelGetCurrentIteratorRow(pi.pi, &num)
+	defer C.free(unsafe.Pointer(pp))
+	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	for i := 0; i < int(num); i++ {
+		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}
-	return pixWands
+	return
 }
 
 // Returns the current pixel iterator row.
@@ -74,37 +70,27 @@ func (pi *PixelIterator) GetIteratorRow() int {
 }
 
 // Returns the next row as an array of pixel wands from the pixel iterator.
-func (pi *PixelIterator) GetNextIteratorRow() []*PixelWand {
-	numWands := C.size_t
-	pis := C.PixelGetNextIteratorRow(pi.pi, &numWands)
-	var pixWands []*PixelWand
-	q := uintptr(unsafe.Pointer(p))
-	for i := 0; i < numWands; i++ {
-		p = (**C.PixelWand)(unsafe.Pointer(q))
-		if *p == nil {
-			break
-		}
-		pixWands = append(pixWands, &PixelWand(*p))
-		q += unsafe.Sizeof(q)
+func (pi *PixelIterator) GetNextIteratorRow() (pws []PixelWand) {
+	num := C.size_t(0)
+	pp := C.PixelGetNextIteratorRow(pi.pi, &num)
+	defer C.free(unsafe.Pointer(pp))
+	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	for i := 0; i < int(num); i++ {
+		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}
-	return pixWands
+	return
 }
 
 // Returns the previous row as an array of pixel wands from the pixel iterator.
-func (pi *PixelIterator) GetPreviousIteratorRow() []*PixelWand {
-	numWands := C.size_t
-	pis := C.PixelGetPreviousIteratorRow(pi.pi, &numWands)
-	var pixWands []*PixelWand
-	q := uintptr(unsafe.Pointer(p))
-	for i := 0; i < numWands; i++ {
-		p = (**C.PixelWand)(unsafe.Pointer(q))
-		if *p == nil {
-			break
-		}
-		pixWands = append(pixWands, &PixelWand(*p))
-		q += unsafe.Sizeof(q)
+func (pi *PixelIterator) GetPreviousIteratorRow() (pws []PixelWand) {
+	num := C.size_t(0)
+	pp := C.PixelGetPreviousIteratorRow(pi.pi, &num)
+	defer C.free(unsafe.Pointer(pp))
+	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	for i := 0; i < int(num); i++ {
+		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}
-	return pixWands
+	return
 }
 
 // Resets the pixel iterator. Use it in conjunction with GetNextIteratorRow()
@@ -131,6 +117,6 @@ func (pi *PixelIterator) SetLastIteratorRow() {
 
 // Syncs the pixel iterator.
 func (pi *PixelIterator) SyncIterator() error {
-	PixelSyncIterator(pi.pi)
+	C.PixelSyncIterator(pi.pi)
 	return pi.GetLastError()
 }

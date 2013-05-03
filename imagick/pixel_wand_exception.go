@@ -22,15 +22,15 @@ func (pwe *PixelWandException) Error() string {
 
 // Clears any exceptions associated with the wand
 func (pw *PixelWand) clearException() bool {
-	return 1 == C.int(C.PixelClearException(pw.pixel))
+	return 1 == C.int(C.PixelClearException(pw.pw))
 }
 
 // Returns the kind, reason and description of any error that occurs when using other methods in this API
 func (pw *PixelWand) GetLastError() error {
 	var et C.ExceptionType
-	csdescription := C.PixelGetException(pw.pixel, &et)
+	csdescription := C.PixelGetException(pw.pw, &et)
 	defer C.free(unsafe.Pointer(csdescription))
-	if ExceptionType(et) != UndefinedException {
+	if ExceptionType(et) != EXCEPTION_UNDEFINED {
 		pw.clearException()
 		return &PixelWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}

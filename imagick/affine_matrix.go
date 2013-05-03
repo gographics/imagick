@@ -7,5 +7,5 @@ package imagick
 import "C"
 
 type AffineMatrix struct {
-	am *AffineMatrix
+	am *C.AffineMatrix
 }
