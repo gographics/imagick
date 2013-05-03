@@ -8,7 +8,6 @@ import (
 func main() {
 	imagick.Initialize()
 	defer imagick.Terminate()
-	var err error
 
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
@@ -17,8 +16,12 @@ func main() {
 	dw := imagick.NewDrawingWand()
 	defer dw.Destroy()
 
-	mw.SetSize(170, 100)
-	mw.ReadImage("xc:black")
+	if err := mw.SetSize(170, 100); err != nil {
+		panic(err)
+	}
+	if err := mw.ReadImage("xc:black"); err != nil {
+		panic(err)
+	}
 
 	pw.SetColor("white")
 	dw.SetFillColor(pw)
@@ -39,12 +42,19 @@ func main() {
 	dw.Rectangle(60, 30, 110, 70)
 
 	// Now we draw the Drawing wand on to the Magick Wand
-	mw.DrawImage(dw)
-	mw.GaussianBlurImage(1, 1)
-
+	if err := mw.DrawImage(dw); err != nil {
+		panic(err)
+	}
+	if err := mw.GaussianBlurImage(1, 1); err != nil {
+		panic(err)
+	}
 	// Turn the matte of == +matte
-	mw.SetImageMatte(false)
-	mw.WriteImage("logo_mask.png")
+	if err := mw.SetImageMatte(false); err != nil {
+		panic(err)
+	}
+	if err := mw.WriteImage("logo_mask.png"); err != nil {
+		panic(err)
+	}
 
 	mw.Destroy()
 	dw.Destroy()
@@ -70,9 +80,9 @@ func main() {
 
 	// Annotate gets all the font information from the drawingwand
 	// but draws the text on the magickwand
-	// I haven't got the Candice font so I'll use a pretty one
-	// that I know I have
-	dw.SetFont("Lucida-Handwriting-Italic")
+	// Get the first available "*Sans*" font
+	fonts := mw.QueryFonts("*Sans*")
+	dw.SetFont(fonts[0])
 	dw.SetFontSize(36)
 	pw.SetColor("white")
 	dw.SetFillColor(pw)
@@ -202,8 +212,7 @@ func main() {
 
 	mwf = mwc.MergeImageLayers(imagick.IMAGE_LAYER_FLATTEN)
 
-	mwf.DisplayImage(os.Getenv("DYSPLAY"))
-	if err != nil {
+	if err := mwf.DisplayImage(os.Getenv("DYSPLAY")); err != nil {
 		panic(err)
 	}
 }

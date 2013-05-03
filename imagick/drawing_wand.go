@@ -32,7 +32,6 @@ func (dw *DrawingWand) Clone() *DrawingWand {
 // has been freed, it should not be used and further unless it re-allocated.
 func (dw *DrawingWand) Destroy() {
 	dw.dw = C.DestroyDrawingWand(dw.dw)
-	dw.dw = nil
 }
 
 // Adjusts the current affine transformation matrix with the specified affine

@@ -19,11 +19,6 @@ func NewPixelWand() *PixelWand {
 	return &PixelWand{C.NewPixelWand()}
 }
 
-// Return a new pixel wand from the C API
-func NewPixelWandFromCAPI(cpw *C.PixelWand) *PixelWand {
-	return &PixelWand{cpw}
-}
-
 // Clears resources associated with the wand
 func (pw *PixelWand) Clear() {
 	C.ClearPixelWand(pw.pw)
@@ -37,8 +32,6 @@ func (pw *PixelWand) Clone() *PixelWand {
 // Deallocates resources associated with a pixel wand
 func (pw *PixelWand) Destroy() {
 	pw.pw = C.DestroyPixelWand(pw.pw)
-	C.free(unsafe.Pointer(pw.pw))
-	pw.pw = nil
 }
 
 // Returns true if the distance between two colors is less than the specified distance

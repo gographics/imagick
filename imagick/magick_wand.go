@@ -41,8 +41,6 @@ func (mw *MagickWand) Clone() *MagickWand {
 // Deallocates memory associated with an MagickWand
 func (mw *MagickWand) Destroy() {
 	mw.mw = C.DestroyMagickWand(mw.mw)
-	C.free(unsafe.Pointer(mw.mw))
-	mw.mw = nil
 }
 
 // Returns true if the wand is a verified magick wand

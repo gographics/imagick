@@ -41,7 +41,7 @@ func (mw *MagickWand) GetAntialias() bool {
 
 // Returns the wand background color
 func (mw *MagickWand) GetBackgroundColor() *PixelWand {
-	return NewPixelWandFromCAPI(C.MagickGetBackgroundColor(mw.mw))
+	return &PixelWand{C.MagickGetBackgroundColor(mw.mw)}
 }
 
 // Returns the wand colorspace type
