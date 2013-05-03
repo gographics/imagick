@@ -74,9 +74,12 @@ func (dw *DrawingWand) Arc(sx, sy, ex, ey, sd, ed float64) {
 }
 
 // Draws a bezier curve through a set of points on the image.
-func (dw *DrawingWand) Bezier(coordinates []*PointInfo) {
-	// TODO will this work? probably not
-	//C.DrawBezier(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&coordinates[0].pi))
+func (dw *DrawingWand) Bezier(coordinates []PointInfo) {
+	ccoordinates := [1 << 16]C.PointInfo{}
+	for k, v := range coordinates {
+		ccoordinates[k] = *v.pi
+	}
+	C.DrawBezier(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
 
 // Draws a circle on the image.
@@ -668,15 +671,21 @@ func (dw *DrawingWand) Point(x, y float64) {
 // Draws a polygon using the current stroke, stroke width, and fill color or
 // texture, using the specified array of coordinates.
 func (dw *DrawingWand) Polygon(coordinates []PointInfo) {
-	// TODO will this work? probably not
-	//C.DrawPolygon(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&coordinates[0].pi))
+	ccoordinates := [1 << 16]C.PointInfo{}
+	for k, v := range coordinates {
+		ccoordinates[k] = *v.pi
+	}
+	C.DrawPolygon(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
 
 // Draws a polyline using the current stroke, stroke width, and fill color or
 // texture, using the specified array of coordinates.
 func (dw *DrawingWand) Polyline(coordinates []PointInfo) {
-	// TODO will this work? probably not
-	//C.DrawPolyline(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&coordinates[0].pi))
+	ccoordinates := [1 << 16]C.PointInfo{}
+	for k, v := range coordinates {
+		ccoordinates[k] = *v.pi
+	}
+	C.DrawPolyline(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
 
 // Terminates a clip path definition.
@@ -915,17 +924,22 @@ func (dw *DrawingWand) SetStrokeAntialias(antialias bool) {
 	C.DrawSetStrokeAntialias(dw.dw, b2i(antialias))
 }
 
-// TODO rewrite this
 // Specifies the pattern of dashes and gaps used to stroke paths. The stroke
 // dash array represents an array of numbers that specify the lengths of
 // alternating dashes and gaps in pixels. If an odd number of values is
 // provided, then the list of values is repeated to yield an even number of
-// values. To remove an existing dash array, pass a zero number_elements
-// argument and null dash_array. A typical stroke dash array might contain the
-// members 5 3 2.
+// values. To remove an existing dash array, pass an empty slice. A typical
+// stroke dash array might contain the members 5 3 2.
 func (dw *DrawingWand) SetStrokeDashArray(dash []float64) error {
-	// TODO will this work? probably not
-	//C.DrawBezier(dw.dw, C.size_t(len(dash)), (*C.PointInfo)(&dash[0].pi))
+	if len(dash) == 0 {
+		C.DrawSetStrokeDashArray(dw.dw, C.size_t(0), nil)
+		return dw.GetLastError()
+	}
+	cdash := [1 << 16]C.double{}
+	for k, v := range dash {
+		cdash[k] = C.double(v)
+	}
+	C.DrawSetStrokeDashArray(dw.dw, C.size_t(len(dash)), (*C.double)(&cdash[0]))
 	return dw.GetLastError()
 }
 

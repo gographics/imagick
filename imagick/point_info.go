@@ -7,5 +7,5 @@ package imagick
 import "C"
 
 type PointInfo struct {
-	pi *PointInfo
+	pi *C.PointInfo
 }

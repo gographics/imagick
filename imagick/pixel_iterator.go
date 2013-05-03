@@ -57,7 +57,7 @@ func (pi *PixelIterator) GetCurrentIteratorRow() (pws []PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetCurrentIteratorRow(pi.pi, &num)
 	defer C.free(unsafe.Pointer(pp))
-	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	vpw := (*[1 << 28]C.PixelWand)(unsafe.Pointer(pp))
 	for i := 0; i < int(num); i++ {
 		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}
@@ -74,7 +74,7 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetNextIteratorRow(pi.pi, &num)
 	defer C.free(unsafe.Pointer(pp))
-	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	vpw := (*[1 << 28]C.PixelWand)(unsafe.Pointer(pp))
 	for i := 0; i < int(num); i++ {
 		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}
@@ -86,7 +86,7 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetPreviousIteratorRow(pi.pi, &num)
 	defer C.free(unsafe.Pointer(pp))
-	vpw := (*[1 << 32]C.PixelWand)(unsafe.Pointer(pp))
+	vpw := (*[1 << 28]C.PixelWand)(unsafe.Pointer(pp))
 	for i := 0; i < int(num); i++ {
 		pws = append(pws, PixelWand{(*C.PixelWand)(&vpw[i])})
 	}

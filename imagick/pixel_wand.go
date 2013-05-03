@@ -195,7 +195,6 @@ func (pw *PixelWand) GetYellowQuantum() Quantum {
 // Sets the normalized alpha color of the pixel wand.
 // 1.0 is fully opaque and 0.0 is fully transparent.
 func (pw *PixelWand) SetAlpha(alpha float64) {
-	// TODO verify alpha value
 	C.PixelSetAlpha(pw.pw, C.double(alpha))
 }
 
