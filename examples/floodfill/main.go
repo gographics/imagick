@@ -28,7 +28,7 @@ func main() {
 		panic(err)
 	}
 
-	rgba := imagick.RedChannel | imagick.GreenChannel | imagick.BlueChannel | imagick.AlphaChannel
+	rgba := imagick.CHANNELS_RGB | imagick.CHANNEL_ALPHA
 
 	// The bordercolor (with fuzz of 20 applied) is replaced by the fill
 	// colour starting at the given coordinate - in this case 0, 0.
