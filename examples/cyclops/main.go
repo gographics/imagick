@@ -1,3 +1,4 @@
+// Port of http://members.shaw.ca/el.supremo/MagickWand/cyclops.htm to Go
 package main
 
 import (

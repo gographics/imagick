@@ -1,3 +1,4 @@
+// Port of http://members.shaw.ca/el.supremo/MagickWand/3dlogo.htm to Go
 package main
 
 import (

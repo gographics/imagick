@@ -1,3 +1,4 @@
+// Port of http://members.shaw.ca/el.supremo/MagickWand/extent.htm to Go
 package main
 
 import (
