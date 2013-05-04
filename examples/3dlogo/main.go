@@ -106,6 +106,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer mwf.Destroy()
 
 	//mw.SetImageMatte(false)
 
@@ -219,7 +220,6 @@ func main() {
 	mwc = imagick.NewMagickWand()
 	mwc.AddImage(mwf)
 	mwc.AddImage(mw)
-	mwf.Destroy()
 
 	mwf = mwc.MergeImageLayers(imagick.IMAGE_LAYER_FLATTEN)
 
