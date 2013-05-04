@@ -22,13 +22,13 @@ func (dwe *DrawingWandException) Error() string {
 
 // Clears any exceptions associated with the wand
 func (dw *DrawingWand) clearException() bool {
-	return 1 == C.int(C.PixelClearException(dw.dw))
+	return 1 == C.int(C.DrawClearException(dw.dw))
 }
 
 // Returns the kind, reason and description of any error that occurs when using other methods in this API
 func (dw *DrawingWand) GetLastError() error {
 	var et C.ExceptionType
-	csdescription := C.PixelGetException(dw.dw, &et)
+	csdescription := C.DrawGetException(dw.dw, &et)
 	defer C.free(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != EXCEPTION_UNDEFINED {
 		dw.clearException()
