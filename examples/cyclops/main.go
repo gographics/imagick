@@ -24,10 +24,10 @@ func main() {
 
 	bg.SetColor("white")
 	mw.BorderImage(bg, 1, 1)
-	mw.SetImageAlphaChannel(imagick.SetAlphaChannel)
+	mw.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_SET)
 
 	fg.SetColor("none")
-	channel := imagick.RGBChannels | imagick.AlphaChannel
+	channel := imagick.CHANNELS_RGB | imagick.CHANNEL_ALPHA
 
 	// Floodfill the "background" colour with the "foreground" colour
 	// starting at coordinate 0,0 using a fuzz of 20
