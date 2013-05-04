@@ -2,7 +2,7 @@
 package main
 
 import (
-	"github.com/gobinds/imagick/imagick"
+	"github.com/gographics/imagick/imagick"
 )
 
 // Set up the drawingwand "dw" for the given font name, font size, and colour.
