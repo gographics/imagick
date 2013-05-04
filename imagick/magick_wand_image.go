@@ -869,10 +869,12 @@ func (mw *MagickWand) FunctionImageChannel(channel ChannelType, function MagickF
 }
 
 // Evaluate expression for each pixel in the image.
-func (mw *MagickWand) FxImage(expression string) *MagickWand {
+func (mw *MagickWand) FxImage(expression string) (fxmw *MagickWand, err error) {
 	csexpression := C.CString(expression)
 	C.free(unsafe.Pointer(csexpression))
-	return &MagickWand{C.MagickFxImage(mw.mw, csexpression)}
+	fxmw = &MagickWand{C.MagickFxImage(mw.mw, csexpression)}
+	err = mw.GetLastError()
+	return
 }
 
 // Evaluate expression for each pixel in the image's channel

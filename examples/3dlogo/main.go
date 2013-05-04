@@ -63,6 +63,7 @@ func main() {
 	mw = imagick.NewMagickWand()
 	pw = imagick.NewPixelWand()
 	dw = imagick.NewDrawingWand()
+
 	mwc := imagick.NewMagickWand()
 	defer mwc.Destroy()
 
@@ -96,8 +97,15 @@ func main() {
 	mw.Destroy()
 
 	mw = imagick.NewMagickWand()
-	mw.ReadImage("logo_ant.png")
-	mwf := mw.FxImage("A")
+
+	if err := mw.ReadImage("logo_ant.png"); err != nil {
+		panic(err)
+	}
+
+	mwf, err := mw.FxImage("A")
+	if err != nil {
+		panic(err)
+	}
 
 	//mw.SetImageMatte(false)
 
@@ -185,7 +193,10 @@ func main() {
 
 	// +matte is the same as -alpha off
 	mwc.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_DEACTIVATE)
-	mwf = mwc.FxImage("rand()")
+	mwf, err = mwc.FxImage("rand()")
+	if err != nil {
+		panic(err)
+	}
 
 	mwf.ShadeImage(true, 120, 30)
 	pw.SetColor("grey70")
