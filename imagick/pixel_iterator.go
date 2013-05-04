@@ -10,7 +10,6 @@ PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
 */
 import "C"
 import "unsafe"
-import "fmt"
 
 type PixelIterator struct {
 	pi *C.PixelIterator
@@ -22,7 +21,6 @@ type PixelIterator struct {
 //
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 	npi := C.NewPixelIterator(mw.mw)
-	fmt.Printf("NewPixelIterator %p\n", npi)
 	return &PixelIterator{npi}
 }
 
@@ -82,7 +80,6 @@ func (pi *PixelIterator) GetIteratorRow() int {
 
 // Returns the next row as an array of pixel wands from the pixel iterator.
 func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
-	fmt.Printf("GetNextIteratorRow %p\n", pi.pi)
 	num := C.size_t(0)
 	pp := C.PixelGetNextIteratorRow(pi.pi, &num)
 	defer C.free(unsafe.Pointer(pp))
@@ -129,7 +126,6 @@ func (pi *PixelIterator) SetLastIteratorRow() {
 
 // Syncs the pixel iterator.
 func (pi *PixelIterator) SyncIterator() error {
-	fmt.Printf("SyncIterator %p\n", pi.pi)
 	C.PixelSyncIterator(pi.pi)
 	return pi.GetLastError()
 }
