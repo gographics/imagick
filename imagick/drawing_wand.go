@@ -31,7 +31,13 @@ func (dw *DrawingWand) Clone() *DrawingWand {
 // Frees all resources associated with the drawing wand. Once the drawing wand
 // has been freed, it should not be used and further unless it re-allocated.
 func (dw *DrawingWand) Destroy() {
+	if dw.dw == nil {
+		return
+	}
 	dw.dw = C.DestroyDrawingWand(dw.dw)
+	C.free(unsafe.Pointer(dw.dw))
+	dw.dw = nil
+
 }
 
 // Adjusts the current affine transformation matrix with the specified affine

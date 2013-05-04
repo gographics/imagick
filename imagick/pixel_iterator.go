@@ -40,7 +40,11 @@ func (pi *PixelIterator) Clone() *PixelIterator {
 
 // Deallocates resources associated with a PixelIterator.
 func (pi *PixelIterator) Destroy() {
+	if pi.pi == nil {
+		return
+	}
 	pi.pi = C.DestroyPixelIterator(pi.pi)
+	C.free(unsafe.Pointer(pi.pi))
 	pi.pi = nil
 }
 

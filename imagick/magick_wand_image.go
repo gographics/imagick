@@ -871,7 +871,7 @@ func (mw *MagickWand) FunctionImageChannel(channel ChannelType, function MagickF
 // Evaluate expression for each pixel in the image.
 func (mw *MagickWand) FxImage(expression string) (fxmw *MagickWand, err error) {
 	csexpression := C.CString(expression)
-	C.free(unsafe.Pointer(csexpression))
+	defer C.free(unsafe.Pointer(csexpression))
 	fxmw = &MagickWand{C.MagickFxImage(mw.mw, csexpression)}
 	err = mw.GetLastError()
 	return
@@ -880,7 +880,7 @@ func (mw *MagickWand) FxImage(expression string) (fxmw *MagickWand, err error) {
 // Evaluate expression for each pixel in the image's channel
 func (mw *MagickWand) FxImageChannel(channel ChannelType, expression string) *MagickWand {
 	csexpression := C.CString(expression)
-	C.free(unsafe.Pointer(csexpression))
+	defer C.free(unsafe.Pointer(csexpression))
 	return &MagickWand{C.MagickFxImageChannel(mw.mw, C.ChannelType(channel), csexpression)}
 }
 

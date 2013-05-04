@@ -31,7 +31,12 @@ func (pw *PixelWand) Clone() *PixelWand {
 
 // Deallocates resources associated with a pixel wand
 func (pw *PixelWand) Destroy() {
+	if pw.pw == nil {
+		return
+	}
 	pw.pw = C.DestroyPixelWand(pw.pw)
+	C.free(unsafe.Pointer(pw.pw))
+	pw.pw = nil
 }
 
 // Returns true if the distance between two colors is less than the specified distance
