@@ -82,7 +82,7 @@ func (dw *DrawingWand) Arc(sx, sy, ex, ey, sd, ed float64) {
 func (dw *DrawingWand) Bezier(coordinates []PointInfo) {
 	ccoordinates := [1 << 16]C.PointInfo{}
 	for k, v := range coordinates {
-		ccoordinates[k] = *v.pi
+		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawBezier(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
@@ -672,7 +672,7 @@ func (dw *DrawingWand) Point(x, y float64) {
 func (dw *DrawingWand) Polygon(coordinates []PointInfo) {
 	ccoordinates := [1 << 16]C.PointInfo{}
 	for k, v := range coordinates {
-		ccoordinates[k] = *v.pi
+		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawPolygon(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
@@ -682,7 +682,7 @@ func (dw *DrawingWand) Polygon(coordinates []PointInfo) {
 func (dw *DrawingWand) Polyline(coordinates []PointInfo) {
 	ccoordinates := [1 << 16]C.PointInfo{}
 	for k, v := range coordinates {
-		ccoordinates[k] = *v.pi
+		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawPolyline(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
 }
