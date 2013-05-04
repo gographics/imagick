@@ -6,5 +6,6 @@ package imagick
 */
 import "C"
 
-// TODO how to map the different types of Quantum?
 type Quantum uint16
+
+const QUANTUM_RANGE = C.QuantumRange
