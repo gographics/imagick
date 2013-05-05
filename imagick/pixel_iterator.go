@@ -29,7 +29,7 @@ func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 // mw: the magick wand to iterate on
 // x, y, cols, rows: there values define the perimeter of a region of pixels
 //
-func NewPixelRegionIterator(mw *MagickWand, x, y int, width, height uint) *PixelIterator {
+func (mw *MagickWand) NewPixelRegionIterator(x, y int, width, height uint) *PixelIterator {
 	return &PixelIterator{C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
 }
 
