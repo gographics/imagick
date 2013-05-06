@@ -2705,34 +2705,6 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 	return mw.GetLastError()
 }
 
-// Replace each pixel with corresponding statistic from the neighborhood of
-// the specified width and height.
-//
-// type: the statistic type (e.g. median, mode, etc.).
-//
-// width: the width of the pixel neighborhood.
-//
-// height: the height of the pixel neighborhood.
-//
-func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
-	C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
-	return mw.GetLastError()
-}
-
-// Replace each pixel with corresponding statistic from the neighborhood of
-// the specified width and height.
-//
-// type: the statistic type (e.g. median, mode, etc.).
-//
-// width: the width of the pixel neighborhood.
-//
-// height: the height of the pixel neighborhood.
-//
-func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
-	C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
-	return mw.GetLastError()
-}
-
 // Hides a digital watermark within the image. Recover the hidden watermark
 // later to prove that the authenticity of an image. Offset defines the start
 // position within the image to hide the watermark.
