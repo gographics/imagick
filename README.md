@@ -1,9 +1,5 @@
-# GoImagick
+# Go IMagick
 
-GoImagick is a set of Go bindings to ImageMagick's MagickWand and MagickCore C APIs.
+Go IMagick is a Go bind to ImageMagick's MagickWand C API.
 
-It's a work-in-progress and was not even tested yet. If you are interested we are accepting help.
 
-Thanks!
-
-Herbert G. Fischer
