@@ -43,6 +43,9 @@ const (
 	FILTER_ROBIDOUX_SHARP FilterType = C.RobidouxSharpFilter
 	FILTER_COSINE         FilterType = C.CosineFilter
 	FILTER_SPLINE         FilterType = C.SplineFilter
-	FILTER_LANCZOS_RADIUS FilterType = C.LanczosRadiusFilter
 	FILTER_SENTINEL       FilterType = C.SentinelFilter
+	/*
+	Missing in ImageMagick 6.7.7
+	FILTER_LANCZOS_RADIUS FilterType = C.LanczosRadiusFilter
+	*/
 )
