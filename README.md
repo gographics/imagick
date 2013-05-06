@@ -16,13 +16,13 @@ these ImageMagick distributions could easily be updated (from the devops PoV).
 sudo port install ImageMagick
 ```
 
-### Ubuntu / Debian
+## Ubuntu / Debian
 
 ```
 sudo apt-get install libmagickwand-dev
 ```
 
-### Common
+## Common
 
 Check if pkg-config is able to find the right ImageMagick include and libs:
 
