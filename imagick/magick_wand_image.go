@@ -1769,16 +1769,17 @@ func (mw *MagickWand) OptimizeImageLayers() *MagickWand {
 	return &MagickWand{C.MagickOptimizeImageLayers(mw.mw)}
 }
 
+// Unsupported in ImageMagick 6.7.7
 // Takes a frame optimized GIF animation, and compares the overlayed pixels
 // against the disposal image resulting from all the previous frames in the
 // animation. Any pixel that does not change the disposal image (and thus does
 // not effect the outcome of an overlay) is made transparent.
 // WARNING: This modifies the current images directly, rather than generate a
 // new image sequence.
-func (mw *MagickWand) OptimizeImageTransparency() error {
-	C.MagickOptimizeImageTransparency(mw.mw)
-	return mw.GetLastError()
-}
+//func (mw *MagickWand) OptimizeImageTransparency() error {
+//	C.MagickOptimizeImageTransparency(mw.mw)
+//	return mw.GetLastError()
+//}
 
 // Performs an ordered dither based on a number of pre-defined dithering
 // threshold maps, but over multiple intensity levels, which can be different
@@ -2655,6 +2656,7 @@ func (mw *MagickWand) SolarizeImage(threshold float64) error {
 	return mw.GetLastError()
 }
 
+// Unsupported in ImageMagick 6.7.7
 // Applies a special effect to the image's channel, similar to the effect
 // achieved in a photo darkroom by selectively exposing areas of photo
 // sensitive paper to light. Threshold ranges from 0 to QuantumRange and is a
@@ -2662,10 +2664,10 @@ func (mw *MagickWand) SolarizeImage(threshold float64) error {
 //
 // threshold: define the extent of the solarization.
 //
-func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float64) error {
-	C.MagickSolarizeImageChannel(mw.mw, C.ChannelType(channel), C.double(threshold))
-	return mw.GetLastError()
-}
+//func (mw *MagickWand) SolarizeImageChannel(channel ChannelType, threshold float64) error {
+//	C.MagickSolarizeImageChannel(mw.mw, C.ChannelType(channel), C.double(threshold))
+//	return mw.GetLastError()
+//}
 
 // Given a set of coordinates, interpolates the colors found at those
 // coordinates, across the whole image, using various methods.
@@ -2705,6 +2707,7 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 	return mw.GetLastError()
 }
 
+// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2714,11 +2717,12 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 //
 // height: the height of the pixel neighborhood.
 //
-func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
-	C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
-	return mw.GetLastError()
-}
+//func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
+//	C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
+//	return mw.GetLastError()
+//}
 
+// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2728,10 +2732,10 @@ func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) er
 //
 // height: the height of the pixel neighborhood.
 //
-func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
-	C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
-	return mw.GetLastError()
-}
+//func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
+//	C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
+//	return mw.GetLastError()
+//}
 
 // Hides a digital watermark within the image. Recover the hidden watermark
 // later to prove that the authenticity of an image. Offset defines the start
