@@ -24,11 +24,17 @@ func main() {
 	iterator := mw.NewPixelIterator()
 	defer iterator.Destroy()
 
-	for y := 0; y < 100; y++ {
+	for y := 0; y < int(mw.GetImageHeight()); y++ {
 		// Get the next row of the image as an array of PixelWands
 		pixels := iterator.GetNextIteratorRow()
+		if len(pixels) == 0 {
+			break
+		}
 		// Set the row of wands to a simple gray scale gradient
 		for x, pixel := range pixels {
+			if !pixel.IsVerified() {
+				panic("unverified pixel")
+			}
 			gray := x * 255 / 100
 			hex := fmt.Sprintf("#%02x%02x%02x", gray, gray, gray)
 			if ret := pixel.SetColor(hex); !ret {

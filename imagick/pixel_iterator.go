@@ -4,7 +4,7 @@ package imagick
 #cgo pkg-config: MagickWand
 #include <wand/MagickWand.h>
 
-PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
+static PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
 	return pws[pos];
 }
 */
@@ -20,8 +20,7 @@ type PixelIterator struct {
 // mw: the magick wand to iterate on
 //
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
-	npi := C.NewPixelIterator(mw.mw)
-	return &PixelIterator{npi}
+	return &PixelIterator{C.NewPixelIterator(mw.mw)}
 }
 
 // Returns a new pixel iterator
@@ -65,7 +64,9 @@ func (pi *PixelIterator) IsVerified() bool {
 func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetCurrentIteratorRow(pi.pi, &num)
-	defer C.free(unsafe.Pointer(pp))
+	if pp == nil {
+		return
+	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
 		pws = append(pws, &PixelWand{cpw})
@@ -82,7 +83,9 @@ func (pi *PixelIterator) GetIteratorRow() int {
 func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetNextIteratorRow(pi.pi, &num)
-	defer C.free(unsafe.Pointer(pp))
+	if pp == nil {
+		return
+	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
 		pws = append(pws, &PixelWand{cpw})
@@ -94,7 +97,9 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetPreviousIteratorRow(pi.pi, &num)
-	defer C.free(unsafe.Pointer(pp))
+	if pp == nil {
+		return
+	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
 		pws = append(pws, &PixelWand{cpw})

@@ -6,6 +6,6 @@ package imagick
 */
 import "C"
 
-type Quantum uint16
+type Quantum C.Quantum
 
 const QUANTUM_RANGE = C.QuantumRange
