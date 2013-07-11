@@ -11,5 +11,3 @@ package imagick
 import "C"
 
 type Quantum C.Quantum
-
-const QUANTUM_RANGE = C.QuantumRange
