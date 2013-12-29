@@ -1,4 +1,9 @@
 
+0.0.3 / 2013-07-26 
+==================
+
+  * [bugfix] Fix to enable the binding to be used with HDRI/OpenEXR version of ImageMagick (#1)
+
 0.0.2 / 2013-05-06 
 ==================
 
