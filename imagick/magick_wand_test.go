@@ -5,7 +5,6 @@
 package imagick
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,9 +12,14 @@ var (
 	mw *MagickWand
 )
 
-func TestNewMagickWand(t *testing.T) {
+func Init() {
 	Initialize()
+}
+
+func TestNewMagickWand(t *testing.T) {
 	mw = NewMagickWand()
+	defer mw.Destroy()
+
 	if !mw.IsVerified() {
 		t.Fatal("MagickWand not verified")
 	}
@@ -65,5 +69,51 @@ func TestQueryFormats(t *testing.T) {
 
 func TestDeleteImageArtifact(t *testing.T) {
 	err := mw.DeleteImageArtifact("*")
-	fmt.Println(err)
+	t.Log(err.Error())
+}
+
+func TestGetImageFloats(t *testing.T) {
+	Initialize()
+	mw = NewMagickWand()
+	defer mw.Destroy()
+
+	if !mw.IsVerified() {
+		t.Fatal("MagickWand not verified")
+	}
+
+	var err error
+	if err = mw.ReadImage(`logo:`); err != nil {
+		t.Fatal("Failed to read internal logo: image")
+	}
+
+	width, height := int(mw.GetImageWidth()), int(mw.GetImageHeight())
+
+	pixels := mw.GetImageFloats(FLOAT_FORMAT_RGB)
+	actual := len(pixels)
+	expected := (width * height * 3)
+	if actual != expected {
+		t.Fatalf("Expected RGB image to have %d float vals; Got %d", expected, actual)
+	}
+
+	pixels = mw.GetImageFloats(FLOAT_FORMAT_RGBA)
+	actual = len(pixels)
+	expected = (width * height * 4)
+	if actual != expected {
+		t.Fatalf("Expected RGBA image to have %d float vals; Got %d", expected, actual)
+	}
+
+	pixels = mw.GetImageFloats(FLOAT_FORMAT_R)
+	actual = len(pixels)
+	expected = (width * height * 1)
+	if actual != expected {
+		t.Fatalf("Expected RNN image to have %d float vals; Got %d", expected, actual)
+	}
+
+	pixels = mw.GetImageFloats(FLOAT_FORMAT_G | FLOAT_FORMAT_B)
+	actual = len(pixels)
+	expected = (width * height * 2)
+	if actual != expected {
+		t.Fatalf("Expected NGB image to have %d float vals; Got %d", expected, actual)
+	}
+
 }
