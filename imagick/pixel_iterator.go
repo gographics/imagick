@@ -5,7 +5,6 @@
 package imagick
 
 /*
-#cgo pkg-config: MagickWand
 #include <wand/MagickWand.h>
 
 static PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
