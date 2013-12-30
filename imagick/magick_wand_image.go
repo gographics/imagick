@@ -7,11 +7,25 @@ package imagick
 /*
 #cgo pkg-config: MagickWand
 #include <wand/MagickWand.h>
+
+#include "wand.h"
 */
 import "C"
+
 import (
 	"os"
 	"unsafe"
+)
+
+type FloatFormat int
+
+const (
+	FLOAT_FORMAT_R    FloatFormat = C.FLOAT_FORMAT_R
+	FLOAT_FORMAT_G    FloatFormat = C.FLOAT_FORMAT_G
+	FLOAT_FORMAT_B    FloatFormat = C.FLOAT_FORMAT_B
+	FLOAT_FORMAT_A    FloatFormat = C.FLOAT_FORMAT_A
+	FLOAT_FORMAT_RGB  FloatFormat = C.FLOAT_FORMAT_RGB
+	FLOAT_FORMAT_RGBA FloatFormat = C.FLOAT_FORMAT_RGBA
 )
 
 // Returns the current image from the magick wand
@@ -971,6 +985,48 @@ func (mw *MagickWand) GetImageBlob() []byte {
 	csblob := C.MagickGetImageBlob(mw.mw, &clen)
 	defer mw.relinquishMemory(unsafe.Pointer(csblob))
 	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
+}
+
+// Return an encoding-agnostic representation of the image, as float
+// pixel values.
+// Accepts a combination of FloatFormat flags indicating which channels
+// should be packed into the returned slice
+//
+// Examples:
+//
+//     // Return format R,G,B,R,G,B,...
+//     FLOAT_FORMAT_RGB
+//
+//     // Return format R,G,B,A,R,G,B,A,...
+//     FLOAT_FORMAT_RGBA
+//
+//     // Return format R,A,R,A,...
+//     FLOAT_FORMAT_R | FLOAT_FORMAT_A
+//
+func (mw *MagickWand) GetImageFloats(floatFormat FloatFormat) []float32 {
+	fmts := []FloatFormat{
+		FLOAT_FORMAT_R,
+		FLOAT_FORMAT_G,
+		FLOAT_FORMAT_B,
+		FLOAT_FORMAT_A,
+	}
+	chanCount := 0
+	for _, c := range fmts {
+		if floatFormat&c != 0 {
+			chanCount += 1
+		}
+	}
+
+	length := int(mw.GetImageWidth()) * int(mw.GetImageHeight()) * chanCount
+	pixels := make([]float32, length)
+	floatPtr := (*C.float)(unsafe.Pointer(&pixels[0]))
+
+	_, err := C.getImageFloatRGB(mw.mw, floatPtr, C.FloatFormat(floatFormat))
+	if err != nil {
+		panic(err)
+	}
+
+	return pixels
 }
 
 // Implements direct to memory image formats. It returns the image sequence
