@@ -17,7 +17,7 @@ func Init() {
 }
 
 func TestNewMagickWand(t *testing.T) {
-	mw = NewMagickWand()
+	mw := NewMagickWand()
 	defer mw.Destroy()
 
 	if !mw.IsVerified() {
@@ -72,48 +72,102 @@ func TestDeleteImageArtifact(t *testing.T) {
 	t.Log(err.Error())
 }
 
-func TestGetImageFloats(t *testing.T) {
+func TestExportImagePixels(t *testing.T) {
 	Initialize()
-	mw = NewMagickWand()
+	mw := NewMagickWand()
 	defer mw.Destroy()
-
-	if !mw.IsVerified() {
-		t.Fatal("MagickWand not verified")
-	}
 
 	var err error
 	if err = mw.ReadImage(`logo:`); err != nil {
 		t.Fatal("Failed to read internal logo: image")
 	}
 
-	width, height := int(mw.GetImageWidth()), int(mw.GetImageHeight())
+	width, height := mw.GetImageWidth(), mw.GetImageHeight()
 
-	pixels := mw.GetImageFloats(FLOAT_FORMAT_RGB)
+	val, err := mw.ExportImagePixels(0, 0, width, height, "RGB", PIXEL_FLOAT)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	pixels := val.([]float32)
 	actual := len(pixels)
 	expected := (width * height * 3)
-	if actual != expected {
+	if actual != int(expected) {
 		t.Fatalf("Expected RGB image to have %d float vals; Got %d", expected, actual)
 	}
 
-	pixels = mw.GetImageFloats(FLOAT_FORMAT_RGBA)
-	actual = len(pixels)
+	val, err = mw.ExportImagePixels(0, 0, width, height, "RGBA", PIXEL_DOUBLE)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	pixels64 := val.([]float64)
+	actual = len(pixels64)
 	expected = (width * height * 4)
-	if actual != expected {
+	if actual != int(expected) {
 		t.Fatalf("Expected RGBA image to have %d float vals; Got %d", expected, actual)
 	}
 
-	pixels = mw.GetImageFloats(FLOAT_FORMAT_R)
+	val, err = mw.ExportImagePixels(0, 0, width, height, "R", PIXEL_FLOAT)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	pixels = val.([]float32)
 	actual = len(pixels)
 	expected = (width * height * 1)
-	if actual != expected {
+	if actual != int(expected) {
 		t.Fatalf("Expected RNN image to have %d float vals; Got %d", expected, actual)
 	}
 
-	pixels = mw.GetImageFloats(FLOAT_FORMAT_G | FLOAT_FORMAT_B)
+	val, err = mw.ExportImagePixels(0, 0, width, height, "GB", PIXEL_FLOAT)
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	pixels = val.([]float32)
 	actual = len(pixels)
 	expected = (width * height * 2)
-	if actual != expected {
+	if actual != int(expected) {
 		t.Fatalf("Expected NGB image to have %d float vals; Got %d", expected, actual)
 	}
+}
 
+func BenchmarkExportImagePixels(b *testing.B) {
+	wand := NewMagickWand()
+	defer wand.Destroy()
+
+	wand.ReadImage("logo:")
+	wand.ScaleImage(1024, 1024)
+
+	var val interface{}
+	var pixels []float32
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		val, _ = wand.ExportImagePixels(0, 0, 1024, 1024, "RGB", PIXEL_FLOAT)
+		pixels = val.([]float32)
+	}
+
+	b.StopTimer()
+
+	if len(pixels) == 0 {
+		b.Fatal("Pixel slice is 0")
+	}
+}
+
+func BenchmarkImportImagePixels(b *testing.B) {
+	wand := NewMagickWand()
+	defer wand.Destroy()
+
+	wand.ReadImage("logo:")
+	wand.ScaleImage(1024, 1024)
+
+	val, _ := wand.ExportImagePixels(0, 0, 1024, 1024, "RGB", PIXEL_FLOAT)
+	pixels := val.([]float32)
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		wand.ImportImagePixels(0, 0, 1024, 1024, "RGB", PIXEL_UNDEFINED, pixels)
+	}
+
+	b.StopTimer()
 }

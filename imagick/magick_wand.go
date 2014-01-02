@@ -5,7 +5,6 @@
 package imagick
 
 /*
-
 #cgo pkg-config: MagickWand MagickCore
 #include <wand/MagickWand.h>
 */
