@@ -2157,6 +2157,9 @@ func (mw *MagickWand) ReadImage(filename string) error {
 
 // Reads an image or image sequence from a blob.
 func (mw *MagickWand) ReadImageBlob(blob []byte) error {
+	if len(blob) == 0 {
+		return errors.New("zero-length blob not permitted")
+	}
 	C.MagickReadImageBlob(mw.mw, unsafe.Pointer(&blob[0]), C.size_t(len(blob)))
 	return mw.GetLastError()
 }

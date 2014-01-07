@@ -72,7 +72,26 @@ func TestDeleteImageArtifact(t *testing.T) {
 	t.Log(err.Error())
 }
 
-func TestExportImagePixels(t *testing.T) {
+func TestReadImageBlob(t *testing.T) {
+	mw = NewMagickWand()
+	defer mw.Destroy()
+
+	// Read an invalid blob
+	blob := []byte{}
+	if err := mw.ReadImageBlob(blob); err == nil {
+		t.Fatal("Expected a failure when passing a zero length blob")
+	}
+
+	mw.ReadImage(`logo:`)
+	blob = mw.GetImageBlob()
+
+	// Read a valid blob
+	if err := mw.ReadImageBlob(blob); err != nil {
+		t.Fatal(err.Error())
+	}
+}
+
+func TestGetImageFloats(t *testing.T) {
 	Initialize()
 	mw := NewMagickWand()
 	defer mw.Destroy()
