@@ -1025,9 +1025,9 @@ func (mw *MagickWand) GetImageClipMask() *MagickWand {
 
 // Returns the image background color.
 func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) {
-	var cbgcolor C.PixelWand
-	C.MagickGetImageBackgroundColor(mw.mw, &cbgcolor)
-	return &PixelWand{&cbgcolor}, mw.GetLastError()
+	cbgcolor := NewPixelWand()
+	C.MagickGetImageBackgroundColor(mw.mw, cbgcolor.pw)
+	return cbgcolor, mw.GetLastError()
 }
 
 // Implements direct to memory image formats. It returns the image as a blob
@@ -1069,9 +1069,9 @@ func (mw *MagickWand) GetImageBluePrimary() (x, y float64, err error) {
 
 // Returns the image border color.
 func (mw *MagickWand) GetImageBorderColor() (borderColor *PixelWand, err error) {
-	var cbc C.PixelWand
-	C.MagickGetImageBorderColor(mw.mw, &cbc)
-	return &PixelWand{&cbc}, mw.GetLastError()
+	cbc := NewPixelWand()
+	C.MagickGetImageBorderColor(mw.mw, cbc.pw)
+	return cbc, mw.GetLastError()
 }
 
 // Gets the depth for one or more image channels.
@@ -1166,9 +1166,9 @@ func (mw *MagickWand) GetImageChannelStatistics() []ChannelStatistics {
 
 // Returns the color of the specified colormap index.
 func (mw *MagickWand) GetImageColormapColor(index uint) (color *PixelWand, err error) {
-	var cpw C.PixelWand
-	C.MagickGetImageColormapColor(mw.mw, C.size_t(index), &cpw)
-	return &PixelWand{&cpw}, mw.GetLastError()
+	cpw := NewPixelWand()
+	C.MagickGetImageColormapColor(mw.mw, C.size_t(index), cpw.pw)
+	return cpw, mw.GetLastError()
 }
 
 // Gets the number of unique colors in the image.
@@ -1311,9 +1311,9 @@ func (mw *MagickWand) GetImageLength() (length uint, err error) {
 
 // Returns the image matte color.
 func (mw *MagickWand) GetImageMatteColor() (matteColor *PixelWand, err error) {
-	var cptrpw (*C.PixelWand)
-	C.MagickGetImageMatteColor(mw.mw, cptrpw)
-	return &PixelWand{cptrpw}, mw.GetLastError()
+	cptrpw := NewPixelWand()
+	C.MagickGetImageMatteColor(mw.mw, cptrpw.pw)
+	return cptrpw, mw.GetLastError()
 }
 
 // Returns the image orientation.
@@ -1336,9 +1336,9 @@ func (mw *MagickWand) GetImagePage() (w, h uint, x, y int, err error) {
 
 // Returns the color of the specified pixel.
 func (mw *MagickWand) GetImagePixelColor(x, y int) (color *PixelWand, err error) {
-	var cpw C.PixelWand
-	C.MagickGetImagePixelColor(mw.mw, C.ssize_t(x), C.ssize_t(y), &cpw)
-	return &PixelWand{&cpw}, mw.GetLastError()
+	pw := NewPixelWand()
+	C.MagickGetImagePixelColor(mw.mw, C.ssize_t(x), C.ssize_t(y), pw.pw)
+	return pw, mw.GetLastError()
 }
 
 // Returns the chromaticy red primary point.
