@@ -38,7 +38,7 @@ go get github.com/gographics/imagick/imagick
 
 # API Doc
 
-http://godoc.org/github.com/gographics/imagick/imagick
+https://gowalker.org/github.com/gographics/imagick/imagick
 
 # Examples
 
