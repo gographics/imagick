@@ -66,7 +66,7 @@ func main() {
 
 # License
 
-Copyright (c) 2013, Herbert G. Fischer
+Copyright (c) 2013-2014, The GoGraphics Team
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
