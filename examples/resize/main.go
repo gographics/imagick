@@ -42,7 +42,7 @@ func main() {
 		panic(err)
 	}
 
-	mw.DisplayImage(os.Getenv("DYSPLAY"))
+	err = mw.DisplayImage(os.Getenv("DISPLAY"))
 	if err != nil {
 		panic(err)
 	}
