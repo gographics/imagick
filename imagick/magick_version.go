@@ -39,19 +39,17 @@ func GetReleaseDate() string {
 }
 
 // Returns the ImageMagick quantum depth as a string constant.
-func GetQuantumDepth() (string, uint) {
+func GetQuantumDepth() uint {
 	cst := C.size_t(0)
-	csq := C.MagickGetQuantumDepth(&cst)
-	defer C.free(unsafe.Pointer(csq))
-	return C.GoString(csq), uint(cst)
+	C.MagickGetQuantumDepth(&cst)
+	return uint(cst)
 }
 
 // Returns the ImageMagick quantum range as a string constant.
-func GetQuantumRange() (string, uint) {
+func GetQuantumRange() uint {
 	cst := C.size_t(0)
-	csq := C.MagickGetQuantumRange(&cst)
-	defer C.free(unsafe.Pointer(csq))
-	return C.GoString(csq), uint(cst)
+	C.MagickGetQuantumRange(&cst)
+	return uint(cst)
 }
 
 // Returns the specified resource in megabytes.
