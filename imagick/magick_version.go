@@ -42,7 +42,6 @@ func GetReleaseDate() string {
 func GetQuantumDepth() (string, uint) {
 	cst := C.size_t(0)
 	csq := C.MagickGetQuantumDepth(&cst)
-	defer C.free(unsafe.Pointer(csq))
 	return C.GoString(csq), uint(cst)
 }
 
@@ -50,7 +49,6 @@ func GetQuantumDepth() (string, uint) {
 func GetQuantumRange() (string, uint) {
 	cst := C.size_t(0)
 	csq := C.MagickGetQuantumRange(&cst)
-	defer C.free(unsafe.Pointer(csq))
 	return C.GoString(csq), uint(cst)
 }
 
