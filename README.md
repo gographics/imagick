@@ -36,6 +36,14 @@ Then go get it:
 go get github.com/gographics/imagick/imagick
 ```
 
+### Build tags
+
+If you want to specify CGO_CFLAGS/CGO_LDFLAGS manually at build time, such as for building statically or without pkg-config, you can use the "no_pkgconfig" build tag:
+
+```
+go build -tags no_pkgconfig github.com/gographics/imagick/imagick
+```
+
 # API Doc
 
 https://gowalker.org/github.com/gographics/imagick/imagick
@@ -54,13 +62,13 @@ package main
 import "github.com/gographics/imagick/imagick"
 
 func main() {
-	imagick.Initialize()
-	defer imagick.Terminate()
+    imagick.Initialize()
+    defer imagick.Terminate()
 
-	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
+    mw := imagick.NewMagickWand()
+    defer mw.Destroy()
 
-	...
+    ...
 }
 ```
 
