@@ -26,6 +26,8 @@ func TestNewMagickWand(t *testing.T) {
 }
 
 func TestCloningAndDestroying(t *testing.T) {
+	mw := NewMagickWand()
+	defer mw.Destroy()
 	clone := mw.Clone()
 	if !clone.IsVerified() {
 		t.Fatal("Unsuccessful clone")
@@ -68,12 +70,15 @@ func TestQueryFormats(t *testing.T) {
 }
 
 func TestDeleteImageArtifact(t *testing.T) {
+	mw := NewMagickWand()
+	defer mw.Destroy()
+
 	err := mw.DeleteImageArtifact("*")
 	t.Log(err.Error())
 }
 
 func TestReadImageBlob(t *testing.T) {
-	mw = NewMagickWand()
+	mw := NewMagickWand()
 	defer mw.Destroy()
 
 	// Read an invalid blob
