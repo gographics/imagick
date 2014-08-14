@@ -148,6 +148,26 @@ func TestGetImageFloats(t *testing.T) {
 	}
 }
 
+func TestGetQuantumDepth(t *testing.T) {
+	name, depth := GetQuantumDepth()
+	if name == "" {
+		t.Fatal("Depth name returned was an empty string")
+	}
+	if depth == 0 {
+		t.Fatal("Depth value returned was 0")
+	}
+}
+
+func TestGetQuantumRange(t *testing.T) {
+	name, r := GetQuantumRange()
+	if name == "" {
+		t.Fatal("Depth name returned was an empty string")
+	}
+	if r == 0 {
+		t.Fatal("Range value returned was 0")
+	}
+}
+
 func BenchmarkExportImagePixels(b *testing.B) {
 	wand := NewMagickWand()
 	defer wand.Destroy()
