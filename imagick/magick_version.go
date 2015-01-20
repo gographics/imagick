@@ -13,28 +13,24 @@ import "unsafe"
 // Returns the ImageMagick API copyright as a string constant.
 func GetCopyright() string {
 	cstr := C.MagickGetCopyright()
-	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Returns the ImageMagick home URL.
 func GetHomeURL() string {
 	cstr := C.MagickGetHomeURL()
-	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Returns the ImageMagick package name as a string constant.
 func GetPackageName() string {
 	cstr := C.MagickGetPackageName()
-	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Returns the ImageMagick release date as a string constant.
 func GetReleaseDate() string {
 	cstr := C.MagickGetReleaseDate()
-	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
@@ -67,7 +63,6 @@ func GetResourceLimit(rtype ResourceType) int64 {
 func GetVersion() (version string, nversion uint) {
 	cnver := C.size_t(0)
 	csver := C.MagickGetVersion(&cnver)
-	defer C.free(unsafe.Pointer(csver))
 	version = C.GoString(csver)
 	nversion = uint(cnver)
 	return
