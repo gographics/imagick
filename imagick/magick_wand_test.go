@@ -73,8 +73,11 @@ func TestDeleteImageArtifact(t *testing.T) {
 	mw := NewMagickWand()
 	defer mw.Destroy()
 
-	err := mw.DeleteImageArtifact("*")
-	t.Log(err.Error())
+	mw.ReadImage(`logo:`)
+
+	if err := mw.DeleteImageArtifact("*"); err != nil {
+		t.Fatalf("Error calling DeleteImageArtifact: %s", err.Error())
+	}
 }
 
 func TestReadImageBlob(t *testing.T) {
