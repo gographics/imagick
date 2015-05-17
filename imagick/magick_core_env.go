@@ -10,7 +10,7 @@ package imagick
 import "C"
 
 func IsCoreInstantiated() bool {
-	return 1 == C.int(C.IsMagickInstantiated())
+	return 1 == C.int(C.IsMagickCoreInstantiated())
 }
 
 func CoreInitialize(path string) {

@@ -2095,7 +2095,7 @@ func (mw *MagickWand) QuantizeImages(numColors uint, colorspace ColorspaceType, 
 // angle: the angle of the blur in degrees.
 //
 func (mw *MagickWand) RadialBlurImage(angle float64) error {
-	C.MagickRadialBlurImage(mw.mw, C.double(angle))
+	C.MagickRotationalBlurImage(mw.mw, C.double(angle))
 	return mw.GetLastError()
 }
 
@@ -2104,7 +2104,7 @@ func (mw *MagickWand) RadialBlurImage(angle float64) error {
 // angle: the angle of the blur in degrees.
 //
 func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle float64) error {
-	C.MagickRadialBlurImageChannel(mw.mw, C.ChannelType(channel), C.double(angle))
+	C.MagickRotationalBlurImageChannel(mw.mw, C.ChannelType(channel), C.double(angle))
 	return mw.GetLastError()
 }
 
