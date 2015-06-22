@@ -84,7 +84,6 @@ func (mw *MagickWand) QueryConfigureOptions(pattern string) (options []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	var num C.size_t
 	copts := C.MagickQueryConfigureOptions(cspattern, &num)
-	defer C.free(unsafe.Pointer(copts))
 	options = sizedCStringArrayToStringSlice(copts, num)
 	return
 }
