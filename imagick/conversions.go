@@ -35,6 +35,7 @@ func cStringArrayToStringSlice(p **C.char) []string {
 
 func sizedCStringArrayToStringSlice(p **C.char, num C.size_t) []string {
 	var strings []string
+	defer C.free(unsafe.Pointer(p))
 	q := uintptr(unsafe.Pointer(p))
 	for i := 0; i < int(num); i++ {
 		p = (**C.char)(unsafe.Pointer(q))
