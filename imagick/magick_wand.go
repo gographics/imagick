@@ -84,7 +84,7 @@ func (mw *MagickWand) QueryConfigureOptions(pattern string) (options []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	var num C.size_t
 	copts := C.MagickQueryConfigureOptions(cspattern, &num)
-	defer C.free(unsafe.Pointer(copts))
+	defer freeCStringArray(copts)
 	options = sizedCStringArrayToStringSlice(copts, num)
 	return
 }
@@ -115,6 +115,7 @@ func (mw *MagickWand) QueryFonts(pattern string) (fonts []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	var num C.size_t
 	copts := C.MagickQueryFonts(cspattern, &num)
+	defer freeCStringArray(copts)
 	fonts = sizedCStringArrayToStringSlice(copts, num)
 	return
 }
@@ -125,6 +126,7 @@ func (mw *MagickWand) QueryFormats(pattern string) (formats []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	var num C.size_t
 	copts := C.MagickQueryFormats(cspattern, &num)
+	defer freeCStringArray(copts)
 	formats = sizedCStringArrayToStringSlice(copts, num)
 	return
 }

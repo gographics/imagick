@@ -18,6 +18,19 @@ func b2i(boolean bool) C.MagickBooleanType {
 	return C.MagickBooleanType(0)
 }
 
+func freeCStringArray(p **C.char) {
+	defer C.free(unsafe.Pointer(p))
+	q := uintptr(unsafe.Pointer(p))
+	for {
+		p = (**C.char)(unsafe.Pointer(q))
+		if *p == nil {
+			break
+		}
+		defer C.free(unsafe.Pointer(*p))
+		q += unsafe.Sizeof(q)
+	}
+}
+
 func cStringArrayToStringSlice(p **C.char) []string {
 	var strings []string
 	q := uintptr(unsafe.Pointer(p))
@@ -26,7 +39,6 @@ func cStringArrayToStringSlice(p **C.char) []string {
 		if *p == nil {
 			break
 		}
-		defer C.free(unsafe.Pointer(*p))
 		strings = append(strings, C.GoString(*p))
 		q += unsafe.Sizeof(q)
 	}
@@ -41,7 +53,6 @@ func sizedCStringArrayToStringSlice(p **C.char, num C.size_t) []string {
 		if *p == nil {
 			break
 		}
-		defer C.free(unsafe.Pointer(*p))
 		strings = append(strings, C.GoString(*p))
 		q += unsafe.Sizeof(q)
 	}

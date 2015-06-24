@@ -106,6 +106,7 @@ func (mw *MagickWand) GetImageArtifacts(pattern string) (artifacts []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	num := C.size_t(0)
 	p := C.MagickGetImageArtifacts(mw.mw, cspattern, &num)
+	defer freeCStringArray(p)
 	artifacts = sizedCStringArrayToStringSlice(p, num)
 	return
 }
@@ -130,6 +131,7 @@ func (mw *MagickWand) GetImageProfiles(pattern string) (profiles []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProfiles(mw.mw, cspattern, &np)
+	defer freeCStringArray(ps)
 	profiles = sizedCStringArrayToStringSlice(ps, np)
 	return
 }
@@ -151,6 +153,7 @@ func (mw *MagickWand) GetImageProperties(pattern string) (properties []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProperties(mw.mw, cspattern, &np)
+	defer freeCStringArray(ps)
 	properties = sizedCStringArrayToStringSlice(ps, np)
 	return
 }
