@@ -32,7 +32,7 @@ func (dw *DrawingWand) clearException() bool {
 func (dw *DrawingWand) GetLastError() error {
 	var et C.ExceptionType
 	csdescription := C.DrawGetException(dw.dw, &et)
-	defer C.free(unsafe.Pointer(csdescription))
+	defer RelinquishMemory(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != EXCEPTION_UNDEFINED {
 		dw.clearException()
 		return &DrawingWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}

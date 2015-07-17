@@ -32,7 +32,7 @@ func (mw *MagickWand) clearException() bool {
 func (mw *MagickWand) GetLastError() error {
 	var et C.ExceptionType
 	csdescription := C.MagickGetException(mw.mw, &et)
-	defer mw.relinquishMemory(unsafe.Pointer(csdescription))
+	defer RelinquishMemory(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != EXCEPTION_UNDEFINED {
 		mw.clearException()
 		return &MagickWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
