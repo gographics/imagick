@@ -19,7 +19,7 @@ func GetCopyright() string {
 // Returns the ImageMagick home URL.
 func GetHomeURL() string {
 	cstr := C.MagickGetHomeURL()
-	defer RelinquishMemory(unsafe.Pointer(cstr))
+	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 

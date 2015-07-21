@@ -38,7 +38,7 @@ func (dw *DrawingWand) Destroy() {
 		return
 	}
 	dw.dw = C.DestroyDrawingWand(dw.dw)
-	RelinquishMemory(unsafe.Pointer(dw.dw))
+	relinquishMemory(unsafe.Pointer(dw.dw))
 	dw.dw = nil
 
 }
@@ -176,7 +176,7 @@ func (dw *DrawingWand) GetBorderColor() (pw *PixelWand) {
 // Obtains the current clipping path ID.
 func (dw *DrawingWand) GetClipPath() string {
 	cscp := C.DrawGetClipPath(dw.dw)
-	defer RelinquishMemory(unsafe.Pointer(cscp))
+	defer relinquishMemory(unsafe.Pointer(cscp))
 	return C.GoString(cscp)
 }
 
@@ -211,14 +211,14 @@ func (dw *DrawingWand) GetFillRule() FillRule {
 // Returns a string specifying the font used when annotating with text.
 func (dw *DrawingWand) GetFont() string {
 	csfont := C.DrawGetFont(dw.dw)
-	defer RelinquishMemory(unsafe.Pointer(csfont))
+	defer relinquishMemory(unsafe.Pointer(csfont))
 	return C.GoString(csfont)
 }
 
 // Returns the font family to use when annotating with text.
 func (dw *DrawingWand) GetFontFamily() string {
 	csfamily := C.DrawGetFontFamily(dw.dw)
-	defer RelinquishMemory(unsafe.Pointer(csfamily))
+	defer relinquishMemory(unsafe.Pointer(csfamily))
 	return C.GoString(csfamily)
 }
 
@@ -337,7 +337,7 @@ func (dw *DrawingWand) GetTextDecoration() DecorationType {
 // Returns a string which specifies the code set used for text annotations.
 func (dw *DrawingWand) GetTextEncoding() string {
 	cstr := C.DrawGetTextEncoding(dw.dw)
-	defer RelinquishMemory(unsafe.Pointer(cstr))
+	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
@@ -360,7 +360,7 @@ func (dw *DrawingWand) GetTextInterwordSpacing() float64 {
 // graphics calls made since the wand was instantiated.
 func (dw *DrawingWand) GetVectorGraphics() string {
 	cstr := C.DrawGetVectorGraphics(dw.dw)
-	defer RelinquishMemory(unsafe.Pointer(cstr))
+	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
