@@ -73,14 +73,14 @@ func (mw *MagickWand) GetFilename() string {
 // Returns the font associated with the MagickWand.
 func (mw *MagickWand) GetFont() string {
 	cstr := C.MagickGetFont(mw.mw)
-	defer RelinquishMemory(unsafe.Pointer(cstr))
+	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Returns the format of the magick wand.
 func (mw *MagickWand) GetFormat() string {
 	cstr := C.MagickGetFormat(mw.mw)
-	defer RelinquishMemory(unsafe.Pointer(cstr))
+	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
@@ -106,7 +106,7 @@ func (mw *MagickWand) GetImageArtifacts(pattern string) (artifacts []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	num := C.size_t(0)
 	p := C.MagickGetImageArtifacts(mw.mw, cspattern, &num)
-	defer RelinquishMemoryCStringArray(p)
+	defer relinquishMemoryCStringArray(p)
 	artifacts = sizedCStringArrayToStringSlice(p, num)
 	return
 }
@@ -119,7 +119,7 @@ func (mw *MagickWand) GetImageProfile(name string) string {
 	defer C.free(unsafe.Pointer(csname))
 	szlen := C.size_t(0)
 	csprofile := C.MagickGetImageProfile(mw.mw, csname, &szlen)
-	defer RelinquishMemory(unsafe.Pointer(csprofile))
+	defer relinquishMemory(unsafe.Pointer(csprofile))
 	return C.GoStringN((*C.char)((unsafe.Pointer)(csprofile)), C.int(szlen))
 }
 
@@ -131,7 +131,7 @@ func (mw *MagickWand) GetImageProfiles(pattern string) (profiles []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProfiles(mw.mw, cspattern, &np)
-	defer RelinquishMemoryCStringArray(ps)
+	defer relinquishMemoryCStringArray(ps)
 	profiles = sizedCStringArrayToStringSlice(ps, np)
 	return
 }
@@ -141,7 +141,7 @@ func (mw *MagickWand) GetImageProperty(property string) string {
 	csproperty := C.CString(property)
 	defer C.free(unsafe.Pointer(csproperty))
 	cspv := C.MagickGetImageProperty(mw.mw, csproperty)
-	defer RelinquishMemory(unsafe.Pointer(cspv))
+	defer relinquishMemory(unsafe.Pointer(cspv))
 	return C.GoString(cspv)
 }
 
@@ -153,7 +153,7 @@ func (mw *MagickWand) GetImageProperties(pattern string) (properties []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProperties(mw.mw, cspattern, &np)
-	defer RelinquishMemoryCStringArray(ps)
+	defer relinquishMemoryCStringArray(ps)
 	properties = sizedCStringArrayToStringSlice(ps, np)
 	return
 }
@@ -173,7 +173,7 @@ func (mw *MagickWand) GetOption(key string) string {
 	cskey := C.CString(key)
 	defer C.free(unsafe.Pointer(cskey))
 	csval := C.MagickGetOption(mw.mw, cskey)
-	defer RelinquishMemory(unsafe.Pointer(csval))
+	defer relinquishMemory(unsafe.Pointer(csval))
 	return C.GoString(csval)
 }
 
@@ -184,7 +184,7 @@ func (mw *MagickWand) GetOptions(pattern string) (options []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetOptions(mw.mw, cspattern, &np)
-	defer RelinquishMemoryCStringArray(ps)
+	defer relinquishMemoryCStringArray(ps)
 	options = sizedCStringArrayToStringSlice(ps, np)
 	return
 }
@@ -267,7 +267,7 @@ func (mw *MagickWand) RemoveImageProfile(name string) []byte {
 	defer C.free(unsafe.Pointer(csname))
 	clen := C.size_t(0)
 	profile := C.MagickRemoveImageProfile(mw.mw, csname, &clen)
-	defer RelinquishMemory(unsafe.Pointer(profile))
+	defer relinquishMemory(unsafe.Pointer(profile))
 	return C.GoBytes(unsafe.Pointer(profile), C.int(clen))
 }
 
