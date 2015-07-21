@@ -14,18 +14,18 @@ import (
 	"unsafe"
 )
 
-// Relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc
-func RelinquishMemory(ptr unsafe.Pointer) {
+// relinquishes memory resources returned by such methods as MagickIdentifyImage(), MagickGetException(), etc
+func relinquishMemory(ptr unsafe.Pointer) {
 	if ptr != nil {
 		C.MagickRelinquishMemory(ptr)
 	}
 }
 
-// Relinquishes memory resources, null terminated array of strings
-func RelinquishMemoryCStringArray(p **C.char) {
-	defer RelinquishMemory(unsafe.Pointer(p))
+// relinquishes memory resources, null terminated array of strings
+func relinquishMemoryCStringArray(p **C.char) {
+	defer relinquishMemory(unsafe.Pointer(p))
 	for *p != nil {
-		RelinquishMemory(unsafe.Pointer(*p))
+		relinquishMemory(unsafe.Pointer(*p))
 		q := uintptr(unsafe.Pointer(p))
 		q += unsafe.Sizeof(q)
 		p = (**C.char)(unsafe.Pointer(q))
