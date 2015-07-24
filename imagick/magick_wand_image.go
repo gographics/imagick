@@ -1226,7 +1226,7 @@ func (mw *MagickWand) GetImageEndian() EndianType {
 
 // Returns the filename of a particular image in a sequence.
 func (mw *MagickWand) GetImageFilename() string {
-	p := C.GoString(C.MagickGetImageFilename(mw.mw))
+	p := C.MagickGetImageFilename(mw.mw)
 	defer C.free(unsafe.Pointer(p))
 	return C.GoString(p)
 }
