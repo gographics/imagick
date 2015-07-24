@@ -87,12 +87,16 @@ func (pw *PixelWand) GetBlueQuantum() Quantum {
 
 // Returns the color of the pixel wand as a string
 func (pw *PixelWand) GetColorAsString() string {
-	return C.GoString(C.PixelGetColorAsString(pw.pw))
+	p := C.PixelGetColorAsString(pw.pw)
+	defer C.free(unsafe.Pointer(p))
+	return C.GoString(p)
 }
 
 // Returns the normalized color of the pixel wand as string
 func (pw *PixelWand) GetColorAsNormalizedString() string {
-	return C.GoString(C.PixelGetColorAsNormalizedString(pw.pw))
+	p := C.PixelGetColorAsNormalizedString(pw.pw)
+	defer C.free(unsafe.Pointer(p))
+	return C.GoString(p)
 }
 
 // Returns the color count associated with this color
