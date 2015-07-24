@@ -37,7 +37,7 @@ func main() {
 	// the target color
 	mw.FloodfillPaintImage(rgba, fc, 20, bc, 0, 0, false)
 
-	mw.DisplayImage(os.Getenv("DYSPLAY"))
+	mw.DisplayImage(os.Getenv("DISPLAY"))
 	if err != nil {
 		panic(err)
 	}
