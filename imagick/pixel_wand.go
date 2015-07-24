@@ -38,7 +38,7 @@ func (pw *PixelWand) Destroy() {
 		return
 	}
 	pw.pw = C.DestroyPixelWand(pw.pw)
-	C.free(unsafe.Pointer(pw.pw))
+	relinquishMemory(unsafe.Pointer(pw.pw))
 	pw.pw = nil
 }
 
