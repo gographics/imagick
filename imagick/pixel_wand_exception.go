@@ -32,7 +32,7 @@ func (pw *PixelWand) clearException() bool {
 func (pw *PixelWand) GetLastError() error {
 	var et C.ExceptionType
 	csdescription := C.PixelGetException(pw.pw, &et)
-	defer C.free(unsafe.Pointer(csdescription))
+	defer relinquishMemory(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != EXCEPTION_UNDEFINED {
 		pw.clearException()
 		return &PixelWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
