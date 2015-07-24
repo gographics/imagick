@@ -1227,14 +1227,14 @@ func (mw *MagickWand) GetImageEndian() EndianType {
 // Returns the filename of a particular image in a sequence.
 func (mw *MagickWand) GetImageFilename() string {
 	p := C.MagickGetImageFilename(mw.mw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 
 // Returns the format of a particular image in a sequence.
 func (mw *MagickWand) GetImageFormat() string {
 	p := C.MagickGetImageFormat(mw.mw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 
@@ -1380,7 +1380,7 @@ func (mw *MagickWand) GetImageScene() uint {
 // Generates an SHA-256 message digest for the image pixel stream.
 func (mw *MagickWand) GetImageSignature() string {
 	p := C.MagickGetImageSignature(mw.mw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 
@@ -1465,7 +1465,7 @@ func (mw *MagickWand) HasPreviousImage() bool {
 // include the image width, height, size, and others.
 func (mw *MagickWand) IdentifyImage() string {
 	p := C.MagickIdentifyImage(mw.mw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 

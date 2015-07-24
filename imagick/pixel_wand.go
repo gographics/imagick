@@ -88,14 +88,14 @@ func (pw *PixelWand) GetBlueQuantum() Quantum {
 // Returns the color of the pixel wand as a string
 func (pw *PixelWand) GetColorAsString() string {
 	p := C.PixelGetColorAsString(pw.pw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 
 // Returns the normalized color of the pixel wand as string
 func (pw *PixelWand) GetColorAsNormalizedString() string {
 	p := C.PixelGetColorAsNormalizedString(pw.pw)
-	defer C.free(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	return C.GoString(p)
 }
 
