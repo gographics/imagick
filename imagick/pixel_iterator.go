@@ -51,7 +51,7 @@ func (pi *PixelIterator) Destroy() {
 		return
 	}
 	pi.pi = C.DestroyPixelIterator(pi.pi)
-	C.free(unsafe.Pointer(pi.pi))
+	relinquishMemory(unsafe.Pointer(pi.pi))
 	pi.pi = nil
 }
 
