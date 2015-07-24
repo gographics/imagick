@@ -1038,7 +1038,7 @@ func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) 
 func (mw *MagickWand) GetImageBlob() []byte {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImageBlob(mw.mw, &clen)
-	defer mw.relinquishMemory(unsafe.Pointer(csblob))
+	defer relinquishMemory(unsafe.Pointer(csblob))
 	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 }
 
@@ -1051,7 +1051,7 @@ func (mw *MagickWand) GetImageBlob() []byte {
 func (mw *MagickWand) GetImagesBlob() []byte {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImagesBlob(mw.mw, &clen)
-	defer mw.relinquishMemory(unsafe.Pointer(csblob))
+	defer relinquishMemory(unsafe.Pointer(csblob))
 	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 }
 
@@ -1091,7 +1091,7 @@ func (mw *MagickWand) GetImageChannelDistortion(reference *MagickWand, channel C
 // and returns the specified distortion metrics.
 func (mw *MagickWand) GetImageChannelDistortions(reference *MagickWand, metric MetricType) float64 {
 	ptrdistortion := C.MagickGetImageChannelDistortions(mw.mw, reference.mw, C.MetricType(metric))
-	defer mw.relinquishMemory(unsafe.Pointer(ptrdistortion))
+	defer relinquishMemory(unsafe.Pointer(ptrdistortion))
 	return float64(*ptrdistortion)
 }
 
@@ -1107,7 +1107,7 @@ func (mw *MagickWand) GetImageChannelDistortions(reference *MagickWand, metric M
 //   contrast = channelFeatures[RedChannel].Contrast[0];
 func (mw *MagickWand) GetImageChannelFeatures(distance uint) []ChannelFeatures {
 	p := C.MagickGetImageChannelFeatures(mw.mw, C.size_t(distance))
-	defer mw.relinquishMemory(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	var feats []ChannelFeatures
 	q := uintptr(unsafe.Pointer(p))
 	for {
@@ -1150,7 +1150,7 @@ func (mw *MagickWand) GetImageChannelRange(channel ChannelType) (min, max float6
 //    redMean = channelStatistics[RedChannel].mean
 func (mw *MagickWand) GetImageChannelStatistics() []ChannelStatistics {
 	p := C.MagickGetImageChannelStatistics(mw.mw)
-	defer mw.relinquishMemory(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	var feats []ChannelStatistics
 	q := uintptr(unsafe.Pointer(p))
 	for {
@@ -1277,7 +1277,7 @@ func (mw *MagickWand) GetImageHeight() uint {
 func (mw *MagickWand) GetImageHistogram() (numberColors uint, pws []PixelWand) {
 	cnc := C.size_t(0)
 	p := C.MagickGetImageHistogram(mw.mw, &cnc)
-	defer mw.relinquishMemory(unsafe.Pointer(p))
+	defer relinquishMemory(unsafe.Pointer(p))
 	q := uintptr(unsafe.Pointer(p))
 	for {
 		p = (**C.PixelWand)(unsafe.Pointer(q))

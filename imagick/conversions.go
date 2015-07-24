@@ -26,7 +26,6 @@ func cStringArrayToStringSlice(p **C.char) []string {
 		if *p == nil {
 			break
 		}
-		defer C.free(unsafe.Pointer(*p))
 		strings = append(strings, C.GoString(*p))
 		q += unsafe.Sizeof(q)
 	}
@@ -41,7 +40,6 @@ func sizedCStringArrayToStringSlice(p **C.char, num C.size_t) []string {
 		if *p == nil {
 			break
 		}
-		defer C.free(unsafe.Pointer(*p))
 		strings = append(strings, C.GoString(*p))
 		q += unsafe.Sizeof(q)
 	}
