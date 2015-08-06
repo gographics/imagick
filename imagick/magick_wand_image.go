@@ -2850,7 +2850,6 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 	return mw.GetLastError()
 }
 
-// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2860,12 +2859,11 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 //
 // height: the height of the pixel neighborhood.
 //
-//func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
-//	C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
-//	return mw.GetLastError()
-//}
+func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
+	C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
+	return mw.GetLastError()
+}
 
-// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2875,10 +2873,10 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 //
 // height: the height of the pixel neighborhood.
 //
-//func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
-//	C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
-//	return mw.GetLastError()
-//}
+func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
+	C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
+	return mw.GetLastError()
+}
 
 // Hides a digital watermark within the image. Recover the hidden watermark
 // later to prove that the authenticity of an image. Offset defines the start
