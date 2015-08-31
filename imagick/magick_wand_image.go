@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"syscall"
 	"unsafe"
 )
 
@@ -1984,9 +1985,10 @@ func (mw *MagickWand) PingImageBlob(blob []byte) error {
 
 // Pings an image or image sequence from an open file descriptor.
 func (mw *MagickWand) PingImageFile(img *os.File) error {
-	cmode := C.CString("w+")
-	defer C.free(unsafe.Pointer(cmode))
-	file := C.fdopen(C.int(img.Fd()), cmode)
+	file, err := cfdopen(img, "rb")
+	if err != nil {
+		return err
+	}
 	defer C.fclose(file)
 	C.MagickPingImageFile(mw.mw, file)
 	return mw.GetLastError()
@@ -2174,9 +2176,10 @@ func (mw *MagickWand) ReadImageBlob(blob []byte) error {
 
 // Reads an image or image sequence from an open file descriptor.
 func (mw *MagickWand) ReadImageFile(img *os.File) error {
-	cmode := C.CString("w+")
-	defer C.free(unsafe.Pointer(cmode))
-	file := C.fdopen(C.int(img.Fd()), cmode)
+	file, err := cfdopen(img, "rb")
+	if err != nil {
+		return err
+	}
 	defer C.fclose(file)
 	C.MagickReadImageFile(mw.mw, file)
 	return mw.GetLastError()
@@ -3111,9 +3114,10 @@ func (mw *MagickWand) WriteImage(filename string) error {
 
 // Writes an image to an open file descriptor.
 func (mw *MagickWand) WriteImageFile(out *os.File) error {
-	cmode := C.CString("w+")
-	defer C.free(unsafe.Pointer(cmode))
-	file := C.fdopen(C.int(out.Fd()), cmode)
+	file, err := cfdopen(out, "w")
+	if err != nil {
+		return err
+	}
 	defer C.fclose(file)
 	C.MagickWriteImageFile(mw.mw, file)
 	return mw.GetLastError()
@@ -3129,10 +3133,29 @@ func (mw *MagickWand) WriteImages(filename string, adjoin bool) error {
 
 // Writes an image sequence to an open file descriptor.
 func (mw *MagickWand) WriteImagesFile(out *os.File) error {
-	cmode := C.CString("w+")
-	defer C.free(unsafe.Pointer(cmode))
-	file := C.fdopen(C.int(out.Fd()), cmode)
+	file, err := cfdopen(out, "w")
+	if err != nil {
+		return err
+	}
 	defer C.fclose(file)
 	C.MagickWriteImagesFile(mw.mw, file)
 	return mw.GetLastError()
+}
+
+// cfdopen returns a C-level FILE*. mode should be as described in fdopen(3).
+// Caller is responsible for closing the file when successfully returned,
+// via C.fclose()
+func cfdopen(file *os.File, mode string) (*C.FILE, error) {
+	cmode := C.CString(mode)
+	defer C.free(unsafe.Pointer(cmode))
+
+	cfile, err := C.fdopen(C.int(file.Fd()), cmode)
+	if err != nil {
+		return nil, err
+	}
+	if cfile == nil {
+		return nil, syscall.EINVAL
+	}
+
+	return cfile, nil
 }
