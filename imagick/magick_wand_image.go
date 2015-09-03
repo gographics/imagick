@@ -2565,6 +2565,12 @@ func (mw *MagickWand) SetImageOrientation(orientation OrientationType) error {
 	return mw.GetLastError()
 }
 
+// Auto orient the image
+func (mw *MagickWand) AutoOrientImage() error {
+	C.MagickAutoOrientImage(mw.mw)
+	return mw.GetLastError()
+}
+
 // Sets the page geometry of the image.
 func (mw *MagickWand) SetImagePage(width, height uint, x, y int) error {
 	C.MagickSetImagePage(mw.mw, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
