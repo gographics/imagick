@@ -2,8 +2,9 @@
 package main
 
 import (
-	"github.com/gographics/imagick/imagick"
 	"os"
+
+	"github.com/gographics/imagick/imagick"
 )
 
 func main() {
@@ -17,7 +18,7 @@ func main() {
 	fg := imagick.NewPixelWand()
 	defer fg.Destroy()
 
-	err = mw.ReadImage("http://www.imagemagick.org/Usage/images/cyclops_sm.gif")
+	err = mw.ReadImage("cyclops_sm.gif")
 	if err != nil {
 		panic(err)
 	}
