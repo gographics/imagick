@@ -20,10 +20,13 @@ func main() {
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
 	defer mw.Destroy()
-	mw.ReadImage("beijing_md.jpg")
+	if err := mw.ReadImage("beijing_md.jpg"); err != nil {
+		panic(err)
+	}
 	// fill in the Y coordinate now that we can get the image dimensions
 	arglist[6] = float64(mw.GetImageHeight() - 1)
-	mw.SigmoidalContrastImage(true, 15, imagick.QUANTUM_RANGE*30/100)
+	_, quant := imagick.GetQuantumRange()
+	mw.SigmoidalContrastImage(true, 15, float64(quant)*30/100)
 	cw := mw.Clone()
 	defer cw.Destroy()
 	cw.SparseColorImage(imagick.CHANNELS_RGB, imagick.INTERPOLATE_BARYCENTRIC_COLOR, arglist)
