@@ -5,6 +5,7 @@
 package imagick
 
 /*
+#include <unistd.h>
 #include <wand/MagickWand.h>
 */
 import "C"
@@ -3145,7 +3146,7 @@ func cfdopen(file *os.File, mode string) (*C.FILE, error) {
 	cmode := C.CString(mode)
 	defer C.free(unsafe.Pointer(cmode))
 
-	cfile, err := C.fdopen(C.int(file.Fd()), cmode)
+	cfile, err := C.fdopen(C.dup(C.int(file.Fd())), cmode)
 	if err != nil {
 		return nil, err
 	}
