@@ -73,7 +73,6 @@ func main() {
     defer imagick.Terminate()
 
     mw := imagick.NewMagickWand()
-    defer mw.Destroy()
 
     ...
 }

@@ -12,7 +12,10 @@ static PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
 }
 */
 import "C"
-import "unsafe"
+import (
+	"runtime"
+	"unsafe"
+)
 
 type PixelIterator struct {
 	pi *C.PixelIterator
@@ -23,7 +26,10 @@ type PixelIterator struct {
 // mw: the magick wand to iterate on
 //
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
-	return &PixelIterator{C.NewPixelIterator(mw.mw)}
+	pi := &PixelIterator{C.NewPixelIterator(mw.mw)}
+	runtime.SetFinalizer(pi, Destroy)
+
+	return pi
 }
 
 // Returns a new pixel iterator
@@ -32,7 +38,10 @@ func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 // x, y, cols, rows: there values define the perimeter of a region of pixels
 //
 func (mw *MagickWand) NewPixelRegionIterator(x, y int, width, height uint) *PixelIterator {
-	return &PixelIterator{C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
+	pi := &PixelIterator{C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
+	runtime.SetFinalizer(pi, Destroy)
+
+	return pi
 }
 
 // Clear resources associated with a PixelIterator.
@@ -42,7 +51,10 @@ func (pi *PixelIterator) Clear() {
 
 // Makes an exact copy of the specified iterator.
 func (pi *PixelIterator) Clone() *PixelIterator {
-	return &PixelIterator{C.ClonePixelIterator(pi.pi)}
+	piCloned := &PixelIterator{C.ClonePixelIterator(pi.pi)}
+	runtime.SetFinalizer(piCloned, Destroy)
+
+	return piCloned
 }
 
 // Deallocates resources associated with a PixelIterator.

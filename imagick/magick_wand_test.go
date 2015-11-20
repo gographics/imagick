@@ -5,7 +5,9 @@
 package imagick
 
 import (
+	"runtime"
 	"testing"
+	"time"
 )
 
 var (
@@ -18,7 +20,6 @@ func Init() {
 
 func TestNewMagickWand(t *testing.T) {
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	if !mw.IsVerified() {
 		t.Fatal("MagickWand not verified")
@@ -27,13 +28,16 @@ func TestNewMagickWand(t *testing.T) {
 
 func TestCloningAndDestroying(t *testing.T) {
 	mw := NewMagickWand()
-	defer mw.Destroy()
 	clone := mw.Clone()
 	if !clone.IsVerified() {
 		t.Fatal("Unsuccessful clone")
 	}
-	clone.Destroy()
-	if clone.IsVerified() || !mw.IsVerified() {
+
+	clone = nil
+	runtime.GC()
+	time.Sleep(100 * time.Millisecond)
+
+	if !mw.IsVerified() {
 		t.Fatal("MagickWand not properly destroyed")
 	}
 }
@@ -71,8 +75,6 @@ func TestQueryFormats(t *testing.T) {
 
 func TestDeleteImageArtifact(t *testing.T) {
 	mw := NewMagickWand()
-	defer mw.Destroy()
-
 	mw.ReadImage(`logo:`)
 
 	if err := mw.DeleteImageArtifact("*"); err != nil {
@@ -82,7 +84,6 @@ func TestDeleteImageArtifact(t *testing.T) {
 
 func TestReadImageBlob(t *testing.T) {
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	// Read an invalid blob
 	blob := []byte{}
@@ -102,7 +103,6 @@ func TestReadImageBlob(t *testing.T) {
 func TestGetImageFloats(t *testing.T) {
 	Initialize()
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	var err error
 	if err = mw.ReadImage(`logo:`); err != nil {
@@ -178,7 +178,6 @@ func TestGetQuantumRange(t *testing.T) {
 
 func BenchmarkExportImagePixels(b *testing.B) {
 	wand := NewMagickWand()
-	defer wand.Destroy()
 
 	wand.ReadImage("logo:")
 	wand.ScaleImage(1024, 1024)
@@ -202,7 +201,6 @@ func BenchmarkExportImagePixels(b *testing.B) {
 
 func BenchmarkImportImagePixels(b *testing.B) {
 	wand := NewMagickWand()
-	defer wand.Destroy()
 
 	wand.ReadImage("logo:")
 	wand.ScaleImage(1024, 1024)

@@ -12,6 +12,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 )
 
@@ -21,14 +22,19 @@ type MagickWand struct {
 }
 
 // Returns a wand required for all other methods in the API. A fatal exception is thrown if there is not enough memory to allocate the wand.
-// Use Destroy() to dispose of the wand then it is no longer needed.
 func NewMagickWand() *MagickWand {
-	return &MagickWand{C.NewMagickWand()}
+	mw := &MagickWand{C.NewMagickWand()}
+	runtime.SetFinalizer(mw, Destroy)
+
+	return mw
 }
 
 // Returns a wand with an image/
 func NewMagickWandFromImage(img *Image) *MagickWand {
-	return &MagickWand{C.NewMagickWandFromImage(img.img)}
+	mw := &MagickWand{C.NewMagickWandFromImage(img.img)}
+	runtime.SetFinalizer(mw, Destroy)
+
+	return mw
 }
 
 // Clear resources associated with the wand, leaving the wand blank, and ready to be used for a new set of images.
@@ -39,7 +45,10 @@ func (mw *MagickWand) Clear() {
 // Makes an exact copy of the MagickWand object
 func (mw *MagickWand) Clone() *MagickWand {
 	clone := C.CloneMagickWand(mw.mw)
-	return &MagickWand{clone}
+	clonedMW := &MagickWand{clone}
+	runtime.SetFinalizer(clonedMW, Destroy)
+
+	return clonedMW
 }
 
 // Deallocates memory associated with an MagickWand

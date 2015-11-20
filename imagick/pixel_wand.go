@@ -10,6 +10,7 @@ package imagick
 import "C"
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -19,7 +20,10 @@ type PixelWand struct {
 
 // Returns a new pixel wand
 func NewPixelWand() *PixelWand {
-	return &PixelWand{C.NewPixelWand()}
+	pw := &PixelWand{C.NewPixelWand()}
+	runtime.SetFinalizer(pw, Destroy)
+
+	return pw
 }
 
 // Clears resources associated with the wand
@@ -29,7 +33,10 @@ func (pw *PixelWand) Clear() {
 
 // Makes an exact copy of the wand
 func (pw *PixelWand) Clone() *PixelWand {
-	return &PixelWand{C.ClonePixelWand(pw.pw)}
+	pwCloned := &PixelWand{C.ClonePixelWand(pw.pw)}
+	runtime.SetFinalizer(pwCloned, Destroy)
+
+	return pw
 }
 
 // Deallocates resources associated with a pixel wand

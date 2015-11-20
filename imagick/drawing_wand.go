@@ -9,6 +9,7 @@ package imagick
 */
 import "C"
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -18,7 +19,10 @@ type DrawingWand struct {
 
 // Returns a drawing wand required for all other methods in the API.
 func NewDrawingWand() *DrawingWand {
-	return &DrawingWand{C.NewDrawingWand()}
+	dw := &DrawingWand{C.NewDrawingWand()}
+	runtime.SetFinalizer(dw, Destroy)
+
+	return dw
 }
 
 // Clears resources associated with the drawing wand.
@@ -28,7 +32,10 @@ func (dw *DrawingWand) Clear() {
 
 // Makes an exact copy of the specified wand.
 func (dw *DrawingWand) Clone() *DrawingWand {
-	return &DrawingWand{C.CloneDrawingWand(dw.dw)}
+	clonedDw := &DrawingWand{C.CloneDrawingWand(dw.dw)}
+	runtime.SetFinalizer(clonedDw, Destroy)
+
+	return clonedDw
 }
 
 // Frees all resources associated with the drawing wand. Once the drawing wand
@@ -40,7 +47,6 @@ func (dw *DrawingWand) Destroy() {
 	dw.dw = C.DestroyDrawingWand(dw.dw)
 	relinquishMemory(unsafe.Pointer(dw.dw))
 	dw.dw = nil
-
 }
 
 // Adjusts the current affine transformation matrix with the specified affine

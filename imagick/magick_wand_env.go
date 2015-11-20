@@ -8,24 +8,33 @@ package imagick
 #include <wand/MagickWand.h>
 */
 import "C"
+import (
+	"sync"
+)
 
 var (
-	initialized bool
+	initialized   bool
+	initOnce      sync.Once
+	terminateOnce sync.Once
 )
 
 // Inicializes the MagickWand environment
 func Initialize() {
-	if initialized {
-		return
-	}
-	C.MagickWandGenesis()
-	initialized = true
+	initOnce.Do(func() {
+		if initialized {
+			return
+		}
+		C.MagickWandGenesis()
+		initialized = true
+	})
 }
 
 // Terminates the MagickWand environment
 func Terminate() {
 	if initialized {
-		C.MagickWandTerminus()
-		initialized = false
+		terminateOnce.Do(func() {
+			C.MagickWandTerminus()
+			initialized = false
+		})
 	}
 }
