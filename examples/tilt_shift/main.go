@@ -19,7 +19,6 @@ func main() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	if err := mw.ReadImage("beijing_md.jpg"); err != nil {
 		panic(err)
 	}
@@ -28,7 +27,6 @@ func main() {
 	_, quant := imagick.GetQuantumRange()
 	mw.SigmoidalContrastImage(true, 15, float64(quant)*30/100)
 	cw := mw.Clone()
-	defer cw.Destroy()
 	cw.SparseColorImage(imagick.CHANNELS_RGB, imagick.INTERPOLATE_BARYCENTRIC_COLOR, arglist)
 	// Do the polynomial function
 	cw.FunctionImage(imagick.FUNCTION_POLYNOMIAL, funclist)

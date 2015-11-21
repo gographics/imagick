@@ -13,28 +13,33 @@ import "C"
 import (
 	"fmt"
 	"runtime"
+	"sync"
+	"sync/atomic"
 	"unsafe"
 )
 
 // This struct represents the MagickWand C API of ImageMagick
 type MagickWand struct {
 	mw *C.MagickWand
+	sync.Once
+}
+
+func newMagickWand(cmw *C.MagickWand) *MagickWand {
+	mw := &MagickWand{mw: cmw}
+	runtime.SetFinalizer(mw, Destroy)
+	mw.IncreaseCount()
+
+	return mw
 }
 
 // Returns a wand required for all other methods in the API. A fatal exception is thrown if there is not enough memory to allocate the wand.
 func NewMagickWand() *MagickWand {
-	mw := &MagickWand{C.NewMagickWand()}
-	runtime.SetFinalizer(mw, Destroy)
-
-	return mw
+	return newMagickWand(C.NewMagickWand())
 }
 
-// Returns a wand with an image/
+// Returns a wand with an image
 func NewMagickWandFromImage(img *Image) *MagickWand {
-	mw := &MagickWand{C.NewMagickWandFromImage(img.img)}
-	runtime.SetFinalizer(mw, Destroy)
-
-	return mw
+	return newMagickWand(C.NewMagickWandFromImage(img.img))
 }
 
 // Clear resources associated with the wand, leaving the wand blank, and ready to be used for a new set of images.
@@ -44,11 +49,7 @@ func (mw *MagickWand) Clear() {
 
 // Makes an exact copy of the MagickWand object
 func (mw *MagickWand) Clone() *MagickWand {
-	clone := C.CloneMagickWand(mw.mw)
-	clonedMW := &MagickWand{clone}
-	runtime.SetFinalizer(clonedMW, Destroy)
-
-	return clonedMW
+	return newMagickWand(C.CloneMagickWand(mw.mw))
 }
 
 // Deallocates memory associated with an MagickWand
@@ -56,9 +57,14 @@ func (mw *MagickWand) Destroy() {
 	if mw.mw == nil {
 		return
 	}
-	mw.mw = C.DestroyMagickWand(mw.mw)
-	relinquishMemory(unsafe.Pointer(mw.mw))
-	mw.mw = nil
+
+	mw.Do(func() {
+		mw.mw = C.DestroyMagickWand(mw.mw)
+		relinquishMemory(unsafe.Pointer(mw.mw))
+		mw.mw = nil
+
+		mw.DecreaseCount()
+	})
 }
 
 // Returns true if the wand is a verified magick wand
@@ -67,6 +73,18 @@ func (mw *MagickWand) IsVerified() bool {
 		return 1 == C.int(C.IsMagickWand(mw.mw))
 	}
 	return false
+}
+
+// Increase MagickWand ref counter and set according "can`t be terminated status"
+func (mw *MagickWand) IncreaseCount() {
+	atomic.AddInt64(&magickWandCounter, int64(1))
+	unsetCanTerminate()
+}
+
+// Decrease MagickWand ref counter and set according "can be terminated status"
+func (mw *MagickWand) DecreaseCount() {
+	atomic.AddInt64(&magickWandCounter, int64(-1))
+	setCanTerminate()
 }
 
 // Returns the position of the iterator in the image list

@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/gographics/imagick/imagick"
 )
 
@@ -11,18 +12,15 @@ func main() {
 	defer imagick.Terminate()
 
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	pw.SetColor("white")
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 
 	// Create a 100x100 image with a default of white
 	mw.NewImage(100, 100, pw)
 
 	// Get a new pixel iterator
 	iterator := mw.NewPixelIterator()
-	defer iterator.Destroy()
 
 	for y := 0; y < int(mw.GetImageHeight()); y++ {
 		// Get the next row of the image as an array of PixelWands

@@ -2,8 +2,9 @@
 package main
 
 import (
-	"github.com/gographics/imagick/imagick"
 	"os"
+
+	"github.com/gographics/imagick/imagick"
 )
 
 func main() {
@@ -13,12 +14,9 @@ func main() {
 	var err error
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 
 	// fillcolor and bordercolor
 	fc, bc := imagick.NewPixelWand(), imagick.NewPixelWand()
-	defer fc.Destroy()
-	defer bc.Destroy()
 
 	fc.SetColor("none")
 	bc.SetColor("white")

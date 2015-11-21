@@ -62,6 +62,7 @@ The examples folder is full with usage examples ported from C ones found in here
 # Quick and partial example
 
 Since this is a CGO binding, Go GC does not manage memory allocated by the C API then is necessary to use Terminate() and Destroy() methods.
+But objects of MagickWand, DrawingWand, PixelIterator and PixelWand are managed by GO GC if you create them by constructors.
 
 ```
 package main
@@ -73,6 +74,61 @@ func main() {
     defer imagick.Terminate()
 
     mw := imagick.NewMagickWand()
+
+    ...
+}
+```
+
+If you use struct literals, you should free resources manually:
+
+```
+package main
+
+import "github.com/gographics/imagick/imagick"
+
+func main() {
+    imagick.Initialize()
+    defer imagick.Terminate()
+
+    mw := imagick.MagickWand{...}
+    defer mw.Destroy()
+
+    ...
+}
+```
+
+Both methods are compatible if constructor methods used:
+
+```
+package main
+
+import "github.com/gographics/imagick/imagick"
+
+func main() {
+    imagick.Initialize()
+    defer imagick.Terminate()
+
+    mw := imagick.NewMagickWand()
+    defer mw.Destroy()
+
+    ...
+}
+```
+
+But you should NOT mix two ways of object creation:
+```
+package main
+
+import "github.com/gographics/imagick/imagick"
+
+func main() {
+    imagick.Initialize()
+    defer imagick.Terminate()
+
+    mw1 := imagick.MagickWand{...}
+    defer mw1.Destroy()
+
+    mw2 := imagick.NewMagickWand()
 
     ...
 }

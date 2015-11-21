@@ -10,19 +10,27 @@ package imagick
 import "C"
 import (
 	"runtime"
+	"sync"
+	"sync/atomic"
 	"unsafe"
 )
 
 type DrawingWand struct {
 	dw *C.DrawingWand
+	sync.Once
+}
+
+func newDrawingWand(cdw *C.DrawingWand) *DrawingWand {
+	dw := &DrawingWand{dw: cdw}
+	runtime.SetFinalizer(dw, Destroy)
+	dw.IncreaseCount()
+
+	return dw
 }
 
 // Returns a drawing wand required for all other methods in the API.
 func NewDrawingWand() *DrawingWand {
-	dw := &DrawingWand{C.NewDrawingWand()}
-	runtime.SetFinalizer(dw, Destroy)
-
-	return dw
+	return newDrawingWand(C.NewDrawingWand())
 }
 
 // Clears resources associated with the drawing wand.
@@ -32,10 +40,7 @@ func (dw *DrawingWand) Clear() {
 
 // Makes an exact copy of the specified wand.
 func (dw *DrawingWand) Clone() *DrawingWand {
-	clonedDw := &DrawingWand{C.CloneDrawingWand(dw.dw)}
-	runtime.SetFinalizer(clonedDw, Destroy)
-
-	return clonedDw
+	return newDrawingWand(C.CloneDrawingWand(dw.dw))
 }
 
 // Frees all resources associated with the drawing wand. Once the drawing wand
@@ -44,9 +49,26 @@ func (dw *DrawingWand) Destroy() {
 	if dw.dw == nil {
 		return
 	}
-	dw.dw = C.DestroyDrawingWand(dw.dw)
-	relinquishMemory(unsafe.Pointer(dw.dw))
-	dw.dw = nil
+
+	dw.Do(func() {
+		dw.dw = C.DestroyDrawingWand(dw.dw)
+		relinquishMemory(unsafe.Pointer(dw.dw))
+		dw.dw = nil
+
+		dw.DecreaseCount()
+	})
+}
+
+// Increase DrawingWand ref counter and set according "can`t be terminated status"
+func (dw *DrawingWand) IncreaseCount() {
+	atomic.AddInt64(&drawingWandCounter, int64(1))
+	unsetCanTerminate()
+}
+
+// Decrease DrawingWand ref counter and set according "can be terminated status"
+func (dw *DrawingWand) DecreaseCount() {
+	atomic.AddInt64(&drawingWandCounter, int64(-1))
+	setCanTerminate()
 }
 
 // Adjusts the current affine transformation matrix with the specified affine

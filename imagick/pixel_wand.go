@@ -11,19 +11,28 @@ import "C"
 
 import (
 	"runtime"
+	"sync"
+	"sync/atomic"
 	"unsafe"
 )
 
 type PixelWand struct {
 	pw *C.PixelWand
+	sync.Once
+}
+
+// Returns a new pixel wand
+func newPixelWand(cpw *C.PixelWand) *PixelWand {
+	pw := &PixelWand{pw: cpw}
+	runtime.SetFinalizer(pw, Destroy)
+	pw.IncreaseCount()
+
+	return pw
 }
 
 // Returns a new pixel wand
 func NewPixelWand() *PixelWand {
-	pw := &PixelWand{C.NewPixelWand()}
-	runtime.SetFinalizer(pw, Destroy)
-
-	return pw
+	return newPixelWand(C.NewPixelWand())
 }
 
 // Clears resources associated with the wand
@@ -33,10 +42,7 @@ func (pw *PixelWand) Clear() {
 
 // Makes an exact copy of the wand
 func (pw *PixelWand) Clone() *PixelWand {
-	pwCloned := &PixelWand{C.ClonePixelWand(pw.pw)}
-	runtime.SetFinalizer(pwCloned, Destroy)
-
-	return pw
+	return newPixelWand(C.ClonePixelWand(pw.pw))
 }
 
 // Deallocates resources associated with a pixel wand
@@ -44,9 +50,14 @@ func (pw *PixelWand) Destroy() {
 	if pw.pw == nil {
 		return
 	}
-	pw.pw = C.DestroyPixelWand(pw.pw)
-	relinquishMemory(unsafe.Pointer(pw.pw))
-	pw.pw = nil
+
+	pw.Do(func() {
+		pw.pw = C.DestroyPixelWand(pw.pw)
+		relinquishMemory(unsafe.Pointer(pw.pw))
+		pw.pw = nil
+
+		pw.DecreaseCount()
+	})
 }
 
 // Returns true if the distance between two colors is less than the specified distance
@@ -60,6 +71,18 @@ func (pw *PixelWand) IsVerified() bool {
 		return 1 == C.int(C.IsPixelWand(pw.pw))
 	}
 	return false
+}
+
+// Increase PixelWand ref counter and set according "can`t be terminated status"
+func (pw *PixelWand) IncreaseCount() {
+	atomic.AddInt64(&pixelWandCounter, int64(1))
+	unsetCanTerminate()
+}
+
+// Decrease PixelWand ref counter and set according "can be terminated status"
+func (pw *PixelWand) DecreaseCount() {
+	atomic.AddInt64(&pixelWandCounter, int64(-1))
+	setCanTerminate()
 }
 
 // Returns the normalized alpha color of the pixel wand

@@ -9,8 +9,6 @@ package imagick
 */
 import "C"
 import (
-	//"fmt"
-	"runtime"
 	"unsafe"
 )
 
@@ -45,10 +43,7 @@ func (mw *MagickWand) GetAntialias() bool {
 
 // Returns the wand background color
 func (mw *MagickWand) GetBackgroundColor() *PixelWand {
-	pw := &PixelWand{C.MagickGetBackgroundColor(mw.mw)}
-	runtime.SetFinalizer(pw, Destroy)
-
-	return pw
+	return newPixelWand(C.MagickGetBackgroundColor(mw.mw))
 }
 
 // Returns the wand colorspace type
