@@ -9,12 +9,18 @@ package imagick
 */
 import "C"
 
+import (
+	"unsafe"
+)
+
 func IsCoreInstantiated() bool {
 	return 1 == C.int(C.IsMagickInstantiated())
 }
 
 func CoreInitialize(path string) {
-	C.MagickCoreGenesis(C.CString(path), 0)
+	cspath := C.CString(path)
+	defer C.free(unsafe.Pointer(cspath))
+	C.MagickCoreGenesis(cspath, 0)
 }
 
 func CoreTerminate() {
