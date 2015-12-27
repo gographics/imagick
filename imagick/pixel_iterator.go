@@ -123,8 +123,8 @@ func (pi *PixelIterator) SetFirstIteratorRow() {
 
 // Set the pixel iterator row.
 func (pi *PixelIterator) SetIteratorRow(row int) error {
-	C.PixelSetIteratorRow(pi.pi, C.ssize_t(row))
-	return pi.GetLastError()
+	ok := C.PixelSetIteratorRow(pi.pi, C.ssize_t(row))
+	return pi.getLastErrorIfFailed(ok)
 }
 
 // Sets the pixel iterator to the last pixel row.
@@ -134,6 +134,6 @@ func (pi *PixelIterator) SetLastIteratorRow() {
 
 // Syncs the pixel iterator.
 func (pi *PixelIterator) SyncIterator() error {
-	C.PixelSyncIterator(pi.pi)
-	return pi.GetLastError()
+	ok := C.PixelSyncIterator(pi.pi)
+	return pi.getLastErrorIfFailed(ok)
 }
