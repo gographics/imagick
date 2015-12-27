@@ -40,3 +40,11 @@ func (pi *PixelIterator) GetLastError() error {
 	}
 	return nil
 }
+
+func (pi *PixelIterator) getLastErrorIfFailed(ok C.MagickBooleanType) error {
+	if C.int(ok) == 0 {
+		return pi.GetLastError()
+	} else {
+		return nil
+	}
+}
