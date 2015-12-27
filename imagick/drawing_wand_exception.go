@@ -39,3 +39,11 @@ func (dw *DrawingWand) GetLastError() error {
 	}
 	return nil
 }
+
+func (dw *DrawingWand) getLastErrorIfFailed(ok C.MagickBooleanType) error {
+	if C.int(ok) == 0 {
+		return dw.GetLastError()
+	} else {
+		return nil
+	}
+}
