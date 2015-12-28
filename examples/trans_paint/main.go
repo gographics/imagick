@@ -8,7 +8,6 @@ func main() {
 	defer imagick.Terminate()
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	mw.ReadImage("logo:")
 
 	// A larger fuzz value allows more colours "near" white to be
@@ -17,7 +16,6 @@ func main() {
 	// Set up the pixelwand containing the colour to be "targeted"
 	// by transparency
 	target := imagick.NewPixelWand()
-	defer target.Destroy()
 	target.SetColor("white")
 	// Change the transparency of all colours which match target (with
 	// fuzz applied). In this case they are made completely transparent (0)

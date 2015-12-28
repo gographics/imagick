@@ -5,20 +5,29 @@
 package imagick
 
 import (
+	"fmt"
+	"runtime"
+	"sync/atomic"
 	"testing"
+	"time"
 )
 
 var (
 	mw *MagickWand
 )
 
-func Init() {
+func init() {
 	Initialize()
 }
 
 func TestNewMagickWand(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	if !mw.IsVerified() {
 		t.Fatal("MagickWand not verified")
@@ -26,19 +35,34 @@ func TestNewMagickWand(t *testing.T) {
 }
 
 func TestCloningAndDestroying(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	mw := NewMagickWand()
-	defer mw.Destroy()
 	clone := mw.Clone()
 	if !clone.IsVerified() {
 		t.Fatal("Unsuccessful clone")
 	}
-	clone.Destroy()
-	if clone.IsVerified() || !mw.IsVerified() {
+
+	clone = nil
+	runtime.GC()
+	time.Sleep(100 * time.Millisecond)
+
+	if !mw.IsVerified() {
 		t.Fatal("MagickWand not properly destroyed")
 	}
 }
 
 func TestQueryConfigureOptions(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	opts := mw.QueryConfigureOptions("*")
 	if len(opts) == 0 {
 		t.Fatal("QueryConfigureOptions returned an empty array")
@@ -49,6 +73,12 @@ func TestQueryConfigureOptions(t *testing.T) {
 }
 
 func TestNonExistingConfigureOption(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	_, err := mw.QueryConfigureOption("4321foobaramps1234")
 	if err == nil {
 		t.Fatal("Missing error when trying to get non-existing configure option")
@@ -56,6 +86,12 @@ func TestNonExistingConfigureOption(t *testing.T) {
 }
 
 func TestQueryFonts(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	fonts := mw.QueryFonts("*")
 	if len(fonts) == 0 {
 		t.Fatal("ImageMagick have not identified a single font in this system")
@@ -63,6 +99,12 @@ func TestQueryFonts(t *testing.T) {
 }
 
 func TestQueryFormats(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	formats := mw.QueryFormats("*")
 	if len(formats) == 0 {
 		t.Fatal("ImageMagick have not identified a single image format in this system")
@@ -70,9 +112,13 @@ func TestQueryFormats(t *testing.T) {
 }
 
 func TestDeleteImageArtifact(t *testing.T) {
-	mw := NewMagickWand()
-	defer mw.Destroy()
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
 
+	mw := NewMagickWand()
 	mw.ReadImage(`logo:`)
 
 	if err := mw.DeleteImageArtifact("*"); err != nil {
@@ -81,8 +127,13 @@ func TestDeleteImageArtifact(t *testing.T) {
 }
 
 func TestReadImageBlob(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	// Read an invalid blob
 	blob := []byte{}
@@ -101,8 +152,12 @@ func TestReadImageBlob(t *testing.T) {
 
 func TestGetImageFloats(t *testing.T) {
 	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	mw := NewMagickWand()
-	defer mw.Destroy()
 
 	var err error
 	if err = mw.ReadImage(`logo:`); err != nil {
@@ -157,6 +212,12 @@ func TestGetImageFloats(t *testing.T) {
 }
 
 func TestGetQuantumDepth(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	name, depth := GetQuantumDepth()
 	if name == "" {
 		t.Fatal("Depth name returned was an empty string")
@@ -167,6 +228,12 @@ func TestGetQuantumDepth(t *testing.T) {
 }
 
 func TestGetQuantumRange(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
 	name, r := GetQuantumRange()
 	if name == "" {
 		t.Fatal("Depth name returned was an empty string")
@@ -176,9 +243,23 @@ func TestGetQuantumRange(t *testing.T) {
 	}
 }
 
+func checkGC(t *testing.T) {
+	if !isImageMagickCleaned() {
+		t.Fatal("Some ImageMagick objects are not destroyed", getObjectCountersString())
+	}
+}
+
+func getObjectCountersString() string {
+	str := fmt.Sprintf("magickWandCounter %d\n", atomic.LoadInt64(&magickWandCounter))
+	str += fmt.Sprintf("drawingWandCounter %d\n", atomic.LoadInt64(&drawingWandCounter))
+	str += fmt.Sprintf("pixelIteratorCounter %d\n", atomic.LoadInt64(&pixelIteratorCounter))
+	str += fmt.Sprintf("pixelWandCounter %d\n", atomic.LoadInt64(&pixelWandCounter))
+
+	return str
+}
+
 func BenchmarkExportImagePixels(b *testing.B) {
 	wand := NewMagickWand()
-	defer wand.Destroy()
 
 	wand.ReadImage("logo:")
 	wand.ScaleImage(1024, 1024)
@@ -202,7 +283,6 @@ func BenchmarkExportImagePixels(b *testing.B) {
 
 func BenchmarkImportImagePixels(b *testing.B) {
 	wand := NewMagickWand()
-	defer wand.Destroy()
 
 	wand.ReadImage("logo:")
 	wand.ScaleImage(1024, 1024)

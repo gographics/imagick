@@ -3,7 +3,7 @@ package main
 
 import (
 	"os"
-
+	
 	"github.com/gographics/imagick/imagick"
 )
 
@@ -12,11 +12,8 @@ func main() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	bg := imagick.NewPixelWand()
-	defer bg.Destroy()
 	fg := imagick.NewPixelWand()
-	defer fg.Destroy()
 
 	err = mw.ReadImage("cyclops_sm.gif")
 	if err != nil {
