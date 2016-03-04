@@ -2114,7 +2114,7 @@ func (mw *MagickWand) QuantizeImages(numColors uint, colorspace ColorspaceType, 
 // angle: the angle of the blur in degrees.
 //
 func (mw *MagickWand) RadialBlurImage(angle float64) error {
-	ok := C.MagickRadialBlurImage(mw.mw, C.double(angle))
+	ok := C.MagickRotationalBlurImage(mw.mw, C.double(angle))
 	return mw.getLastErrorIfFailed(ok)
 }
 
@@ -2123,7 +2123,7 @@ func (mw *MagickWand) RadialBlurImage(angle float64) error {
 // angle: the angle of the blur in degrees.
 //
 func (mw *MagickWand) RadialBlurImageChannel(channel ChannelType, angle float64) error {
-	ok := C.MagickRadialBlurImageChannel(mw.mw, C.ChannelType(channel), C.double(angle))
+	ok := C.MagickRotationalBlurImageChannel(mw.mw, C.ChannelType(channel), C.double(angle))
 	return mw.getLastErrorIfFailed(ok)
 }
 
@@ -2577,6 +2577,12 @@ func (mw *MagickWand) SetImageOrientation(orientation OrientationType) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// Auto orient the image
+func (mw *MagickWand) AutoOrientImage() error {
+	ok := C.MagickAutoOrientImage(mw.mw)
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // Sets the page geometry of the image.
 func (mw *MagickWand) SetImagePage(width, height uint, x, y int) error {
 	ok := C.MagickSetImagePage(mw.mw, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
@@ -2862,7 +2868,6 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
-// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2872,12 +2877,11 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 //
 // height: the height of the pixel neighborhood.
 //
-//func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
-//	ok := C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
-//	return mw.getLastErrorIfFailed(ok)
-//}
+func (mw *MagickWand) StatisticImage(stype StatisticType, width, height uint) error {
+	ok := C.MagickStatisticImage(mw.mw, C.StatisticType(stype), C.size_t(width), C.size_t(height))
+	return mw.getLastErrorIfFailed(ok)
+}
 
-// Not available in ImageMagick 6.8.0
 // Replace each pixel with corresponding statistic from the neighborhood of
 // the specified width and height.
 //
@@ -2887,10 +2891,10 @@ func (mw *MagickWand) SpreadImage(radius float64) error {
 //
 // height: the height of the pixel neighborhood.
 //
-//func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
-//	ok := C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
-//	return mw.getLastErrorIfFailed(ok)
-//}
+func (mw *MagickWand) StatisticImageChannel(channel ChannelType, stype StatisticType, width, height uint) error {
+	ok := C.MagickStatisticImageChannel(mw.mw, C.ChannelType(channel), C.StatisticType(stype), C.size_t(width), C.size_t(height))
+	return mw.getLastErrorIfFailed(ok)
+}
 
 // Hides a digital watermark within the image. Recover the hidden watermark
 // later to prove that the authenticity of an image. Offset defines the start
