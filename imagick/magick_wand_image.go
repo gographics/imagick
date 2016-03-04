@@ -763,8 +763,13 @@ func (mw *MagickWand) EvaluateImageChannel(channel ChannelType, op EvaluateOpera
 //
 func (mw *MagickWand) ExportImagePixels(x, y int, cols, rows uint,
 	pmap string, stype StorageType) (interface{}, error) {
-
+	if len(pmap) == 0 {
+		return nil, errors.New("zero-length pmap not permitted")
+	}
 	maplen := (int(cols) - x) * (int(rows) - y) * len(pmap)
+	if maplen <= 0 {
+		return nil, errors.New("Args x, y, cols, and rows produces an invalid region <= 0")
+	}
 
 	var (
 		pixel_iface interface{}
@@ -1980,6 +1985,9 @@ func (mw *MagickWand) PingImage(filename string) error {
 
 // Pings an image or image sequence from a blob.
 func (mw *MagickWand) PingImageBlob(blob []byte) error {
+	if len(blob) == 0 {
+		return errors.New("zero-length blob not permitted")
+	}
 	ok := C.MagickPingImageBlob(mw.mw, unsafe.Pointer(&blob[0]), C.size_t(len(blob)))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2571,8 +2579,8 @@ func (mw *MagickWand) SetImageOrientation(orientation OrientationType) error {
 
 // Auto orient the image
 func (mw *MagickWand) AutoOrientImage() error {
-	C.MagickAutoOrientImage(mw.mw)
-	return mw.GetLastError()
+	ok := C.MagickAutoOrientImage(mw.mw)
+	return mw.getLastErrorIfFailed(ok)
 }
 
 // Sets the page geometry of the image.
