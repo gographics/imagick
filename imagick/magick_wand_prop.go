@@ -10,6 +10,7 @@ package imagick
 import "C"
 import (
 	//"fmt"
+	"errors"
 	"unsafe"
 )
 
@@ -252,6 +253,9 @@ func (mw *MagickWand) GetType() ImageType {
 // name: Name of profile to add or remove: ICC, IPTC, or generic profile.
 //
 func (mw *MagickWand) ProfileImage(name string, profile []byte) error {
+	if len(profile) == 0 {
+		return errors.New("zero-length profile not permitted")
+	}
 	csname := C.CString(name)
 	defer C.free(unsafe.Pointer(csname))
 	ok := C.MagickProfileImage(mw.mw, csname, unsafe.Pointer(&profile[0]), C.size_t(len(profile)))
@@ -362,6 +366,9 @@ func (mw *MagickWand) SetImageArtifact(artifact, value string) error {
 //
 // name: Name of profile to add or remove: ICC, IPTC, or generic profile.
 func (mw *MagickWand) SetImageProfile(name string, profile []byte) error {
+	if len(profile) == 0 {
+		return errors.New("zero-length profile not permitted")
+	}
 	csname := C.CString(name)
 	defer C.free(unsafe.Pointer(csname))
 	ok := C.MagickSetImageProfile(mw.mw, csname, unsafe.Pointer(&profile[0]), C.size_t(len(profile)))
