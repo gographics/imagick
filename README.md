@@ -1,5 +1,7 @@
 # Go Imagick
 
+[![GoDoc](https://gopkg.in/gographics/imagick.v2/imagick?status.svg)](https://gopkg.in/gographics/imagick.v2/imagick)
+
 Go Imagick is a Go bind to ImageMagick's MagickWand C API.
 
 We support two compatibility branches:
@@ -9,7 +11,7 @@ master (tag v2.x.x): >= ImageMagick 6.8.9
 legacy (tag v1.x.x): <= ImageMagick 6.8.8
 ```
 
-Additionally, we maintain tags to make these compatibility branches available through gopkg.in:
+The map, respectively, through gopkg.in:
 
 ```
 gopkg.in/gographics/imagick.v2/imagick
@@ -40,16 +42,10 @@ Check if pkg-config is able to find the right ImageMagick include and libs:
 pkg-config --cflags --libs MagickWand
 ```
 
-Then go get it (via gopkg.in):
+Then go get it:
 
 ```
 go get gopkg.in/gographics/imagick.v2/imagick
-```
-
-or 
-
-```
-go get github.com/gographics/imagick/imagick
 ```
 
 ### Build tags
@@ -57,12 +53,8 @@ go get github.com/gographics/imagick/imagick
 If you want to specify CGO_CFLAGS/CGO_LDFLAGS manually at build time, such as for building statically or without pkg-config, you can use the "no_pkgconfig" build tag:
 
 ```
-go build -tags no_pkgconfig github.com/gographics/imagick/imagick
+go build -tags no_pkgconfig gopkg.in/gographics/imagick.v2/imagick
 ```
-
-# API Doc
-
-https://gowalker.org/github.com/gographics/imagick/imagick
 
 # Examples
 
@@ -75,7 +67,7 @@ Since this is a CGO binding, Go GC does not manage memory allocated by the C API
 ```
 package main
 
-import "github.com/gographics/imagick/imagick"
+import "gopkg.in/gographics/imagick.v2/imagick"
 
 func main() {
     imagick.Initialize()
