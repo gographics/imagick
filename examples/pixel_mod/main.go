@@ -1,7 +1,7 @@
 // Port of http://members.shaw.ca/el.supremo/MagickWand/pixel_mod.htm to Go
 package main
 
-import "github.com/gographics/imagick/imagick"
+import "gopkg.in/gographics/imagick.v2/imagick"
 
 func main() {
 	useDraw()
