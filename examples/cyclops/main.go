@@ -4,7 +4,7 @@ package main
 import (
 	"os"
 
-	"github.com/gographics/imagick/imagick"
+	"gopkg.in/gographics/imagick.v1/imagick"
 )
 
 func main() {

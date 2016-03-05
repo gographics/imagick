@@ -2,8 +2,9 @@
 package main
 
 import (
-	"github.com/gographics/imagick/imagick"
 	"math"
+
+	"gopkg.in/gographics/imagick.v1/imagick"
 )
 
 func DegreesToRadians(deg float64) (rad float64) {

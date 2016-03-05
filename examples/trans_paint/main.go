@@ -1,7 +1,7 @@
 // Port of http://members.shaw.ca/el.supremo/MagickWand/trans_paint.htm to Go
 package main
 
-import "github.com/gographics/imagick/imagick"
+import "gopkg.in/gographics/imagick.v1/imagick"
 
 func main() {
 	imagick.Initialize()
