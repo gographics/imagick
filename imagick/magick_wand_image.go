@@ -558,10 +558,17 @@ func (mw *MagickWand) CycleColormapImage(displace int) error {
 // pixels: This array of values contain the pixel components as defined by the
 // type.
 //
-func (mw *MagickWand) ConstituteImage(cols, rows uint, pmap string, stype StorageType, pixels []interface{}) error {
+func (mw *MagickWand) ConstituteImage(cols, rows uint, pmap string, stype StorageType, pixels interface{}) error {
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
-	ok := C.MagickConstituteImage(mw.mw, C.size_t(cols), C.size_t(rows), cspmap, C.StorageType(stype), unsafe.Pointer(&pixels[0]))
+	ptr, calculatedStype, err := pixelInterfaceToPtr(pixels)
+	if err != nil {
+		return err
+	}
+	if stype == PIXEL_UNDEFINED {
+		stype = calculatedStype
+	}
+	ok := C.MagickConstituteImage(mw.mw, C.size_t(cols), C.size_t(rows), cspmap, C.StorageType(stype), ptr)
 	return mw.getLastErrorIfFailed(ok)
 }
 
@@ -1484,6 +1491,51 @@ func (mw *MagickWand) ImplodeImage(radius float64) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// Identifies the type of pixels and returns the storage type and an
+// unsafe pointer to the data.
+func pixelInterfaceToPtr(pixels interface{}) (unsafe.Pointer, StorageType, error) {
+	var ptr unsafe.Pointer
+	var stype StorageType
+
+	switch t := pixels.(type) {
+
+	case []byte:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_CHAR
+
+	case []float64:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_DOUBLE
+
+	case []float32:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_FLOAT
+
+	case []int16:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_SHORT
+
+	case []int32:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_INTEGER
+
+	case []int64:
+		v := &t[0]
+		ptr = unsafe.Pointer(v)
+		stype = PIXEL_LONG
+
+	default:
+		return ptr, nil, fmt.Errorf("Type %T is not valid for this operation", t)
+	}
+
+	return ptr, stype, nil
+}
+
 // Accepts pixel data and stores it in the image at the location you specify.
 // The pixel data can be either byte, int16, int32, int64, float32, or float64
 // in the order specified by map. Suppose your want to upload the first
@@ -1522,53 +1574,12 @@ func (mw *MagickWand) ImportImagePixels(x, y int, cols, rows uint, pmap string,
 
 	var ptr unsafe.Pointer
 
-	switch t := pixels.(type) {
-
-	case []byte:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_CHAR
-		}
-
-	case []float64:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_DOUBLE
-		}
-
-	case []float32:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_FLOAT
-		}
-
-	case []int16:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_SHORT
-		}
-
-	case []int32:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_INTEGER
-		}
-
-	case []int64:
-		v := &t[0]
-		ptr = unsafe.Pointer(v)
-		if stype == PIXEL_UNDEFINED {
-			stype = PIXEL_LONG
-		}
-
-	default:
-		return fmt.Errorf("Type %T is not valid for this operation", t)
-
+	ptr, calculatedStype, err := pixelInterfaceToPtr(pixels)
+	if err != nil {
+		return err
+	}
+	if stype == PIXEL_UNDEFINED {
+		stype = calculatedStype
 	}
 
 	ok := C.MagickImportImagePixels(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(cols),
