@@ -5,6 +5,7 @@
 package imagick
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -217,4 +218,32 @@ func BenchmarkImportImagePixels(b *testing.B) {
 	}
 
 	b.StopTimer()
+}
+
+func TestPixelInterfaceToPtr(t *testing.T) {
+	tests := []struct {
+		pixels  interface{}
+		storage StorageType
+	}{
+		{[]byte{0}, PIXEL_CHAR},
+		{[]float64{0}, PIXEL_DOUBLE},
+		{[]float32{0}, PIXEL_FLOAT},
+		{[]int16{0}, PIXEL_SHORT},
+		{[]int32{0}, PIXEL_INTEGER},
+		{[]int64{0}, PIXEL_LONG},
+	}
+	for _, value := range tests {
+		_, storageType, err := pixelInterfaceToPtr(value.pixels)
+		if err != nil {
+			t.Fatal("Error when passing", reflect.TypeOf(value.pixels))
+		}
+		if storageType != value.storage {
+			t.Fatal("Wrong storage type received for", reflect.TypeOf(value.pixels))
+		}
+	}
+
+	_, _, err := pixelInterfaceToPtr(32)
+	if err == nil {
+		t.Fatal("Expected error when passing invalid type")
+	}
 }
