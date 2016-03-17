@@ -220,32 +220,25 @@ func BenchmarkImportImagePixels(b *testing.B) {
 	b.StopTimer()
 }
 
-type testPixelInterfaceValues struct {
-	Pixels  interface{}
-	Storage StorageType
-}
-
 func TestPixelInterfaceToPtr(t *testing.T) {
-	Tests := make([]testPixelInterfaceValues, 6)
-	Tests[0].Pixels = []byte{0}
-	Tests[0].Storage = PIXEL_CHAR
-	Tests[1].Pixels = []float64{0}
-	Tests[1].Storage = PIXEL_DOUBLE
-	Tests[2].Pixels = []float32{0}
-	Tests[2].Storage = PIXEL_FLOAT
-	Tests[3].Pixels = []int16{0}
-	Tests[3].Storage = PIXEL_SHORT
-	Tests[4].Pixels = []int32{0}
-	Tests[4].Storage = PIXEL_INTEGER
-	Tests[5].Pixels = []int64{0}
-	Tests[5].Storage = PIXEL_LONG
-	for _, value := range Tests {
-		_, storageType, err := pixelInterfaceToPtr(value.Pixels)
+	tests := []struct {
+		pixels  interface{}
+		storage StorageType
+	}{
+		{[]byte{0}, PIXEL_CHAR},
+		{[]float64{0}, PIXEL_DOUBLE},
+		{[]float32{0}, PIXEL_FLOAT},
+		{[]int16{0}, PIXEL_SHORT},
+		{[]int32{0}, PIXEL_INTEGER},
+		{[]int64{0}, PIXEL_LONG},
+	}
+	for _, value := range tests {
+		_, storageType, err := pixelInterfaceToPtr(value.pixels)
 		if err != nil {
-			t.Fatal("Error when passing", reflect.TypeOf(value.Pixels))
+			t.Fatal("Error when passing", reflect.TypeOf(value.pixels))
 		}
-		if storageType != value.Storage {
-			t.Fatal("Wrong storage type received for", reflect.TypeOf(value.Pixels))
+		if storageType != value.storage {
+			t.Fatal("Wrong storage type received for", reflect.TypeOf(value.pixels))
 		}
 	}
 
