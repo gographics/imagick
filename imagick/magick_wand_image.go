@@ -1529,7 +1529,7 @@ func pixelInterfaceToPtr(pixels interface{}) (unsafe.Pointer, StorageType, error
 		stype = PIXEL_LONG
 
 	default:
-		return ptr, nil, fmt.Errorf("Type %T is not valid for this operation", t)
+		return ptr, PIXEL_UNDEFINED, fmt.Errorf("Type %T is not valid for this operation", t)
 	}
 
 	return ptr, stype, nil
