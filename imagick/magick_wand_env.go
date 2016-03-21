@@ -8,13 +8,17 @@ package imagick
 #include <wand/MagickWand.h>
 */
 import "C"
+import "sync"
 
 var (
+	initMutex sync.Mutex
 	initialized bool
 )
 
 // Inicializes the MagickWand environment
 func Initialize() {
+	initMutex.Lock()
+	defer initMutex.Unlock()
 	if initialized {
 		return
 	}
@@ -24,6 +28,8 @@ func Initialize() {
 
 // Terminates the MagickWand environment
 func Terminate() {
+	initMutex.Lock()
+	defer initMutex.Unlock()
 	if initialized {
 		C.MagickWandTerminus()
 		initialized = false
