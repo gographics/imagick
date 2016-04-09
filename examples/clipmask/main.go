@@ -10,13 +10,8 @@ func main() {
 	defer imagick.Terminate()
 
 	dest := imagick.NewMagickWand()
-	defer dest.Destroy()
-
 	src := imagick.NewMagickWand()
-	defer src.Destroy()
-
 	mask := imagick.NewMagickWand()
-	defer mask.Destroy()
 
 	dest.SetSize(100, 100)
 	src.SetSize(100, 100)

@@ -8,13 +8,9 @@ func main() {
 	defer imagick.Terminate()
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	lw := imagick.NewMagickWand()
-	defer lw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 
 	// Create the initial 640x480 transparent canvas
 	pw.SetColor("none")
