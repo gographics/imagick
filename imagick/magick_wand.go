@@ -19,8 +19,8 @@ import (
 
 // This struct represents the MagickWand C API of ImageMagick
 type MagickWand struct {
-	mw *C.MagickWand
-	sync.Once
+	mw   *C.MagickWand
+	init sync.Once
 }
 
 func newMagickWand(cmw *C.MagickWand) *MagickWand {
@@ -57,7 +57,7 @@ func (mw *MagickWand) Destroy() {
 		return
 	}
 
-	mw.Do(func() {
+	mw.init.Do(func() {
 		mw.mw = C.DestroyMagickWand(mw.mw)
 		relinquishMemory(unsafe.Pointer(mw.mw))
 		mw.mw = nil

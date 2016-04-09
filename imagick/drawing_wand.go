@@ -16,8 +16,8 @@ import (
 )
 
 type DrawingWand struct {
-	dw *C.DrawingWand
-	sync.Once
+	dw   *C.DrawingWand
+	init sync.Once
 }
 
 func newDrawingWand(cdw *C.DrawingWand) *DrawingWand {
@@ -50,7 +50,7 @@ func (dw *DrawingWand) Destroy() {
 		return
 	}
 
-	dw.Do(func() {
+	dw.init.Do(func() {
 		dw.dw = C.DestroyDrawingWand(dw.dw)
 		relinquishMemory(unsafe.Pointer(dw.dw))
 		dw.dw = nil

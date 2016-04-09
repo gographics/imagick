@@ -20,8 +20,8 @@ import (
 )
 
 type PixelIterator struct {
-	pi *C.PixelIterator
-	sync.Once
+	pi   *C.PixelIterator
+	init sync.Once
 }
 
 func newPixelIterator(cpi *C.PixelIterator) *PixelIterator {
@@ -65,7 +65,7 @@ func (pi *PixelIterator) Destroy() {
 		return
 	}
 
-	pi.Do(func() {
+	pi.init.Do(func() {
 		pi.pi = C.DestroyPixelIterator(pi.pi)
 		relinquishMemory(unsafe.Pointer(pi.pi))
 		pi.pi = nil

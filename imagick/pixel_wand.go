@@ -17,8 +17,8 @@ import (
 )
 
 type PixelWand struct {
-	pw *C.PixelWand
-	sync.Once
+	pw   *C.PixelWand
+	init sync.Once
 }
 
 // Returns a new pixel wand
@@ -51,7 +51,7 @@ func (pw *PixelWand) Destroy() {
 		return
 	}
 
-	pw.Do(func() {
+	pw.init.Do(func() {
 		pw.pw = C.DestroyPixelWand(pw.pw)
 		relinquishMemory(unsafe.Pointer(pw.pw))
 		pw.pw = nil
