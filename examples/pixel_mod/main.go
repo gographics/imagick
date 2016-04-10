@@ -14,13 +14,12 @@ func useDraw() {
 
 	/* Create a wand */
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
+
 	/* Read the input image */
 	mw.ReadImage("logo:")
 	fill := imagick.NewPixelWand()
-	defer fill.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
+
 	// Set the fill to "red" or you can do the same thing with this:
 	fill.SetColor("red")
 	dw.SetFillColor(fill)
@@ -37,13 +36,11 @@ func usePixelIterator() {
 
 	/* Create a wand */
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 
 	/* Read the input image */
 	mw.ReadImage("logo:")
 	// Get a one-pixel region at coordinate 200,100
 	iterator := mw.NewPixelRegionIterator(200, 100, 1, 1)
-	defer iterator.Destroy()
 	pixels := iterator.GetNextIteratorRow()
 	// Modify the pixel
 	pixels[0].SetColor("red")

@@ -8,7 +8,6 @@ func main() {
 	defer imagick.Terminate()
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	mw.ReadImage("logo:")
 
 	// We know that logo: is 640x480 but in the general case
@@ -22,7 +21,7 @@ func main() {
 	mw.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_DEACTIVATE)
 	// clone the input image
 	mwr := mw.Clone()
-	defer mwr.Destroy()
+
 	// Resize it
 	mwr.ResizeImage(w, h/2, imagick.FILTER_LANCZOS, 1)
 	// Flip the image over to form the reflection
@@ -31,7 +30,6 @@ func main() {
 	// Create the gradient image which will be used as the alpha
 	// channel in the reflection image
 	mwg := imagick.NewMagickWand()
-	defer mwg.Destroy()
 	mwg.SetSize(w, h/2)
 	mwg.ReadImage("gradient:white-black")
 
@@ -43,7 +41,6 @@ func main() {
 
 	// Append the reflection to the bottom (MagickTrue) of the original image
 	mwout := mw.AppendImages(true)
-	defer mwout.Destroy()
 
 	// and save the result
 	mwout.WriteImage("logo_reflect.png")
