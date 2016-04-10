@@ -10,9 +10,7 @@ func main() {
 	defer imagick.Terminate()
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	aw := imagick.NewMagickWand()
-	defer aw.Destroy()
 
 	// Read the first input image
 	if err := mw.ReadImage("bunny_grass.gif"); err != nil {

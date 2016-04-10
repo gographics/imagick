@@ -8,9 +8,7 @@ func main() {
 	defer imagick.Terminate()
 
 	image := imagick.NewMagickWand()
-	defer image.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 
 	image.ReadImage("fract6.jpg")
 
@@ -37,7 +35,7 @@ func main() {
 
 	// Make a blank canvas to draw on
 	canvas := imagick.NewMagickWand()
-	defer canvas.Destroy()
+
 	// Use a colour from the input image
 	pw, err := image.GetImagePixelColor(0, 0)
 	if err != nil {

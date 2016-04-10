@@ -12,10 +12,24 @@ static PixelWand* get_pw_at(PixelWand** pws, size_t pos) {
 }
 */
 import "C"
-import "unsafe"
+import (
+	"runtime"
+	"sync"
+	"sync/atomic"
+	"unsafe"
+)
 
 type PixelIterator struct {
-	pi *C.PixelIterator
+	pi   *C.PixelIterator
+	init sync.Once
+}
+
+func newPixelIterator(cpi *C.PixelIterator) *PixelIterator {
+	pi := &PixelIterator{pi: cpi}
+	runtime.SetFinalizer(pi, Destroy)
+	pi.IncreaseCount()
+
+	return pi
 }
 
 // Returns a new pixel iterator
@@ -23,7 +37,7 @@ type PixelIterator struct {
 // mw: the magick wand to iterate on
 //
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
-	return &PixelIterator{C.NewPixelIterator(mw.mw)}
+	return newPixelIterator(C.NewPixelIterator(mw.mw))
 }
 
 // Returns a new pixel iterator
@@ -32,7 +46,7 @@ func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 // x, y, cols, rows: there values define the perimeter of a region of pixels
 //
 func (mw *MagickWand) NewPixelRegionIterator(x, y int, width, height uint) *PixelIterator {
-	return &PixelIterator{C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height))}
+	return newPixelIterator(C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height)))
 }
 
 // Clear resources associated with a PixelIterator.
@@ -42,7 +56,7 @@ func (pi *PixelIterator) Clear() {
 
 // Makes an exact copy of the specified iterator.
 func (pi *PixelIterator) Clone() *PixelIterator {
-	return &PixelIterator{C.ClonePixelIterator(pi.pi)}
+	return newPixelIterator(C.ClonePixelIterator(pi.pi))
 }
 
 // Deallocates resources associated with a PixelIterator.
@@ -50,9 +64,14 @@ func (pi *PixelIterator) Destroy() {
 	if pi.pi == nil {
 		return
 	}
-	pi.pi = C.DestroyPixelIterator(pi.pi)
-	relinquishMemory(unsafe.Pointer(pi.pi))
-	pi.pi = nil
+
+	pi.init.Do(func() {
+		pi.pi = C.DestroyPixelIterator(pi.pi)
+		relinquishMemory(unsafe.Pointer(pi.pi))
+		pi.pi = nil
+
+		pi.DecreaseCount()
+	})
 }
 
 // Returns true if the iterator is verified as a pixel iterator.
@@ -61,6 +80,18 @@ func (pi *PixelIterator) IsVerified() bool {
 		return false
 	}
 	return 1 == C.IsPixelIterator(pi.pi)
+}
+
+// Increase PixelIterator ref counter and set according "can`t be terminated status"
+func (pi *PixelIterator) IncreaseCount() {
+	atomic.AddInt64(&pixelIteratorCounter, int64(1))
+	unsetCanTerminate()
+}
+
+// Decrease DrawingWand ref counter and set according "can be terminated status"
+func (pi *PixelIterator) DecreaseCount() {
+	atomic.AddInt64(&pixelIteratorCounter, int64(-1))
+	setCanTerminate()
 }
 
 // Returns the current row as an array of pixel wands from the pixel iterator.
@@ -72,7 +103,7 @@ func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, &PixelWand{cpw})
+		pws = append(pws, newPixelWand(cpw))
 	}
 	return
 }
@@ -91,7 +122,7 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, &PixelWand{cpw})
+		pws = append(pws, newPixelWand(cpw))
 	}
 	return
 }
@@ -105,7 +136,7 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, &PixelWand{cpw})
+		pws = append(pws, newPixelWand(cpw))
 	}
 	return
 }

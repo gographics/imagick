@@ -8,7 +8,6 @@ import "gopkg.in/gographics/imagick.v1/imagick"
 // Currently only used in Text Effect 2
 func setTilePattern(dw *imagick.DrawingWand, pattern_name, pattern_file string) {
 	tw := imagick.NewMagickWand()
-	defer tw.Destroy()
 
 	tw.ReadImage(pattern_file)
 	// Read the tile's width and height
@@ -41,11 +40,9 @@ func textEffect1() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
+
 	pw.SetColor("none")
 	// Create a new transparent image
 	mw.NewImage(350, 100, pw)
@@ -78,7 +75,7 @@ func textEffect1() {
 	mw.CompositeImage(cw, imagick.COMPOSITE_OP_OVER, 5, 5)
 	cw.Destroy()
 	cw = imagick.NewMagickWand()
-	defer cw.Destroy()
+
 	// Create a new image the same size as the text image and put a solid colour
 	// as its background
 	pw.SetColor("rgb(125,215,255)")
@@ -95,11 +92,8 @@ func textEffect2() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	setTilePattern(dw, "#check", "pattern:checkerboard")
 	pw.SetColor("lightblue")
 	// Create a new transparent image
@@ -125,11 +119,8 @@ func textEffect3() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	// Create a 320x100 lightblue canvas
 	pw.SetColor("lightblue")
 	mw.NewImage(320, 100, pw)
@@ -155,11 +146,8 @@ func textEffect4() {
 	imagick.Initialize()
 	defer imagick.Terminate()
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	// Create a 320x100 canvas
 	pw.SetColor("gray")
 	mw.NewImage(320, 100, pw)
@@ -178,7 +166,6 @@ func textEffect4() {
 	pw.SetColor("yellow")
 	dw.SetFillColor(pw)
 	cpw := imagick.NewPixelWand()
-	defer cpw.Destroy()
 	cpw.SetColor("gold")
 	mw.ColorizeImage(pw, cpw)
 	// and write it
@@ -191,11 +178,8 @@ func textEffect5And6() {
 	defer imagick.Terminate()
 	// This one uses d_args
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	// Create a 320x100 transparent canvas
 	pw.SetColor("none")
 	mw.NewImage(320, 100, pw)
@@ -251,11 +235,8 @@ func textEffect7() {
 	defer imagick.Terminate()
 	// This one uses d_args[0]
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	// Create a 320x200 transparent canvas
 	pw.SetColor("none")
 	mw.NewImage(320, 200, pw)
@@ -285,11 +266,8 @@ func textEffect8() {
 	defer imagick.Terminate()
 	// This one uses d_args[0]
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
 	dw := imagick.NewDrawingWand()
-	defer dw.Destroy()
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	// Create a 320x200 transparent canvas
 	pw.SetColor("none")
 	mw.NewImage(640, 480, pw)

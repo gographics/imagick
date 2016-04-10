@@ -14,10 +14,7 @@ func main() {
 	var err error
 
 	mw := imagick.NewMagickWand()
-	defer mw.Destroy()
-
 	pw := imagick.NewPixelWand()
-	defer pw.Destroy()
 	pw.SetColor("blue")
 
 	err = mw.ReadImage("logo:")
