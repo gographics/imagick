@@ -251,7 +251,7 @@ func checkGC(t *testing.T) {
 }
 
 func getObjectCountersString() string {
-	str := fmt.Sprintf("magickWandCounter %d\n", atomic.LoadInt64(&magickWandCounter))
+	str := fmt.Sprintf("\nmagickWandCounter %d\n", atomic.LoadInt64(&magickWandCounter))
 	str += fmt.Sprintf("drawingWandCounter %d\n", atomic.LoadInt64(&drawingWandCounter))
 	str += fmt.Sprintf("pixelIteratorCounter %d\n", atomic.LoadInt64(&pixelIteratorCounter))
 	str += fmt.Sprintf("pixelWandCounter %d\n", atomic.LoadInt64(&pixelWandCounter))

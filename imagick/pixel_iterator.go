@@ -103,7 +103,10 @@ func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, newPixelWand(cpw))
+		// PixelWand is a private pointer, borrowed from the pixel
+		// iterator. We don't want to reference count it. It will
+		// get destroyed by C API when PixelIterator is destroyed.
+		pws = append(pws, &PixelWand{pw: cpw})
 	}
 	return
 }
@@ -122,7 +125,10 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, newPixelWand(cpw))
+		// PixelWand is a private pointer, borrowed from the pixel
+		// iterator. We don't want to reference count it. It will
+		// get destroyed by C API when PixelIterator is destroyed.
+		pws = append(pws, &PixelWand{pw: cpw})
 	}
 	return
 }
@@ -136,7 +142,10 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 	}
 	for i := 0; i < int(num); i++ {
 		cpw := C.get_pw_at(pp, C.size_t(i))
-		pws = append(pws, newPixelWand(cpw))
+		// PixelWand is a private pointer, borrowed from the pixel
+		// iterator. We don't want to reference count it. It will
+		// get destroyed by C API when PixelIterator is destroyed.
+		pws = append(pws, &PixelWand{pw: cpw})
 	}
 	return
 }
