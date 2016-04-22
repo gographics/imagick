@@ -151,7 +151,7 @@ func TestReadImageBlob(t *testing.T) {
 	}
 }
 
-func TestGetImageFloats(t *testing.T) {
+func TestExportImagePixels(t *testing.T) {
 	Initialize()
 	defer func(t *testing.T) {
 		checkGC(t)
@@ -165,50 +165,85 @@ func TestGetImageFloats(t *testing.T) {
 		t.Fatal("Failed to read internal logo: image")
 	}
 
-	width, height := mw.GetImageWidth(), mw.GetImageHeight()
-
-	val, err := mw.ExportImagePixels(0, 0, width, height, "RGB", PIXEL_FLOAT)
+	var width, height uint = 100, 100
+	err = mw.ScaleImage(width, height)
 	if err != nil {
-		t.Fatal(err.Error())
-	}
-	pixels := val.([]float32)
-	actual := len(pixels)
-	expected := (width * height * 3)
-	if actual != int(expected) {
-		t.Fatalf("Expected RGB image to have %d float vals; Got %d", expected, actual)
+		t.Fatalf("Failed scaling image: %s", err.Error())
 	}
 
-	val, err = mw.ExportImagePixels(0, 0, width, height, "RGBA", PIXEL_DOUBLE)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-	pixels64 := val.([]float64)
-	actual = len(pixels64)
-	expected = (width * height * 4)
-	if actual != int(expected) {
-		t.Fatalf("Expected RGBA image to have %d float vals; Got %d", expected, actual)
+	tests := []struct {
+		x, y    int
+		w, h    uint
+		pmap    string
+		stype   StorageType
+		isError bool // If we expect to fail
+	}{
+		{0, 0, width, height, "RGB", PIXEL_FLOAT, false},   // 0
+		{0, 0, width, height, "RGBA", PIXEL_DOUBLE, false}, // 1
+		{0, 0, width, height, "R", PIXEL_FLOAT, false},     // 2
+		{0, 0, width, height, "GB", PIXEL_FLOAT, false},    // 3
+		{0, 1, width, 1, "RGB", PIXEL_DOUBLE, false},       // 4
+
+		{0, 0, width, 0, "RGB", PIXEL_DOUBLE, true},                    // 5
+		{0, 0, 0, height, "RGB", PIXEL_DOUBLE, true},                   // 6
+		{0, 0, 0, 0, "RGB", PIXEL_DOUBLE, true},                        // 7
+		{int(width) + 1, 0, width, height, "RGB", PIXEL_DOUBLE, true},  // 8
+		{0, int(height) + 1, width, height, "RGB", PIXEL_DOUBLE, true}, // 9
+		{0, int(height) + 1, width, 1, "RGB", PIXEL_DOUBLE, true},      // 10
 	}
 
-	val, err = mw.ExportImagePixels(0, 0, width, height, "R", PIXEL_FLOAT)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-	pixels = val.([]float32)
-	actual = len(pixels)
-	expected = (width * height * 1)
-	if actual != int(expected) {
-		t.Fatalf("Expected RNN image to have %d float vals; Got %d", expected, actual)
-	}
+	for i, tt := range tests {
 
-	val, err = mw.ExportImagePixels(0, 0, width, height, "GB", PIXEL_FLOAT)
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-	pixels = val.([]float32)
-	actual = len(pixels)
-	expected = (width * height * 2)
-	if actual != int(expected) {
-		t.Fatalf("Expected NGB image to have %d float vals; Got %d", expected, actual)
+		val, err := mw.ExportImagePixels(tt.x, tt.y, tt.w, tt.h, tt.pmap, tt.stype)
+
+		if tt.isError {
+			if err == nil {
+				t.Errorf("[#%d] Expected test to fail, but it did not", i)
+			}
+			continue
+		}
+
+		if err != nil {
+			t.Errorf("[#%d] %s", i, err.Error())
+			continue
+		}
+
+		typ := reflect.TypeOf(val)
+		elem := typ.Elem()
+		actualKind := elem.Kind()
+
+		var (
+			expectKind reflect.Kind
+			size       int
+		)
+
+		switch tt.stype {
+
+		case PIXEL_FLOAT:
+			expectKind = reflect.Float32
+			size = len(val.([]float32))
+
+		case PIXEL_DOUBLE:
+			expectKind = reflect.Float64
+			size = len(val.([]float64))
+
+		default:
+			t.Fatalf("[#%d] Unhandled testcase StorageType: %v", i, tt.stype)
+		}
+
+		if actualKind != expectKind {
+			t.Errorf("[#%d] Expected slice element type %v, got %v",
+				i, expectKind, actualKind)
+			continue
+		}
+
+		expected := int(tt.w) * int(tt.h) * len(tt.pmap)
+
+		if size != expected {
+			t.Errorf("[#%d] Expected %q image to have %d pixel vals; Got %d",
+				i, tt.pmap, expected, size)
+		}
+
 	}
 }
 

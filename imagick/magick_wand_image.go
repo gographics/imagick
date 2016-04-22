@@ -773,9 +773,17 @@ func (mw *MagickWand) ExportImagePixels(x, y int, cols, rows uint,
 	if len(pmap) == 0 {
 		return nil, errors.New("zero-length pmap not permitted")
 	}
-	maplen := (int(cols) - x) * (int(rows) - y) * len(pmap)
-	if maplen <= 0 {
+
+	if x < 0 || uint(x) > mw.GetImageWidth() ||
+		y < 0 || uint(y) > mw.GetImageHeight() ||
+		cols == 0 || rows == 0 {
+
 		return nil, errors.New("Args x, y, cols, and rows produces an invalid region <= 0")
+	}
+
+	maplen := int(cols) * int(rows) * len(pmap)
+	if maplen <= 0 {
+		return nil, errors.New("Args cols and rows produces an invalid region <= 0")
 	}
 
 	var (
