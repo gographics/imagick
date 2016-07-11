@@ -8,5 +8,5 @@ package imagick
 import "C"
 
 type GeometryInfo struct {
-    gi C.GeometryInfo
+	gi C.GeometryInfo
 }
