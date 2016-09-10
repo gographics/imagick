@@ -34,6 +34,22 @@ sudo port install ImageMagick
 sudo apt-get install libmagickwand-dev
 ```
 
+## Windows
+
+*Thanks @vprus*
+
+1. Install msys per instructions at: https://github.com/StephanTLavavej/mingw-distro/blob/master/README.md
+1. Install pkg-config-lite from https://sourceforge.net/projects/pkgconfiglite/files to any directory
+1. In msys shell, do: ```pacman -S mingw-w64-x86_64-imagemagick```
+1. In msys shell, do: ```pacman -S mingw-w64-x86_64-gcc```
+1. Switch to cmd.exe shell, and do:
+
+```
+set PATH=C:/Temp/gcc/msys64/mingw64/bin;%PATH%
+set PKG_CONFIG_PATH=C:/Temp/gcc/msys64/mingw64/lib/pkgconfig
+go build gopkg.in/gographics/imagick.v2/imagick
+```
+
 ## Common
 
 Check if pkg-config is able to find the right ImageMagick include and libs:
