@@ -62,8 +62,8 @@ The examples folder is full with usage examples ported from C ones found in here
 
 # Quick and partial example
 
-Since this is a CGO binding, Go GC does not manage memory allocated by the C API then is necessary to use Terminate() and Destroy() methods.
-But objects of MagickWand, DrawingWand, PixelIterator and PixelWand are managed by GO GC if you create them by constructors.
+Since this is a CGO binding, and the Go GC does not manage memory allocated by the C API, it is then necessary to use the Terminate() and Destroy() methods.
+Objects of type MagickWand, DrawingWand, PixelIterator and PixelWand are managed by Go GC if you create them via constructors.
 
 ```go
 package main
