@@ -7,8 +7,8 @@ Go Imagick is a Go bind to ImageMagick's MagickWand C API.
 We support two compatibility branches:
 
 ```
-master (tag v2.x.x): >= ImageMagick 6.8.9
-legacy (tag v1.x.x): <= ImageMagick 6.8.8
+master (tag v2.x.x): 6.8.9-9 <= ImageMagick <  7.x
+legacy (tag v1.x.x): 6.7.x   <= ImageMagick <= 6.8.9-8
 ```
 
 They map, respectively, through gopkg.in:
