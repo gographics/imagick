@@ -165,8 +165,8 @@ func (mw *MagickWand) GetInterlaceScheme() InterlaceType {
 }
 
 // Gets the wand compression.
-func (mw *MagickWand) GetInterpolateMethod() InterpolatePixelMethod {
-	return InterpolatePixelMethod(C.MagickGetInterpolateMethod(mw.mw))
+func (mw *MagickWand) GetInterpolateMethod() PixelInterpolateMethod {
+	return PixelInterpolateMethod(C.MagickGetInterpolateMethod(mw.mw))
 }
 
 // Returns a value associated with a wand and the specified key.
@@ -392,7 +392,7 @@ func (mw *MagickWand) SetInterlaceScheme(scheme InterlaceType) error {
 }
 
 // Sets the interpolate pixel method.
-func (mw *MagickWand) SetInterpolateMethod(method InterpolatePixelMethod) error {
+func (mw *MagickWand) SetInterpolateMethod(method PixelInterpolateMethod) error {
 	ok := C.MagickSetInterpolateMethod(mw.mw, C.PixelInterpolateMethod(method))
 	return mw.getLastErrorIfFailed(ok)
 }

@@ -246,7 +246,7 @@ func (mw *MagickWand) ClipImagePath(pathname string, inside bool) error {
 }
 
 // Replaces colors in the image from a color lookup table
-func (mw *MagickWand) ClutImage(clut *MagickWand, interp InterpolatePixelMethod) error {
+func (mw *MagickWand) ClutImage(clut *MagickWand, interp PixelInterpolateMethod) error {
 	ok := C.MagickClutImage(mw.mw, clut.mw, C.PixelInterpolateMethod(interp))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -1038,8 +1038,8 @@ func (mw *MagickWand) GetImageInterlaceScheme() InterlaceType {
 }
 
 // Returns the interpolation method for the sepcified image.
-func (mw *MagickWand) GetImageInterpolateMethod() InterpolatePixelMethod {
-	return InterpolatePixelMethod(C.MagickGetImageInterpolateMethod(mw.mw))
+func (mw *MagickWand) GetImageInterpolateMethod() PixelInterpolateMethod {
+	return PixelInterpolateMethod(C.MagickGetImageInterpolateMethod(mw.mw))
 }
 
 // Gets the image iterations.
@@ -1202,7 +1202,7 @@ func (mw *MagickWand) IdentifyImage() string {
 //
 // method: the pixel interpolation method.
 //
-func (mw *MagickWand) ImplodeImage(radius float64, method InterpolatePixelMethod) error {
+func (mw *MagickWand) ImplodeImage(radius float64, method PixelInterpolateMethod) error {
 	ok := C.MagickImplodeImage(mw.mw, C.double(radius), C.PixelInterpolateMethod(method))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -1613,7 +1613,7 @@ func (mw *MagickWand) PingImageFile(img *os.File) error {
 // method: the pixel interpolation method.
 //
 func (mw *MagickWand) PolaroidImage(dw *DrawingWand, caption string,
-	angle float64, method InterpolatePixelMethod) error {
+	angle float64, method PixelInterpolateMethod) error {
 
 	ccaption := C.CString(caption)
 	defer C.free(unsafe.Pointer(ccaption))
@@ -2089,7 +2089,7 @@ func (mw *MagickWand) SetImageInterlaceScheme(interlace InterlaceType) error {
 }
 
 // Sets the image interpolate pixel method.
-func (mw *MagickWand) SetImageInterpolateMethod(method InterpolatePixelMethod) error {
+func (mw *MagickWand) SetImageInterpolateMethod(method PixelInterpolateMethod) error {
 	ok := C.MagickSetImageInterpolateMethod(mw.mw, C.PixelInterpolateMethod(method))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2379,7 +2379,7 @@ func (mw *MagickWand) SpliceImage(width, height uint, x, y int) error {
 //
 // radius: Choose a random pixel in a neighborhood of this extent.
 //
-func (mw *MagickWand) SpreadImage(method InterpolatePixelMethod, radius float64) error {
+func (mw *MagickWand) SpreadImage(method PixelInterpolateMethod, radius float64) error {
 	ok := C.MagickSpreadImage(mw.mw, C.PixelInterpolateMethod(method), C.double(radius))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2428,7 +2428,7 @@ func (mw *MagickWand) StripImage() error {
 //
 // method: the pixel interpolation method.
 //
-func (mw *MagickWand) SwirlImage(degrees float64, method InterpolatePixelMethod) error {
+func (mw *MagickWand) SwirlImage(degrees float64, method PixelInterpolateMethod) error {
 	ok := C.MagickSwirlImage(mw.mw, C.double(degrees), C.PixelInterpolateMethod(method))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2575,7 +2575,7 @@ func (mw *MagickWand) VignetteImage(blackPoint, whitePoint float64, x, y int) er
 // method: the pixel interpolation method
 //
 func (mw *MagickWand) WaveImage(amplitude, wavelength float64,
-	method InterpolatePixelMethod) error {
+	method PixelInterpolateMethod) error {
 
 	ok := C.MagickWaveImage(mw.mw, C.double(amplitude),
 		C.double(wavelength), C.PixelInterpolateMethod(method))
