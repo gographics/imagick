@@ -184,6 +184,7 @@ func (pw *PixelWand) GetMagentaQuantum() Quantum {
 }
 
 // Gets the magick color of the pixel wand
+// TODO(justinfx): Needs tests. Most likely crashes/leaks.
 func (pw *PixelWand) GetMagickColor() *PixelInfo {
 	var pi C.PixelInfo
 	C.PixelGetMagickColor(pw.pw, &pi)
@@ -201,6 +202,7 @@ func (pw *PixelWand) GetOpacityQuantum() Quantum {
 }
 
 // Gets the color of the pixel wand as a PixelPacket
+// TODO(justinfx): Needs tests. Most likely crashes/leaks.
 func (pw *PixelWand) GetQuantumColor() *PixelInfo {
 	var pi C.PixelInfo
 	C.PixelGetQuantumPacket(pw.pw, &pi)
