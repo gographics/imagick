@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 import "unsafe"
@@ -57,26 +57,14 @@ func sizedDoubleArrayToFloat64Slice(p *C.double, num C.size_t) []float64 {
 	return nums
 }
 
-func ConvertRGBToHSB(qr, qg, qb Quantum) (h, s, b float64) {
-	var dh, ds, db C.double
-	C.ConvertRGBToHSB(C.Quantum(qr), C.Quantum(qg), C.Quantum(qb), &dh, &ds, &db)
-	return float64(dh), float64(ds), float64(db)
-}
-
-func ConvertHSBToRGB(fh, fs, fb float64) (r, g, b Quantum) {
-	var qr, qg, qb C.Quantum
-	C.ConvertHSBToRGB(C.double(fh), C.double(fs), C.double(fb), &qr, &qg, &qb)
-	return Quantum(qr), Quantum(qg), Quantum(qb)
-}
-
-func ConvertRGBToHSL(qr, qg, qb Quantum) (h, s, l float64) {
+func ConvertRGBToHSL(qr, qg, qb float64) (h, s, l float64) {
 	var dh, ds, dl C.double
-	C.ConvertRGBToHSL(C.Quantum(qr), C.Quantum(qg), C.Quantum(qb), &dh, &ds, &dl)
+	C.ConvertRGBToHSL(C.double(qr), C.double(qg), C.double(qb), &dh, &ds, &dl)
 	return float64(dh), float64(ds), float64(dl)
 }
 
-func ConvertHSLToRGB(fh, fs, fl float64) (r, g, b Quantum) {
-	var qr, qg, qb C.Quantum
+func ConvertHSLToRGB(fh, fs, fl float64) (r, g, b float64) {
+	var qr, qg, qb C.double
 	C.ConvertHSLToRGB(C.double(fh), C.double(fs), C.double(fl), &qr, &qg, &qb)
-	return Quantum(qr), Quantum(qg), Quantum(qb)
+	return float64(qr), float64(qg), float64(qb)
 }

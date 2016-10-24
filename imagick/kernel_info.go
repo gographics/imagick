@@ -5,10 +5,16 @@
 package imagick
 
 /*
-#include <magick/MagickCore.h>
+#include <MagickCore/MagickCore.h>
 */
 import "C"
 
+// TODO(justinfx)
+// KernelInfo contains fields to describe a convolution kernel
 type KernelInfo struct {
 	info *C.KernelInfo
+}
+
+func newKernelInfoFromCAPI(info *C.KernelInfo) *KernelInfo {
+	return &KernelInfo{info}
 }

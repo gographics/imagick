@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 
@@ -184,27 +184,27 @@ func (pw *PixelWand) GetMagentaQuantum() Quantum {
 }
 
 // Gets the magick color of the pixel wand
-func (pw *PixelWand) GetMagickColor() *MagickPixelPacket {
-	var mpp C.MagickPixelPacket
-	C.PixelGetMagickColor(pw.pw, &mpp)
-	return newMagickPixelPacketFromCAPI(&mpp)
+func (pw *PixelWand) GetMagickColor() *PixelInfo {
+	var pi C.PixelInfo
+	C.PixelGetMagickColor(pw.pw, &pi)
+	return newPixelInfoFromCAPI(&pi)
 }
 
-// Returns the normalized opacity color of the pixel wand
+// Deprecated: Use GetAlpha()
 func (pw *PixelWand) GetOpacity() float64 {
-	return float64(C.PixelGetOpacity(pw.pw))
+	return pw.GetAlpha()
 }
 
-// Returns the opacity color of the pixel wand
+// Deprecated: Use GetAlphaQuantum()
 func (pw *PixelWand) GetOpacityQuantum() Quantum {
-	return Quantum(C.PixelGetOpacityQuantum(pw.pw))
+	return pw.GetAlphaQuantum()
 }
 
 // Gets the color of the pixel wand as a PixelPacket
-func (pw *PixelWand) GetQuantumColor() *PixelPacket {
-	var pp C.PixelPacket
-	C.PixelGetQuantumColor(pw.pw, &pp)
-	return newPixelPacketFromCAPI(&pp)
+func (pw *PixelWand) GetQuantumColor() *PixelInfo {
+	var pi C.PixelInfo
+	C.PixelGetQuantumPacket(pw.pw, &pi)
+	return newPixelInfoFromCAPI(&pi)
 }
 
 // Returns the normalized red color of the pixel wand
@@ -306,8 +306,8 @@ func (pw *PixelWand) SetHSL(hue, saturation, brightness float64) {
 }
 
 // Sets the colormap index of the pixel wand
-func (pw *PixelWand) SetIndex(index *IndexPacket) {
-	C.PixelSetIndex(pw.pw, C.IndexPacket(*index))
+func (pw *PixelWand) SetIndex(quantum Quantum) {
+	C.PixelSetIndex(pw.pw, C.Quantum(quantum))
 }
 
 // Sets the normalized magenta color of the pixel wand
@@ -320,24 +320,24 @@ func (pw *PixelWand) SetMagentaQuantum(magenta Quantum) {
 	C.PixelSetMagentaQuantum(pw.pw, C.Quantum(magenta))
 }
 
-// Sets the color of the pixel wand
-func (pw *PixelWand) SetMagickColor(color *MagickPixelPacket) {
-	C.PixelSetMagickColor(pw.pw, color.mpp)
-}
-
-// Sets the normalized opacity color of the pixel wand
+// Deprecated: Use SetAlpha()
 func (pw *PixelWand) SetOpacity(opacity float64) {
-	C.PixelSetOpacity(pw.pw, C.double(opacity))
+	pw.SetAlpha(opacity)
 }
 
-// Sets the opacity color of the pixel wand
+// Deprecared: USe SetAlphaQuantum()
 func (pw *PixelWand) SetOpacityQuantum(opacity Quantum) {
-	C.PixelSetOpacityQuantum(pw.pw, C.Quantum(opacity))
+	pw.SetAlphaQuantum(opacity)
+}
+
+// Deprecared: Use SetPixelColor
+func (pw *PixelWand) SetMagickColor(color *PixelInfo) {
+	C.PixelSetPixelColor(pw.pw, color.pi)
 }
 
 // Sets the color of the pixel wand
-func (pw *PixelWand) SetQuantumColor(color *PixelPacket) {
-	C.PixelSetQuantumColor(pw.pw, color.pp)
+func (pw *PixelWand) SetPixelColor(color *PixelInfo) {
+	C.PixelSetPixelColor(pw.pw, color.pi)
 }
 
 // Sets the normalized red color of the pixel wand

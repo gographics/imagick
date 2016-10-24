@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 
@@ -23,5 +23,4 @@ const (
 	GRAVITY_SOUTH_WEST GravityType = C.SouthWestGravity
 	GRAVITY_SOUTH      GravityType = C.SouthGravity
 	GRAVITY_SOUTH_EAST GravityType = C.SouthEastGravity
-	GRAVITY_STATIC     GravityType = C.StaticGravity
 )

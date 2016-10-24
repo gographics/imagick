@@ -5,14 +5,12 @@
 package imagick
 
 /*
-#include <magick/MagickCore.h>
+#include <MagickCore/MagickCore.h>
 */
 import "C"
 
-import (
 //"fmt"
 //"unsafe"
-)
 
 type ChannelFeatures struct {
 	cf *C.ChannelFeatures

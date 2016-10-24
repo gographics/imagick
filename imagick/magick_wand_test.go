@@ -344,8 +344,8 @@ func TestPixelInterfaceToPtr(t *testing.T) {
 		{[]float64{0}, PIXEL_DOUBLE},
 		{[]float32{0}, PIXEL_FLOAT},
 		{[]int16{0}, PIXEL_SHORT},
-		{[]int32{0}, PIXEL_INTEGER},
-		{[]int64{0}, PIXEL_LONG},
+		{[]int64{0}, PIXEL_LONGLONG},
+		{[]int32{0}, PIXEL_LONG},
 	}
 	for _, value := range tests {
 		_, storageType, err := pixelInterfaceToPtr(value.pixels)

@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 import (
@@ -414,6 +414,12 @@ func (dw *DrawingWand) Line(sx, sy, ex, ey float64) {
 	C.DrawLine(dw.dw, C.double(sx), C.double(sy), C.double(ex), C.double(ey))
 }
 
+// Deprecated in ImageMagick-7.x
+// Use Alpha()
+func (dw *DrawingWand) Matte(x, y float64, pmethod PaintMethod) {
+	C.DrawAlpha(dw.dw, C.double(x), C.double(y), C.PaintMethod(pmethod))
+}
+
 // Paints on the image's opacity channel in order to set effected pixels to
 // transparent. to influence the opacity of pixels. The available paint
 // methods are:
@@ -431,8 +437,8 @@ func (dw *DrawingWand) Line(sx, sy, ex, ey float64) {
 //
 // x, y: x, y ordinates
 // pmethod: paint method
-func (dw *DrawingWand) Matte(x, y float64, pmethod PaintMethod) {
-	C.DrawMatte(dw.dw, C.double(x), C.double(y), C.PaintMethod(pmethod))
+func (dw *DrawingWand) Alpha(x, y float64, pmethod PaintMethod) {
+	C.DrawAlpha(dw.dw, C.double(x), C.double(y), C.PaintMethod(pmethod))
 }
 
 // Adds a path element to the current path which closes the current subpath by
@@ -1102,8 +1108,8 @@ func (dw *DrawingWand) Translate(x, y float64) {
 // x2: right x ordinate
 //
 // y2: bottom y ordinate
-func (dw *DrawingWand) SetViewbox(x1, y1, x2, y2 int) {
-	C.DrawSetViewbox(dw.dw, C.ssize_t(x1), C.ssize_t(y1), C.ssize_t(x2), C.ssize_t(y2))
+func (dw *DrawingWand) SetViewbox(x1, y1, x2, y2 float64) {
+	C.DrawSetViewbox(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2))
 }
 
 // Returns true if the wand is verified as a drawing wand.

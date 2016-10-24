@@ -5,14 +5,14 @@
 package imagick
 
 /*
-#include <magick/MagickCore.h>
+#include <MagickCore/MagickCore.h>
 */
 import "C"
 
-type MagickPixelPacket struct {
-	mpp *C.MagickPixelPacket
+type PixelInfo struct {
+	pi *C.PixelInfo
 }
 
-func newMagickPixelPacketFromCAPI(mpp *C.MagickPixelPacket) *MagickPixelPacket {
-	return &MagickPixelPacket{mpp}
+func newPixelInfoFromCAPI(pi *C.PixelInfo) *PixelInfo {
+	return &PixelInfo{pi}
 }

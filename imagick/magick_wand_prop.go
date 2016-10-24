@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 import (
@@ -393,7 +393,7 @@ func (mw *MagickWand) SetInterlaceScheme(scheme InterlaceType) error {
 
 // Sets the interpolate pixel method.
 func (mw *MagickWand) SetInterpolateMethod(method InterpolatePixelMethod) error {
-	ok := C.MagickSetInterpolateMethod(mw.mw, C.InterpolatePixelMethod(method))
+	ok := C.MagickSetInterpolateMethod(mw.mw, C.PixelInterpolateMethod(method))
 	return mw.getLastErrorIfFailed(ok)
 }
 

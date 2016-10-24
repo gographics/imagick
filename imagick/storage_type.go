@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 
@@ -16,7 +16,7 @@ const (
 	PIXEL_CHAR      StorageType = C.CharPixel
 	PIXEL_DOUBLE    StorageType = C.DoublePixel
 	PIXEL_FLOAT     StorageType = C.FloatPixel
-	PIXEL_INTEGER   StorageType = C.IntegerPixel
+	PIXEL_LONGLONG  StorageType = C.LongLongPixel
 	PIXEL_LONG      StorageType = C.LongPixel
 	PIXEL_QUANTUM   StorageType = C.QuantumPixel
 	PIXEL_SHORT     StorageType = C.ShortPixel

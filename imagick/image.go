@@ -5,7 +5,7 @@
 package imagick
 
 /*
-#include <magick/MagickCore.h>
+#include <MagickCore/MagickCore.h>
 */
 import "C"
 
@@ -13,6 +13,23 @@ type Image struct {
 	img *C.Image
 }
 
-func NewMagickImage(info *ImageInfo, width, height uint, background *MagickPixelPacket) *Image {
-	return &Image{img: C.NewMagickImage(info.info, C.size_t(width), C.size_t(height), background.mpp)}
+// TODO(justinfx): Needs tests, using ExceptionInfo
+func NewMagickImage(info *ImageInfo, width, height uint,
+	background *PixelInfo) (*Image, *ExceptionInfo) {
+
+	var exc C.ExceptionInfo
+
+	img := C.NewMagickImage(
+		info.info,
+		C.size_t(width), C.size_t(height),
+		background.pi,
+		&exc)
+
+	var err *ExceptionInfo = nil
+
+	if exc.error_number != 0 {
+		err = newExceptionInfo(&exc)
+	}
+
+	return &Image{img: img}, err
 }

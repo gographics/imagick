@@ -6,7 +6,7 @@ package imagick
 
 /*
 #cgo !no_pkgconfig pkg-config: MagickWand MagickCore
-#include <wand/MagickWand.h>
+#include <MagickWand/MagickWand.h>
 */
 import "C"
 
