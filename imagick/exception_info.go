@@ -11,6 +11,9 @@ import "C"
 
 import "fmt"
 
+// ExceptionInfo is an error type returned by certain
+// New* API calls.
+// TODO(justinfx): Needs tests
 type ExceptionInfo struct {
 	kind        ExceptionType
 	errno       int
@@ -19,6 +22,10 @@ type ExceptionInfo struct {
 }
 
 func newExceptionInfo(errInfo *C.ExceptionInfo) *ExceptionInfo {
+	if errInfo == nil {
+		return nil
+	}
+
 	return &ExceptionInfo{
 		kind:        ExceptionType(errInfo.severity),
 		errno:       int(errInfo.error_number),

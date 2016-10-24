@@ -12,3 +12,16 @@ import "C"
 type ImageInfo struct {
 	info *C.ImageInfo
 }
+
+func newImageInfo() *ImageInfo {
+	ii := C.AcquireImageInfo()
+	C.GetImageInfo(ii)
+	return &ImageInfo{ii}
+}
+
+func (ii *ImageInfo) Destroy() {
+	if ii.info != nil {
+		C.DestroyImageInfo(ii.info)
+		ii.info = nil
+	}
+}
