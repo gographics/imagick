@@ -399,7 +399,6 @@ func (mw *MagickWand) ContrastStretchImage(blackPoint, whitePoint float64) error
 	return mw.getLastErrorIfFailed(ok)
 }
 
-// TODO(justinfx)
 // Applies a custom convolution kernel to the image.
 //
 // kernel: KernelInfo
