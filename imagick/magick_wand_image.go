@@ -1962,6 +1962,12 @@ func (mw *MagickWand) SetImageColor(color *PixelWand) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// SetImageAlphaChannel activates, deactivates, resets, or sets the alpha channel.
+func (mw *MagickWand) SetImageAlphaChannel(operation AlphaChannelType) error {
+	ok := C.MagickSetImageAlphaChannel(mw.mw, C.AlphaChannelOption(operation))
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // Sets the color of the specified colormap index.
 //
 // index: the offset into the image colormap.
