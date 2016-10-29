@@ -4,7 +4,7 @@ package main
 import (
 	"os"
 
-	"gopkg.in/gographics/imagick.v2/imagick"
+	"gopkg.in/gographics/imagick.v3/imagick"
 )
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 
 	mwc.ReadImage("logo_mask.png")
 	mwc.SetImageMatte(false)
-	mw.CompositeImage(mwc, imagick.COMPOSITE_OP_COPY_OPACITY, 0, 0)
+	mw.CompositeImage(mwc, imagick.COMPOSITE_OP_COPY_ALPHA, true, 0, 0)
 
 	// Annotate gets all the font information from the drawingwand
 	// but draws the text on the magickwand
@@ -116,7 +116,7 @@ func main() {
 	// ant.png  -compose Overlay -composite
 	mwc = imagick.NewMagickWand()
 	mwc.ReadImage("logo_ant.png")
-	mwf.CompositeImage(mwc, imagick.COMPOSITE_OP_OVERLAY, 0, 0)
+	mwf.CompositeImage(mwc, imagick.COMPOSITE_OP_OVERLAY, true, 0, 0)
 	mwc.Destroy()
 
 	// ant.png  -matte  -compose Dst_In  -composite
@@ -130,7 +130,7 @@ func main() {
 	// It would appear that the -matte affects each wand currently in the
 	// command list because applying it to both wands gives the same result
 	mwf.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_SET)
-	mwf.CompositeImage(mwc, imagick.COMPOSITE_OP_DST_IN, 0, 0)
+	mwf.CompositeImage(mwc, imagick.COMPOSITE_OP_DST_IN, true, 0, 0)
 
 	mwf.WriteImage("logo_ant_3D.png")
 

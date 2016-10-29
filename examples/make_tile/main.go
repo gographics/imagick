@@ -1,7 +1,7 @@
 // Port of http://members.shaw.ca/el.supremo/MagickWand/make_tile.htm to Go
 package main
 
-import "gopkg.in/gographics/imagick.v2/imagick"
+import "gopkg.in/gographics/imagick.v3/imagick"
 
 // make-tile creates a tileable image from an input image.
 // ( +clone -flop ) +append  ( +clone -flip ) -append -resize 50%

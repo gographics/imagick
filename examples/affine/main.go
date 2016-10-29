@@ -4,7 +4,7 @@ package main
 import (
 	"math"
 
-	"gopkg.in/gographics/imagick.v2/imagick"
+	"gopkg.in/gographics/imagick.v3/imagick"
 )
 
 func DegreesToRadians(deg float64) (rad float64) {

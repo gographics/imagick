@@ -1,7 +1,7 @@
 // Port of http://members.shaw.ca/el.supremo/MagickWand/reflect.htm to Go
 package main
 
-import "gopkg.in/gographics/imagick.v2/imagick"
+import "gopkg.in/gographics/imagick.v3/imagick"
 
 func main() {
 	imagick.Initialize()
