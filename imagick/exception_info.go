@@ -13,7 +13,6 @@ import "fmt"
 
 // ExceptionInfo is an error type returned by certain
 // New* API calls.
-// TODO(justinfx): Needs tests
 type ExceptionInfo struct {
 	kind        ExceptionType
 	errno       int
@@ -21,6 +20,7 @@ type ExceptionInfo struct {
 	description string
 }
 
+// Create a new ExceptionInfo wrapper around a C ExceptionInfo ptr
 func newExceptionInfo(errInfo *C.ExceptionInfo) *ExceptionInfo {
 	if errInfo == nil {
 		return nil
@@ -34,18 +34,44 @@ func newExceptionInfo(errInfo *C.ExceptionInfo) *ExceptionInfo {
 	}
 }
 
+// Check if a given C ExceptionInfo ptr is an error.
+// Returns a valid ExceptionInfo if there was an error,
+// otherwise returns nil
+func checkExceptionInfo(errInfo *C.ExceptionInfo) *ExceptionInfo {
+	if errInfo != nil && errInfo.error_number != 0 {
+		return newExceptionInfo(errInfo)
+	}
+
+	return nil
+}
+
 func (e *ExceptionInfo) Error() string {
+	if e == nil {
+		return ""
+	}
 	return fmt.Sprintf("%s: %s", e.kind.String(), e.description)
 }
 
+// Errno returns the ExceptionInfo error number (non-zero if error)
 func (e *ExceptionInfo) Errno() int {
+	if e == nil {
+		return 0
+	}
 	return e.errno
 }
 
+// Reason returns the string reason for the Exception
 func (e *ExceptionInfo) Reason() string {
+	if e == nil {
+		return ""
+	}
 	return e.reason
 }
 
+// Description returns the string description for the Exception
 func (e *ExceptionInfo) Description() string {
+	if e == nil {
+		return ""
+	}
 	return e.description
 }

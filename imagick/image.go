@@ -13,7 +13,6 @@ type Image struct {
 	img *C.Image
 }
 
-// TODO(justinfx): Needs tests, using ExceptionInfo
 func NewMagickImage(info *ImageInfo, width, height uint,
 	background *PixelInfo) (*Image, *ExceptionInfo) {
 
@@ -25,11 +24,9 @@ func NewMagickImage(info *ImageInfo, width, height uint,
 		background.pi,
 		&exc)
 
-	var err *ExceptionInfo = nil
-
-	if exc.error_number != 0 {
-		err = newExceptionInfo(&exc)
+	if err := checkExceptionInfo(&exc); err != nil {
+		return nil, err
 	}
 
-	return &Image{img: img}, err
+	return &Image{img: img}, nil
 }
