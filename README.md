@@ -8,6 +8,7 @@ We support two compatibility branches:
 
 ```
 master (tag v2.x.x): 6.8.9-9 <= ImageMagick <= 6.9.6-2
+im-7   (tag v3.x.x): 7.x     <= ImageMagick <= 7.x
 legacy (tag v1.x.x): 6.7.x   <= ImageMagick <= 6.8.9-8
 ```
 
@@ -15,6 +16,7 @@ They map, respectively, through gopkg.in:
 
 ```
 gopkg.in/gographics/imagick.v2/imagick
+gopkg.in/gographics/imagick.v3/imagick
 gopkg.in/gographics/imagick.v1/imagick
 ```
 
@@ -153,7 +155,7 @@ func main() {
 
 # License
 
-Copyright (c) 2013-2014, The GoGraphics Team
+Copyright (c) 2013-2016, The GoGraphics Team
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
