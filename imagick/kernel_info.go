@@ -6,6 +6,16 @@ package imagick
 
 /*
 #include <magick/MagickCore.h>
+
+#if defined(__cplusplus) || defined(c_plusplus)
+extern "C" {
+#endif
+
+extern void ScaleKernelInfo(KernelInfo *,const double,const GeometryFlags);
+
+#if defined(__cplusplus) || defined(c_plusplus)
+}
+#endif
 */
 import "C"
 
