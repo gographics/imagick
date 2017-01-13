@@ -1961,6 +1961,15 @@ func (mw *MagickWand) SetImageBorderColor(border *PixelWand) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// SetImageChannelMask sets image channel mask, and returns
+// the previous channel type setting.
+// Setting the channel mask impacts the effect of image operations,
+// to limit the operation to the given channel.
+func (mw *MagickWand) SetImageChannelMask(channel ChannelType) ChannelType {
+	prevChannel := C.MagickSetImageChannelMask(mw.mw, C.ChannelType(channel))
+	return ChannelType(prevChannel)
+}
+
 // Set the entire wand canvas to the specified color.
 func (mw *MagickWand) SetImageColor(color *PixelWand) error {
 	ok := C.MagickSetImageColor(mw.mw, color.pw)
