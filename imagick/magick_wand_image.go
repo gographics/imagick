@@ -847,6 +847,12 @@ func (mw *MagickWand) GetImage() *MagickWand {
 	return newMagickWand(C.MagickGetImage(mw.mw))
 }
 
+// GetImageAlphaChannel returns MagickFalse if the image alpha channel is not
+// activated. That is, the image is RGB rather than RGBA or CMYK rather than CMYKA.
+func (mw *MagickWand) GetImageAlphaChannel() bool {
+	return 1 == C.MagickGetImageAlphaChannel(mw.mw)
+}
+
 // Returns the image background color.
 func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) {
 	cbgcolor := NewPixelWand()

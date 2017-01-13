@@ -127,6 +127,21 @@ func TestDeleteImageArtifact(t *testing.T) {
 	}
 }
 
+func TestImageAlpha(t *testing.T) {
+	mw := NewMagickWand()
+	mw.ReadImage(`logo:`)
+
+	if mw.GetImageAlphaChannel() {
+		t.Fatal("Expected image not to have an activated alpha channel")
+	}
+
+	mw.SetImageAlphaChannel(ALPHA_CHANNEL_ACTIVATE)
+
+	if !mw.GetImageAlphaChannel() {
+		t.Fatal("Expected image to have an activated alpha channel")
+	}
+}
+
 func TestReadImageBlob(t *testing.T) {
 	Initialize()
 	defer func(t *testing.T) {
