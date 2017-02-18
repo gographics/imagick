@@ -127,6 +127,36 @@ func TestDeleteImageArtifact(t *testing.T) {
 	}
 }
 
+func TestImageAlpha(t *testing.T) {
+	mw := NewMagickWand()
+	mw.ReadImage(`logo:`)
+
+	if mw.GetImageAlphaChannel() {
+		t.Fatal("Expected image not to have an activated alpha channel")
+	}
+
+	mw.SetImageAlphaChannel(ALPHA_CHANNEL_ACTIVATE)
+
+	if !mw.GetImageAlphaChannel() {
+		t.Fatal("Expected image to have an activated alpha channel")
+	}
+}
+
+func TestImageChannelMask(t *testing.T) {
+	mw := NewMagickWand()
+	mw.ReadImage(`logo:`)
+
+	channel := mw.SetImageChannelMask(CHANNEL_ALPHA)
+	if channel != CHANNELS_ALL {
+		t.Fatalf("Expected CHANNELS_ALL (%v), got %v", CHANNELS_ALL, channel)
+	}
+
+	channel = mw.SetImageChannelMask(CHANNELS_ALL)
+	if channel != CHANNEL_ALPHA {
+		t.Fatalf("Expected CHANNEL_ALPHA (%v), got %v", CHANNEL_ALPHA, channel)
+	}
+}
+
 func TestReadImageBlob(t *testing.T) {
 	Initialize()
 	defer func(t *testing.T) {

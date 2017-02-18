@@ -847,6 +847,12 @@ func (mw *MagickWand) GetImage() *MagickWand {
 	return newMagickWand(C.MagickGetImage(mw.mw))
 }
 
+// GetImageAlphaChannel returns MagickFalse if the image alpha channel is not
+// activated. That is, the image is RGB rather than RGBA or CMYK rather than CMYKA.
+func (mw *MagickWand) GetImageAlphaChannel() bool {
+	return 1 == C.MagickGetImageAlphaChannel(mw.mw)
+}
+
 // Returns the image background color.
 func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) {
 	cbgcolor := NewPixelWand()
@@ -1953,6 +1959,15 @@ func (mw *MagickWand) SetImageBluePrimary(x, y, z float64) error {
 func (mw *MagickWand) SetImageBorderColor(border *PixelWand) error {
 	ok := C.MagickSetImageBorderColor(mw.mw, border.pw)
 	return mw.getLastErrorIfFailed(ok)
+}
+
+// SetImageChannelMask sets image channel mask, and returns
+// the previous channel type setting.
+// Setting the channel mask impacts the effect of image operations,
+// to limit the operation to the given channel.
+func (mw *MagickWand) SetImageChannelMask(channel ChannelType) ChannelType {
+	prevChannel := C.MagickSetImageChannelMask(mw.mw, C.ChannelType(channel))
+	return ChannelType(prevChannel)
 }
 
 // Set the entire wand canvas to the specified color.
