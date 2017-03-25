@@ -78,7 +78,7 @@ func (dw *DrawingWand) DecreaseCount() {
 // affine: Affine matrix parameters
 //
 func (dw *DrawingWand) Affine(affine *AffineMatrix) {
-	C.DrawAffine(dw.dw, affine.am)
+	C.DrawAffine(dw.dw, affine.ptr())
 }
 
 // Draws text on the image.
