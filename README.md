@@ -40,17 +40,24 @@ sudo apt-get install libmagickwand-dev
 
 *Thanks @vprus*
 
-1. Install msys per instructions at: https://github.com/StephanTLavavej/mingw-distro/blob/master/README.md
-1. Install pkg-config-lite from https://sourceforge.net/projects/pkgconfiglite/files to any directory
-1. In msys shell, do: ```pacman -S mingw-w64-x86_64-imagemagick```
-1. In msys shell, do: ```pacman -S mingw-w64-x86_64-gcc```
-1. Switch to cmd.exe shell, and do:
++ Install [msys2-x86_64](http://www.msys2.org/)
++ In msys shell, do: 
+```
+pacman -Syuu
+pacman -S mingw-w64-x86_64-gcc
+pacman -S mingw-w64-x86_64-pkg-config
+pacman -S mingw-w64-x86_64-zlib
+pacman -S mingw-w64-x86_64-imagemagick
+```
 
++ Switch to cmd.exe shell, and do:
 ```
-set PATH=C:/Temp/gcc/msys64/mingw64/bin;%PATH%
-set PKG_CONFIG_PATH=C:/Temp/gcc/msys64/mingw64/lib/pkgconfig
-go build gopkg.in/gographics/imagick.v2/imagick
+set PATH=<msys64>\mingw64\bin;%PATH%
+set PKG_CONFIG_PATH=<msys64>\mingw64\lib\pkgconfig
+set MAGICK_CODER_MODULE_PATH=<msys64>\mingw64\lib\ImageMagick-7.0.5\modules-Q16HDRI\coders
+go build gopkg.in/gographics/imagick.v3/imagick
 ```
+(BTW: you should change `<msys64>` to your installation path of `msys2` ; the environment variable of `MAGICK_CODER_MODULE_PATH` is to avoid `NoDecodeDelegateForThisImageFormat` error.)
 
 ## Common
 
