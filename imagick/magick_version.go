@@ -68,3 +68,13 @@ func GetVersion() (version string, nversion uint) {
 	nversion = uint(cnver)
 	return
 }
+
+// Specify resource limit at package level.
+func SetResourceLimit(rtype ResourceType, limit uint64) bool {
+	ok := C.MagickSetResourceLimit(C.ResourceType(rtype), C.MagickSizeType(limit))
+    if C.int(ok) == 0 {
+        return false
+    } else {
+        return true
+    }
+}
