@@ -36,11 +36,14 @@ func NewDrawingWand() *DrawingWand {
 // Clears resources associated with the drawing wand.
 func (dw *DrawingWand) Clear() {
 	C.ClearDrawingWand(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Makes an exact copy of the specified wand.
 func (dw *DrawingWand) Clone() *DrawingWand {
-	return newDrawingWand(C.CloneDrawingWand(dw.dw))
+	ret := newDrawingWand(C.CloneDrawingWand(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Frees all resources associated with the drawing wand. Once the drawing wand
@@ -79,6 +82,7 @@ func (dw *DrawingWand) DecreaseCount() {
 //
 func (dw *DrawingWand) Affine(affine *AffineMatrix) {
 	C.DrawAffine(dw.dw, affine.ptr())
+	runtime.KeepAlive(dw)
 }
 
 // Draws text on the image.
@@ -89,6 +93,7 @@ func (dw *DrawingWand) Annotation(x, y float64, text string) {
 	cstext := (*C.uchar)((unsafe.Pointer)(C.CString(text)))
 	defer C.free(unsafe.Pointer(cstext))
 	C.DrawAnnotation(dw.dw, C.double(x), C.double(y), cstext)
+	runtime.KeepAlive(dw)
 }
 
 // Draws an arc falling within a specified bounding rectangle on the image.
@@ -107,6 +112,7 @@ func (dw *DrawingWand) Annotation(x, y float64, text string) {
 //
 func (dw *DrawingWand) Arc(sx, sy, ex, ey, sd, ed float64) {
 	C.DrawArc(dw.dw, C.double(sx), C.double(sy), C.double(ex), C.double(ey), C.double(sd), C.double(ed))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a bezier curve through a set of points on the image.
@@ -116,6 +122,7 @@ func (dw *DrawingWand) Bezier(coordinates []PointInfo) {
 		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawBezier(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a circle on the image.
@@ -130,6 +137,7 @@ func (dw *DrawingWand) Bezier(coordinates []PointInfo) {
 //
 func (dw *DrawingWand) Circle(ox, oy, px, py float64) {
 	C.DrawCircle(dw.dw, C.double(ox), C.double(oy), C.double(px), C.double(py))
+	runtime.KeepAlive(dw)
 }
 
 // Composites an image onto the current image, using the specified composition
@@ -167,6 +175,7 @@ func (dw *DrawingWand) Composite(compose CompositeOperator, x, y, width, height 
 //
 func (dw *DrawingWand) Color(x, y float64, pm PaintMethod) {
 	C.DrawColor(dw.dw, C.double(x), C.double(y), C.PaintMethod(pm))
+	runtime.KeepAlive(dw)
 }
 
 // Adds a comment to a vector output stream.
@@ -174,6 +183,7 @@ func (dw *DrawingWand) Comment(comment string) {
 	cscomment := C.CString(comment)
 	defer C.free(unsafe.Pointer(cscomment))
 	C.DrawComment(dw.dw, cscomment)
+	runtime.KeepAlive(dw)
 }
 
 // Draws an ellipse on the image.
@@ -192,53 +202,66 @@ func (dw *DrawingWand) Comment(comment string) {
 //
 func (dw *DrawingWand) Ellipse(ox, oy, rx, ry, start, end float64) {
 	C.DrawEllipse(dw.dw, C.double(ox), C.double(oy), C.double(rx), C.double(ry), C.double(start), C.double(end))
+	runtime.KeepAlive(dw)
 }
 
 // Returns the border color used for drawing bordered objects.
 func (dw *DrawingWand) GetBorderColor() (pw *PixelWand) {
 	pw = NewPixelWand()
 	C.DrawGetBorderColor(dw.dw, pw.pw)
+	runtime.KeepAlive(dw)
 	return
 }
 
 // Obtains the current clipping path ID.
 func (dw *DrawingWand) GetClipPath() string {
 	cscp := C.DrawGetClipPath(dw.dw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cscp))
 	return C.GoString(cscp)
 }
 
 // Returns the current polygon fill rule to be used by the clipping path.
 func (dw *DrawingWand) GetClipRule() FillRule {
-	return FillRule(C.DrawGetClipRule(dw.dw))
+	ret := FillRule(C.DrawGetClipRule(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the interpretation of clip path units.
 func (dw *DrawingWand) GetClipUnits() ClipPathUnits {
-	return ClipPathUnits(C.DrawGetClipUnits(dw.dw))
+	ret := ClipPathUnits(C.DrawGetClipUnits(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the fill color used for drawing filled objects.
 func (dw *DrawingWand) GetFillColor() (pw *PixelWand) {
 	pw = NewPixelWand()
 	C.DrawGetFillColor(dw.dw, pw.pw)
+	runtime.KeepAlive(dw)
 	return
 }
 
 // Returns the opacity used when drawing using the fill color or fill texture.
 // Fully opaque is 1.0.
 func (dw *DrawingWand) GetFillOpacity() float64 {
-	return float64(C.DrawGetFillOpacity(dw.dw))
+	ret := float64(C.DrawGetFillOpacity(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the fill rule used while drawing polygons.
 func (dw *DrawingWand) GetFillRule() FillRule {
-	return FillRule(C.DrawGetFillRule(dw.dw))
+	ret := FillRule(C.DrawGetFillRule(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns a string specifying the font used when annotating with text.
 func (dw *DrawingWand) GetFont() string {
 	csfont := C.DrawGetFont(dw.dw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(csfont))
 	return C.GoString(csfont)
 }
@@ -246,6 +269,7 @@ func (dw *DrawingWand) GetFont() string {
 // Returns the font family to use when annotating with text.
 func (dw *DrawingWand) GetFontFamily() string {
 	csfamily := C.DrawGetFontFamily(dw.dw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(csfamily))
 	return C.GoString(csfamily)
 }
@@ -259,28 +283,38 @@ func (dw *DrawingWand) GetFontResolution() (x, y float64, err error) {
 
 // Returns the font stretch used when annotating with text.
 func (dw *DrawingWand) GetFontStretch() StretchType {
-	return StretchType(C.DrawGetFontStretch(dw.dw))
+	ret := StretchType(C.DrawGetFontStretch(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the font style used when annotating with text.
 func (dw *DrawingWand) GetFontStyle() StyleType {
-	return StyleType(C.DrawGetFontStyle(dw.dw))
+	ret := StyleType(C.DrawGetFontStyle(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the font weight used when annotating with text.
 func (dw *DrawingWand) GetFontWeight() uint {
-	return uint(C.DrawGetFontWeight(dw.dw))
+	ret := uint(C.DrawGetFontWeight(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the text placement gravity used when annotating with text.
 func (dw *DrawingWand) GetGravity() GravityType {
-	return GravityType(C.DrawGetGravity(dw.dw))
+	ret := GravityType(C.DrawGetGravity(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the opacity used when drawing with the fill or stroke color or
 // texture. Fully opaque is 1.0.
 func (dw *DrawingWand) GetOpacity() float64 {
-	return float64(C.DrawGetOpacity(dw.dw))
+	ret := float64(C.DrawGetOpacity(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the current stroke antialias setting. Stroked outlines are
@@ -288,13 +322,16 @@ func (dw *DrawingWand) GetOpacity() float64 {
 // thresholded to determine if the stroke color or underlying canvas color
 // should be used.
 func (dw *DrawingWand) GetStrokeAntialias() bool {
-	return 1 == C.DrawGetStrokeAntialias(dw.dw)
+	ret := 1 == C.DrawGetStrokeAntialias(dw.dw)
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the color used for stroking object outlines.
 func (dw *DrawingWand) GetStrokeColor() (pw *PixelWand) {
 	pw = NewPixelWand()
 	C.DrawGetStrokeColor(dw.dw, pw.pw)
+	runtime.KeepAlive(dw)
 	return
 }
 
@@ -304,27 +341,34 @@ func (dw *DrawingWand) GetStrokeColor() (pw *PixelWand) {
 func (dw *DrawingWand) GetStrokeDashArray() (nums []float64) {
 	count := C.size_t(0)
 	p := C.DrawGetStrokeDashArray(dw.dw, &count)
+	runtime.KeepAlive(dw)
 	nums = sizedDoubleArrayToFloat64Slice(p, count)
 	return
 }
 
 // Returns the offset into the dash pattern to start the dash.
 func (dw *DrawingWand) GetStrokeDashOffset() float64 {
-	return float64(C.DrawGetStrokeDashOffset(dw.dw))
+	ret := float64(C.DrawGetStrokeDashOffset(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the shape to be used at the end of open subpaths when they are
 // stroked. Values of LineCap are UndefinedCap, ButtCap, RoundCap, and
 // SquareCap.
 func (dw *DrawingWand) GetStrokeLineCap() LineCap {
-	return LineCap(C.DrawGetStrokeLineCap(dw.dw))
+	ret := LineCap(C.DrawGetStrokeLineCap(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the shape to be used at the corners of paths (or other vector
 // shapes) when they are stroked. Values of LineJoin are UndefinedJoin,
 // MiterJoin, RoundJoin, and BevelJoin.
 func (dw *DrawingWand) GetStrokeLineJoin() LineJoin {
-	return LineJoin(C.DrawGetStrokeLineJoin(dw.dw))
+	ret := LineJoin(C.DrawGetStrokeLineJoin(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the miter limit. When two line segments meet at a sharp angle and
@@ -333,61 +377,81 @@ func (dw *DrawingWand) GetStrokeLineJoin() LineJoin {
 // The miterLimit' imposes a limit on the ratio of the miter length to the
 // 'lineWidth'.
 func (dw *DrawingWand) GetStrokeMiterLimit() uint {
-	return uint(C.DrawGetStrokeMiterLimit(dw.dw))
+	ret := uint(C.DrawGetStrokeMiterLimit(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the opacity of stroked object outlines.
 func (dw *DrawingWand) GetStrokeOpacity() float64 {
-	return float64(C.DrawGetStrokeOpacity(dw.dw))
+	ret := float64(C.DrawGetStrokeOpacity(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the width of the stroke used to draw object outlines.
 func (dw *DrawingWand) GetStrokeWidth() float64 {
-	return float64(C.DrawGetStrokeWidth(dw.dw))
+	ret := float64(C.DrawGetStrokeWidth(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the alignment applied when annotating with text.
 func (dw *DrawingWand) GetTextAlignment() AlignType {
-	return AlignType(C.DrawGetTextAlignment(dw.dw))
+	ret := AlignType(C.DrawGetTextAlignment(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the current text antialias setting, which determines whether text
 // is antialiased. Text is antialiased by default.
 func (dw *DrawingWand) GetTextAntialias() bool {
-	return 1 == C.DrawGetTextAntialias(dw.dw)
+	ret := 1 == C.DrawGetTextAntialias(dw.dw)
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the decoration applied when annotating with text.
 func (dw *DrawingWand) GetTextDecoration() DecorationType {
-	return DecorationType(C.DrawGetTextDecoration(dw.dw))
+	ret := DecorationType(C.DrawGetTextDecoration(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns a string which specifies the code set used for text annotations.
 func (dw *DrawingWand) GetTextEncoding() string {
 	cstr := C.DrawGetTextEncoding(dw.dw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Gets the spacing between characters in text.
 func (dw *DrawingWand) GetTextKerning() float64 {
-	return float64(C.DrawGetTextKerning(dw.dw))
+	ret := float64(C.DrawGetTextKerning(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Gets the spacing between lines in text.
 func (dw *DrawingWand) GetTextInterlineSpacing() float64 {
-	return float64(C.DrawGetTextInterwordSpacing(dw.dw))
+	ret := float64(C.DrawGetTextInterwordSpacing(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Gets the spacing between words in text.
 func (dw *DrawingWand) GetTextInterwordSpacing() float64 {
-	return float64(C.DrawGetTextInterwordSpacing(dw.dw))
+	ret := float64(C.DrawGetTextInterwordSpacing(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns a string which specifies the vector graphics generated by any
 // graphics calls made since the wand was instantiated.
 func (dw *DrawingWand) GetVectorGraphics() string {
 	cstr := C.DrawGetVectorGraphics(dw.dw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
@@ -396,6 +460,7 @@ func (dw *DrawingWand) GetVectorGraphics() string {
 func (dw *DrawingWand) GetTextUnderColor() (pw *PixelWand) {
 	pw = NewPixelWand()
 	C.DrawGetTextUnderColor(dw.dw, pw.pw)
+	runtime.KeepAlive(dw)
 	return
 }
 
@@ -412,6 +477,7 @@ func (dw *DrawingWand) GetTextUnderColor() (pw *PixelWand) {
 //
 func (dw *DrawingWand) Line(sx, sy, ex, ey float64) {
 	C.DrawLine(dw.dw, C.double(sx), C.double(sy), C.double(ex), C.double(ey))
+	runtime.KeepAlive(dw)
 }
 
 // Paints on the image's opacity channel in order to set effected pixels to
@@ -433,6 +499,7 @@ func (dw *DrawingWand) Line(sx, sy, ex, ey float64) {
 // pmethod: paint method
 func (dw *DrawingWand) Matte(x, y float64, pmethod PaintMethod) {
 	C.DrawMatte(dw.dw, C.double(x), C.double(y), C.PaintMethod(pmethod))
+	runtime.KeepAlive(dw)
 }
 
 // Adds a path element to the current path which closes the current subpath by
@@ -440,6 +507,7 @@ func (dw *DrawingWand) Matte(x, y float64, pmethod PaintMethod) {
 // recent starting point (usually, the most recent moveto point).
 func (dw *DrawingWand) PathClose() {
 	C.DrawPathClose(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Draws a cubic Bezier curve from the current point to (x,y) using (x1,y1) as
@@ -456,6 +524,7 @@ func (dw *DrawingWand) PathClose() {
 //
 func (dw *DrawingWand) PathCurveToAbsolute(x1, y1, x2, y2, x, y float64) {
 	C.DrawPathCurveToAbsolute(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a cubic Bezier curve from the current point to (x,y) using (x1,y1) as
@@ -472,6 +541,7 @@ func (dw *DrawingWand) PathCurveToAbsolute(x1, y1, x2, y2, x, y float64) {
 //
 func (dw *DrawingWand) PathCurveToRelative(x1, y1, x2, y2, x, y float64) {
 	C.DrawPathCurveToRelative(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a quadratic Bezier curve from the current point to (x,y) using (x1,y1)
@@ -485,6 +555,7 @@ func (dw *DrawingWand) PathCurveToRelative(x1, y1, x2, y2, x, y float64) {
 //
 func (dw *DrawingWand) PathCurveToQuadraticBezierAbsolute(x1, y1, x, y float64) {
 	C.DrawPathCurveToQuadraticBezierAbsolute(dw.dw, C.double(x1), C.double(y1), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a quadratic Bezier curve from the current point to (x,y) using (x1,y1)
@@ -495,6 +566,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierAbsolute(x1, y1, x, y float64) 
 // x, y: ordinates of final point
 func (dw *DrawingWand) PathCurveToQuadraticBezierRelative(x1, y1, x, y float64) {
 	C.DrawPathCurveToQuadraticBezierRelative(dw.dw, C.double(x1), C.double(y1), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a quadratic Bezier curve (using absolute coordinates) from the current
@@ -511,6 +583,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierRelative(x1, y1, x, y float64) 
 //
 func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothAbsolute(x, y float64) {
 	C.DrawPathCurveToQuadraticBezierSmoothAbsolute(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a quadratic Bezier curve (using relative coordinates) from the current
@@ -527,6 +600,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothAbsolute(x, y float64) {
 //
 func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothRelative(x, y float64) {
 	C.DrawPathCurveToQuadraticBezierSmoothRelative(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a cubic Bezier curve from the current point to (x,y) using absolute
@@ -545,6 +619,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothRelative(x, y float64) {
 //
 func (dw *DrawingWand) PathCurveToSmoothAbsolute(x2, y2, x, y float64) {
 	C.DrawPathCurveToSmoothAbsolute(dw.dw, C.double(x2), C.double(y2), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a cubic Bezier curve from the current point to (x,y) using relative
@@ -563,6 +638,7 @@ func (dw *DrawingWand) PathCurveToSmoothAbsolute(x2, y2, x, y float64) {
 //
 func (dw *DrawingWand) PathCurveToSmoothRelative(x2, y2, x, y float64) {
 	C.DrawPathCurveToSmoothRelative(dw.dw, C.double(x2), C.double(y2), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws an elliptical arc from the current point to (x, y) using absolute
@@ -586,6 +662,7 @@ func (dw *DrawingWand) PathCurveToSmoothRelative(x2, y2, x, y float64) {
 //
 func (dw *DrawingWand) PathEllipticArcAbsolute(rx, ry, xAxisRotation float64, largeArcFlag, sweepFlag bool, x, y float64) {
 	C.DrawPathEllipticArcAbsolute(dw.dw, C.double(rx), C.double(ry), C.double(xAxisRotation), b2i(largeArcFlag), b2i(sweepFlag), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws an elliptical arc from the current point to (x, y) using relative
@@ -609,11 +686,13 @@ func (dw *DrawingWand) PathEllipticArcAbsolute(rx, ry, xAxisRotation float64, la
 //
 func (dw *DrawingWand) PathEllipticArcRelative(rx, ry, xAxisRotation float64, largeArcFlag, sweepFlag bool, x, y float64) {
 	C.DrawPathEllipticArcRelative(dw.dw, C.double(rx), C.double(ry), C.double(xAxisRotation), b2i(largeArcFlag), b2i(sweepFlag), C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Terminates the current path.
 func (dw *DrawingWand) PathFinish() {
 	C.DrawPathFinish(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Draws a line path from the current point to the given coordinate using
@@ -622,6 +701,7 @@ func (dw *DrawingWand) PathFinish() {
 // x, y: target x and y ordinates
 func (dw *DrawingWand) PathLineToAbsolute(x, y float64) {
 	C.DrawPathLineToAbsolute(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a line path from the current point to the given coordinate using
@@ -631,6 +711,7 @@ func (dw *DrawingWand) PathLineToAbsolute(x, y float64) {
 //
 func (dw *DrawingWand) PathLineToRelative(x, y float64) {
 	C.DrawPathLineToRelative(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a horizontal line path from the current point to the target point
@@ -640,6 +721,7 @@ func (dw *DrawingWand) PathLineToRelative(x, y float64) {
 // x: target x ordinate
 func (dw *DrawingWand) PathLineToHorizontalAbsolute(x float64) {
 	C.DrawPathLineToHorizontalAbsolute(dw.dw, C.double(x))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a horizontal line path from the current point to the target point
@@ -649,6 +731,7 @@ func (dw *DrawingWand) PathLineToHorizontalAbsolute(x float64) {
 // x: target x ordinate
 func (dw *DrawingWand) PathLineToHorizontalRelative(x float64) {
 	C.DrawPathLineToHorizontalRelative(dw.dw, C.double(x))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a vertical line path from the current point to the target point using
@@ -657,6 +740,7 @@ func (dw *DrawingWand) PathLineToHorizontalRelative(x float64) {
 // y: target y ordinate
 func (dw *DrawingWand) PathLineToVerticalAbsolute(y float64) {
 	C.DrawPathLineToVerticalAbsolute(dw.dw, C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a vertical line path from the current point to the target point using
@@ -665,6 +749,7 @@ func (dw *DrawingWand) PathLineToVerticalAbsolute(y float64) {
 // y: target y ordinate
 func (dw *DrawingWand) PathLineToVerticalRelative(y float64) {
 	C.DrawPathLineToVerticalRelative(dw.dw, C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Starts a new sub-path at the given coordinate using absolute coordinates.
@@ -673,6 +758,7 @@ func (dw *DrawingWand) PathLineToVerticalRelative(y float64) {
 // x, y: target x and y ordinates
 func (dw *DrawingWand) PathMoveToAbsolute(x, y float64) {
 	C.DrawPathMoveToAbsolute(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Starts a new sub-path at the given coordinate using relative coordinates.
@@ -681,6 +767,7 @@ func (dw *DrawingWand) PathMoveToAbsolute(x, y float64) {
 // x, y: target x and y ordinates
 func (dw *DrawingWand) PathMoveToRelative(x, y float64) {
 	C.DrawPathMoveToRelative(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Declares the start of a path drawing list which is terminated by a matching
@@ -689,6 +776,7 @@ func (dw *DrawingWand) PathMoveToRelative(x, y float64) {
 // commands are subordinate commands and they do not function by themselves.
 func (dw *DrawingWand) PathStart() {
 	C.DrawPathStart(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Draws a point using the current fill color.
@@ -696,6 +784,7 @@ func (dw *DrawingWand) PathStart() {
 // x, y: target x, y coordinates
 func (dw *DrawingWand) Point(x, y float64) {
 	C.DrawPoint(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a polygon using the current stroke, stroke width, and fill color or
@@ -706,6 +795,7 @@ func (dw *DrawingWand) Polygon(coordinates []PointInfo) {
 		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawPolygon(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a polyline using the current stroke, stroke width, and fill color or
@@ -716,16 +806,19 @@ func (dw *DrawingWand) Polyline(coordinates []PointInfo) {
 		ccoordinates[k] = C.PointInfo{C.double(v.X), C.double(v.Y)}
 	}
 	C.DrawPolyline(dw.dw, C.size_t(len(coordinates)), (*C.PointInfo)(&ccoordinates[0]))
+	runtime.KeepAlive(dw)
 }
 
 // Terminates a clip path definition.
 func (dw *DrawingWand) PopClipPath() {
 	C.DrawPopClipPath(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Terminates a definition list.
 func (dw *DrawingWand) PopDefs() {
 	C.DrawPopDefs(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Terminates a pattern definition.
@@ -742,6 +835,7 @@ func (dw *DrawingWand) PushClipPath(clipMaskId string) {
 	cstr := C.CString(clipMaskId)
 	defer C.free(unsafe.Pointer(cstr))
 	C.DrawPushClipPath(dw.dw, cstr)
+	runtime.KeepAlive(dw)
 }
 
 // Indicates that commands up to a terminating PopDefs() command create named
@@ -749,6 +843,7 @@ func (dw *DrawingWand) PushClipPath(clipMaskId string) {
 // earlier for the sake of efficiency.
 func (dw *DrawingWand) PushDefs() {
 	C.DrawPushDefs(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Indicates that subsequent commands up to a PopPattern() command comprise the
@@ -777,11 +872,13 @@ func (dw *DrawingWand) PushPattern(patternId string, x, y, width, height float64
 // x2, y2: ordinates of second coordinate
 func (dw *DrawingWand) Rectangle(x1, y1, x2, y2 float64) {
 	C.DrawRectangle(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2))
+	runtime.KeepAlive(dw)
 }
 
 // Resets the vector graphics associated with the specified wand.
 func (dw *DrawingWand) ResetVectorGraphics() {
 	C.DrawResetVectorGraphics(dw.dw)
+	runtime.KeepAlive(dw)
 }
 
 // Applies the specified rotation to the current coordinate space.
@@ -789,6 +886,7 @@ func (dw *DrawingWand) ResetVectorGraphics() {
 // degrees: degrees of rotation
 func (dw *DrawingWand) Rotate(degrees float64) {
 	C.DrawRotate(dw.dw, C.double(degrees))
+	runtime.KeepAlive(dw)
 }
 
 // Draws a rounted rectangle given two coordinates, x & y corner radiuses and
@@ -801,6 +899,7 @@ func (dw *DrawingWand) Rotate(degrees float64) {
 // rx, ry: radius of corner in horizontal and vertical directions
 func (dw *DrawingWand) RoundRectangle(x1, y1, x2, y2, rx, ry float64) {
 	C.DrawRoundRectangle(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(rx), C.double(ry))
+	runtime.KeepAlive(dw)
 }
 
 // Adjusts the scaling factor to apply in the horizontal and vertical
@@ -812,11 +911,13 @@ func (dw *DrawingWand) RoundRectangle(x1, y1, x2, y2, rx, ry float64) {
 //
 func (dw *DrawingWand) Scale(x, y float64) {
 	C.DrawScale(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the border color to be used for drawing bordered objects.
 func (dw *DrawingWand) SetBorderColor(borderWand *PixelWand) {
 	C.DrawSetBorderColor(dw.dw, borderWand.pw)
+	runtime.KeepAlive(dw)
 }
 
 // Associates a named clipping path with the image. Only the areas drawn on by
@@ -832,23 +933,27 @@ func (dw *DrawingWand) SetClipPath(clipMaskId string) error {
 // Set the polygon fill rule to be used by the clipping path.
 func (dw *DrawingWand) SetClipRule(fillRule FillRule) {
 	C.DrawSetClipRule(dw.dw, C.FillRule(fillRule))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the interpretation of clip path units.
 // clipUnits: units to use
 func (dw *DrawingWand) SetClipUnits(clipUnits ClipPathUnits) {
 	C.DrawSetClipUnits(dw.dw, C.ClipPathUnits(clipUnits))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the fill color to be used for drawing filled objects.
 func (dw *DrawingWand) SetFillColor(fillWand *PixelWand) {
 	C.DrawSetFillColor(dw.dw, fillWand.pw)
+	runtime.KeepAlive(dw)
 }
 
 // Sets the opacity to use when drawing using the fill color or fill texture.
 // Fully opaque is 1.0.
 func (dw *DrawingWand) SetFillOpacity(opacity float64) {
 	C.DrawSetFillOpacity(dw.dw, C.double(opacity))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the image resolution.
@@ -863,6 +968,7 @@ func (dw *DrawingWand) SetFontResolution(xRes, yRes float64) error {
 // texture. Fully opaque is 1.0.
 func (dw *DrawingWand) SetOpacity(opacity float64) {
 	C.DrawSetOpacity(dw.dw, C.double(opacity))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the URL to use as a fill pattern for filling objects. Only local URLs
@@ -880,6 +986,7 @@ func (dw *DrawingWand) SetFillPatternURL(fillUrl string) error {
 // Sets the fill rule to use while drawing polygons.
 func (dw *DrawingWand) SetFillRule(fillRule FillRule) {
 	C.DrawSetFillRule(dw.dw, C.FillRule(fillRule))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the fully-sepecified font to use when annotating with text.
@@ -903,18 +1010,21 @@ func (dw *DrawingWand) SetFontFamily(fontFamily string) error {
 // pointSize: text pointsize
 func (dw *DrawingWand) SetFontSize(pointSize float64) {
 	C.DrawSetFontSize(dw.dw, C.double(pointSize))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the font stretch to use when annotating with text. The AnyStretch
 // enumeration acts as a wild-card "don't care" option.
 func (dw *DrawingWand) SetFontStretch(fontStretch StretchType) {
 	C.DrawSetFontStretch(dw.dw, C.StretchType(fontStretch))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the font style to use when annotating with text. The AnyStyle
 // enumeration acts as a wild-card "don't care" option.
 func (dw *DrawingWand) SetFontStyle(style StyleType) {
 	C.DrawSetFontStyle(dw.dw, C.StyleType(style))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the font weight to use when annotating with text.
@@ -922,16 +1032,19 @@ func (dw *DrawingWand) SetFontStyle(style StyleType) {
 // fontWeight: font weight (valid range 100-900)
 func (dw *DrawingWand) SetFontWeight(fontWeight uint) {
 	C.DrawSetFontWeight(dw.dw, C.size_t(fontWeight))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the text placement gravity to use when annotating with text.
 func (dw *DrawingWand) SetGravity(gravity GravityType) {
 	C.DrawSetGravity(dw.dw, C.GravityType(gravity))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the color used for stroking object outlines.
 func (dw *DrawingWand) SetStrokeColor(strokeWand *PixelWand) {
 	C.DrawSetStrokeColor(dw.dw, strokeWand.pw)
+	runtime.KeepAlive(dw)
 }
 
 // Sets the pattern used for stroking object outlines.
@@ -952,6 +1065,7 @@ func (dw *DrawingWand) SetStrokePatternURL(strokeUrl string) error {
 // antialias: set to false to disable antialiasing
 func (dw *DrawingWand) SetStrokeAntialias(antialias bool) {
 	C.DrawSetStrokeAntialias(dw.dw, b2i(antialias))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the pattern of dashes and gaps used to stroke paths. The stroke
@@ -976,18 +1090,21 @@ func (dw *DrawingWand) SetStrokeDashArray(dash []float64) error {
 // Specifies the offset into the dash pattern to start the dash.
 func (dw *DrawingWand) SetStrokeDashOffset(offset float64) {
 	C.DrawSetStrokeDashOffset(dw.dw, C.double(offset))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the shape to be used at the end of open subpaths when they are
 // stroked.
 func (dw *DrawingWand) SetStrokeLineCap(lineCap LineCap) {
 	C.DrawSetStrokeLineCap(dw.dw, C.LineCap(lineCap))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the shape to be used at the corners of paths (or other vector
 // shapes) when they are stroked.
 func (dw *DrawingWand) SetStrokeLineJoin(lineJoin LineJoin) {
 	C.DrawSetStrokeLineJoin(dw.dw, C.LineJoin(lineJoin))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the miter limit. When two line segments meet at a sharp angle and
@@ -997,6 +1114,7 @@ func (dw *DrawingWand) SetStrokeLineJoin(lineJoin LineJoin) {
 // 'lineWidth'.
 func (dw *DrawingWand) SetStrokeMiterLimit(miterLimit uint) {
 	C.DrawSetStrokeMiterLimit(dw.dw, C.size_t(miterLimit))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the opacity of stroked object outlines.
@@ -1004,26 +1122,31 @@ func (dw *DrawingWand) SetStrokeMiterLimit(miterLimit uint) {
 // opacity: stroke opacity. The value 1.0 is opaque.
 func (dw *DrawingWand) SetStrokeOpacity(opacity float64) {
 	C.DrawSetStrokeOpacity(dw.dw, C.double(opacity))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the width of the stroke used to draw object outlines.
 func (dw *DrawingWand) SetStrokeWidth(width float64) {
 	C.DrawSetStrokeWidth(dw.dw, C.double(width))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies a text alignment to be applied when annotating with text.
 func (dw *DrawingWand) SetTextAlignment(alignment AlignType) {
 	C.DrawSetTextAlignment(dw.dw, C.AlignType(alignment))
+	runtime.KeepAlive(dw)
 }
 
 // Controls whether text is antialiased. Text is antialiased by default.
 func (dw *DrawingWand) SetTextAntialias(antialias bool) {
 	C.DrawSetTextAntialias(dw.dw, b2i(antialias))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies a decoration to be applied when annotating with text.
 func (dw *DrawingWand) SetTextDecoration(decoration DecorationType) {
 	C.DrawSetTextDecoration(dw.dw, C.DecorationType(decoration))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the code set to use for text annotations. The only character
@@ -1035,27 +1158,32 @@ func (dw *DrawingWand) SetTextEncoding(encoding string) {
 	csencoding := C.CString(encoding)
 	defer C.free(unsafe.Pointer(csencoding))
 	C.DrawSetTextEncoding(dw.dw, csencoding)
+	runtime.KeepAlive(dw)
 }
 
 // Sets the spacing between characters in text.
 func (dw *DrawingWand) SetTextKerning(kerning float64) {
 	C.DrawSetTextKerning(dw.dw, C.double(kerning))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the spacing between line in text.
 func (dw *DrawingWand) SetTextInterlineSpacing(spacing float64) {
 	C.DrawSetTextInterlineSpacing(dw.dw, C.double(spacing))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the spacing between words in text.
 func (dw *DrawingWand) SetTextInterwordSpacing(spacing float64) {
 	C.DrawSetTextInterwordSpacing(dw.dw, C.double(spacing))
+	runtime.KeepAlive(dw)
 }
 
 // Specifies the color of a background rectangle to place under text
 // annotations.
 func (dw *DrawingWand) SetTextUnderColor(underWand *PixelWand) {
 	C.DrawSetTextUnderColor(dw.dw, underWand.pw)
+	runtime.KeepAlive(dw)
 }
 
 // Sets the vector graphics associated with the specified wand. Use this method
@@ -1072,6 +1200,7 @@ func (dw *DrawingWand) SetVectorGraphics(xml string) error {
 // degrees: number of degrees to skew the coordinates
 func (dw *DrawingWand) SkewX(degrees float64) {
 	C.DrawSkewX(dw.dw, C.double(degrees))
+	runtime.KeepAlive(dw)
 }
 
 // Skews the current coordinate system in the vertical direction.
@@ -1079,6 +1208,7 @@ func (dw *DrawingWand) SkewX(degrees float64) {
 // degrees: number of degrees to skew the coordinates
 func (dw *DrawingWand) SkewY(degrees float64) {
 	C.DrawSkewY(dw.dw, C.double(degrees))
+	runtime.KeepAlive(dw)
 }
 
 // Applies a translation to the current coordinate system which moves the
@@ -1087,6 +1217,7 @@ func (dw *DrawingWand) SkewY(degrees float64) {
 // x, y: new x, y ordinate for coordinate system origin
 func (dw *DrawingWand) Translate(x, y float64) {
 	C.DrawTranslate(dw.dw, C.double(x), C.double(y))
+	runtime.KeepAlive(dw)
 }
 
 // Sets the overall canvas size to be recorded with the drawing vector data.
@@ -1104,6 +1235,7 @@ func (dw *DrawingWand) Translate(x, y float64) {
 // y2: bottom y ordinate
 func (dw *DrawingWand) SetViewbox(x1, y1, x2, y2 int) {
 	C.DrawSetViewbox(dw.dw, C.ssize_t(x1), C.ssize_t(y1), C.ssize_t(x2), C.ssize_t(y2))
+	runtime.KeepAlive(dw)
 }
 
 // Returns true if the wand is verified as a drawing wand.
@@ -1111,12 +1243,16 @@ func (dw *DrawingWand) IsVerified() bool {
 	if dw.dw == nil {
 		return false
 	}
-	return 1 == C.IsDrawingWand(dw.dw)
+	ret := 1 == C.IsDrawingWand(dw.dw)
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the current drawing wand.
 func (dw *DrawingWand) PeekDrawingWand() *DrawInfo {
-	return &DrawInfo{C.PeekDrawingWand(dw.dw)}
+	ret := &DrawInfo{C.PeekDrawingWand(dw.dw)}
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Destroys the current drawing wand and returns to the previously pushed

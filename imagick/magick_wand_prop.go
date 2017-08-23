@@ -11,6 +11,7 @@ import "C"
 import (
 	//"fmt"
 	"errors"
+	"runtime"
 	"unsafe"
 )
 
@@ -40,33 +41,43 @@ func (mw *MagickWand) DeleteOption(option string) error {
 
 // Returns the antialias property associated with the wand
 func (mw *MagickWand) GetAntialias() bool {
-	return 1 == C.int(C.MagickGetAntialias(mw.mw))
+	ret := 1 == C.int(C.MagickGetAntialias(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns the wand background color
 func (mw *MagickWand) GetBackgroundColor() *PixelWand {
-	return newPixelWand(C.MagickGetBackgroundColor(mw.mw))
+	ret := newPixelWand(C.MagickGetBackgroundColor(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns the wand colorspace type
 func (mw *MagickWand) GetColorspace() ColorspaceType {
 	ccst := C.MagickGetColorspace(mw.mw)
+	runtime.KeepAlive(mw)
 	return ColorspaceType(ccst)
 }
 
 // Gets the wand compression type.
 func (mw *MagickWand) GetCompression() CompressionType {
-	return CompressionType(C.MagickGetCompression(mw.mw))
+	ret := CompressionType(C.MagickGetCompression(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Gets the wand compression quality.
 func (mw *MagickWand) GetCompressionQuality() uint {
-	return uint(C.MagickGetCompressionQuality(mw.mw))
+	ret := uint(C.MagickGetCompressionQuality(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns the filename associated with an image sequence.
 func (mw *MagickWand) GetFilename() string {
 	cstr := C.MagickGetFilename(mw.mw)
+	runtime.KeepAlive(mw)
 	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
@@ -74,6 +85,7 @@ func (mw *MagickWand) GetFilename() string {
 // Returns the font associated with the MagickWand.
 func (mw *MagickWand) GetFont() string {
 	cstr := C.MagickGetFont(mw.mw)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
@@ -81,13 +93,16 @@ func (mw *MagickWand) GetFont() string {
 // Returns the format of the magick wand.
 func (mw *MagickWand) GetFormat() string {
 	cstr := C.MagickGetFormat(mw.mw)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
 
 // Gets the wand gravity.
 func (mw *MagickWand) GetGravity() GravityType {
-	return GravityType(C.MagickGetGravity(mw.mw))
+	ret := GravityType(C.MagickGetGravity(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns a value associated with the specified artifact.
@@ -95,6 +110,7 @@ func (mw *MagickWand) GetImageArtifact(artifact string) string {
 	csartifact := C.CString(artifact)
 	defer C.free(unsafe.Pointer(csartifact))
 	cstr := C.MagickGetImageArtifact(mw.mw, csartifact)
+	runtime.KeepAlive(mw)
 	defer C.free(unsafe.Pointer(cstr))
 	return C.GoString(cstr)
 }
@@ -107,6 +123,7 @@ func (mw *MagickWand) GetImageArtifacts(pattern string) (artifacts []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	num := C.size_t(0)
 	p := C.MagickGetImageArtifacts(mw.mw, cspattern, &num)
+	runtime.KeepAlive(mw)
 	defer relinquishMemoryCStringArray(p)
 	artifacts = sizedCStringArrayToStringSlice(p, num)
 	return
@@ -120,6 +137,7 @@ func (mw *MagickWand) GetImageProfile(name string) string {
 	defer C.free(unsafe.Pointer(csname))
 	szlen := C.size_t(0)
 	csprofile := C.MagickGetImageProfile(mw.mw, csname, &szlen)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(csprofile))
 	return C.GoStringN((*C.char)((unsafe.Pointer)(csprofile)), C.int(szlen))
 }
@@ -132,6 +150,7 @@ func (mw *MagickWand) GetImageProfiles(pattern string) (profiles []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProfiles(mw.mw, cspattern, &np)
+	runtime.KeepAlive(mw)
 	defer relinquishMemoryCStringArray(ps)
 	profiles = sizedCStringArrayToStringSlice(ps, np)
 	return
@@ -142,6 +161,7 @@ func (mw *MagickWand) GetImageProperty(property string) string {
 	csproperty := C.CString(property)
 	defer C.free(unsafe.Pointer(csproperty))
 	cspv := C.MagickGetImageProperty(mw.mw, csproperty)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(cspv))
 	return C.GoString(cspv)
 }
@@ -154,6 +174,7 @@ func (mw *MagickWand) GetImageProperties(pattern string) (properties []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetImageProperties(mw.mw, cspattern, &np)
+	runtime.KeepAlive(mw)
 	defer relinquishMemoryCStringArray(ps)
 	properties = sizedCStringArrayToStringSlice(ps, np)
 	return
@@ -161,12 +182,16 @@ func (mw *MagickWand) GetImageProperties(pattern string) (properties []string) {
 
 // Gets the wand interlace scheme.
 func (mw *MagickWand) GetInterlaceScheme() InterlaceType {
-	return InterlaceType(C.MagickGetInterlaceScheme(mw.mw))
+	ret := InterlaceType(C.MagickGetInterlaceScheme(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Gets the wand compression.
 func (mw *MagickWand) GetInterpolateMethod() InterpolatePixelMethod {
-	return InterpolatePixelMethod(C.MagickGetInterpolateMethod(mw.mw))
+	ret := InterpolatePixelMethod(C.MagickGetInterpolateMethod(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns a value associated with a wand and the specified key.
@@ -174,6 +199,7 @@ func (mw *MagickWand) GetOption(key string) string {
 	cskey := C.CString(key)
 	defer C.free(unsafe.Pointer(cskey))
 	csval := C.MagickGetOption(mw.mw, cskey)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(csval))
 	return C.GoString(csval)
 }
@@ -185,6 +211,7 @@ func (mw *MagickWand) GetOptions(pattern string) (options []string) {
 	defer C.free(unsafe.Pointer(cspattern))
 	np := C.size_t(0)
 	ps := C.MagickGetOptions(mw.mw, cspattern, &np)
+	runtime.KeepAlive(mw)
 	defer relinquishMemoryCStringArray(ps)
 	options = sizedCStringArrayToStringSlice(ps, np)
 	return
@@ -192,7 +219,9 @@ func (mw *MagickWand) GetOptions(pattern string) (options []string) {
 
 // Gets the wand orientation type.
 func (mw *MagickWand) GetOrientation() OrientationType {
-	return OrientationType(C.MagickGetOrientation(mw.mw))
+	ret := OrientationType(C.MagickGetOrientation(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns the page geometry associated with the magick wand.
@@ -207,7 +236,9 @@ func (mw *MagickWand) GetPage() (width, height uint, x, y int, err error) {
 
 // Returns the font pointsize associated with the MagickWand.
 func (mw *MagickWand) GetPointsize() float64 {
-	return float64(C.MagickGetPointsize(mw.mw))
+	ret := float64(C.MagickGetPointsize(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Gets the image X and Y resolution.
@@ -221,6 +252,7 @@ func (mw *MagickWand) GetResolution() (x, y float64, err error) {
 func (mw *MagickWand) GetSamplingFactors() (factors []float64) {
 	num := C.size_t(0)
 	pd := C.MagickGetSamplingFactors(mw.mw, &num)
+	runtime.KeepAlive(mw)
 	factors = sizedDoubleArrayToFloat64Slice(pd, num)
 	return
 }
@@ -243,7 +275,9 @@ func (mw *MagickWand) GetSizeOffset() (offset int, err error) {
 
 // Returns the wand type.
 func (mw *MagickWand) GetType() ImageType {
-	return ImageType(C.MagickGetType(mw.mw))
+	ret := ImageType(C.MagickGetType(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Adds or removes a ICC, IPTC, or generic profile from an image. If the
@@ -271,6 +305,7 @@ func (mw *MagickWand) RemoveImageProfile(name string) []byte {
 	defer C.free(unsafe.Pointer(csname))
 	clen := C.size_t(0)
 	profile := C.MagickRemoveImageProfile(mw.mw, csname, &clen)
+	runtime.KeepAlive(mw)
 	defer relinquishMemory(unsafe.Pointer(profile))
 	return C.GoBytes(unsafe.Pointer(profile), C.int(clen))
 }
@@ -284,6 +319,7 @@ func (mw *MagickWand) SetAntialias(antialias bool) error {
 // Sets the wand background color.
 func (mw *MagickWand) SetBackgroundColor(background *PixelWand) error {
 	ok := C.MagickSetBackgroundColor(mw.mw, background.pw)
+	runtime.KeepAlive(background)
 	return mw.getLastErrorIfFailed(ok)
 }
 

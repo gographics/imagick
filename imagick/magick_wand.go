@@ -38,17 +38,22 @@ func NewMagickWand() *MagickWand {
 
 // Returns a wand with an image
 func NewMagickWandFromImage(img *Image) *MagickWand {
-	return newMagickWand(C.NewMagickWandFromImage(img.img))
+	ret := newMagickWand(C.NewMagickWandFromImage(img.img))
+	runtime.KeepAlive(img)
+	return ret
 }
 
 // Clear resources associated with the wand, leaving the wand blank, and ready to be used for a new set of images.
 func (mw *MagickWand) Clear() {
 	C.ClearMagickWand(mw.mw)
+	runtime.KeepAlive(mw)
 }
 
 // Makes an exact copy of the MagickWand object
 func (mw *MagickWand) Clone() *MagickWand {
-	return newMagickWand(C.CloneMagickWand(mw.mw))
+	ret := newMagickWand(C.CloneMagickWand(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Deallocates memory associated with an MagickWand
@@ -71,6 +76,7 @@ func (mw *MagickWand) IsVerified() bool {
 	if mw.mw != nil {
 		return 1 == C.int(C.IsMagickWand(mw.mw))
 	}
+	runtime.KeepAlive(mw)
 	return false
 }
 
@@ -88,7 +94,9 @@ func (mw *MagickWand) DecreaseCount() {
 
 // Returns the position of the iterator in the image list
 func (mw *MagickWand) GetIteratorIndex() uint {
-	return uint(C.MagickGetIteratorIndex(mw.mw))
+	ret := uint(C.MagickGetIteratorIndex(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns the value associated with the specified configure option
@@ -120,6 +128,8 @@ func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMe
 	cstext := C.CString(textLine)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.dw, cstext)
+	runtime.KeepAlive(mw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cdoubles))
 	doubles := sizedDoubleArrayToFloat64Slice(cdoubles, 13)
 	return NewFontMetricsFromArray(doubles)
@@ -130,6 +140,8 @@ func (mw *MagickWand) QueryMultilineFontMetrics(dw *DrawingWand, textParagraph s
 	cstext := C.CString(textParagraph)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.dw, cstext)
+	runtime.KeepAlive(mw)
+	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cdoubles))
 	doubles := sizedDoubleArrayToFloat64Slice(cdoubles, 13)
 	return NewFontMetricsFromArray(doubles)
@@ -164,6 +176,7 @@ func (mw *MagickWand) QueryFormats(pattern string) (formats []string) {
 // Using this before AddImages() or ReadImages() will cause new images to be inserted between the first and second image.
 func (mw *MagickWand) ResetIterator() {
 	C.MagickResetIterator(mw.mw)
+	runtime.KeepAlive(mw)
 }
 
 // This method sets the wand iterator to the first image.
@@ -173,6 +186,7 @@ func (mw *MagickWand) ResetIterator() {
 // This operation is similar to ResetIterator() but differs in how AddImage(), ReadImage(), and NextImage() behaves afterward.
 func (mw *MagickWand) SetFirstIterator() {
 	C.MagickSetFirstIterator(mw.mw)
+	runtime.KeepAlive(mw)
 }
 
 // This method set the iterator to the given position in the image list specified with the index parameter.
@@ -184,7 +198,9 @@ func (mw *MagickWand) SetFirstIterator() {
 // regardless of if a zero (first image in list) or negative index (from end) is used.
 // Jumping to index 0 is similar to ResetIterator() but differs in how NextImage() behaves afterward.
 func (mw *MagickWand) SetIteratorIndex(index int) bool {
-	return 1 == C.int(C.MagickSetIteratorIndex(mw.mw, C.ssize_t(index)))
+	ret := 1 == C.int(C.MagickSetIteratorIndex(mw.mw, C.ssize_t(index)))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // SetLastIterator() sets the wand iterator to the last image.
@@ -193,4 +209,5 @@ func (mw *MagickWand) SetIteratorIndex(index int) bool {
 // Typically this function is used before AddImage(), ReadImage() functions to ensure new images are appended to the very end of wand's image list.
 func (mw *MagickWand) SetLastIterator() {
 	C.MagickSetLastIterator(mw.mw)
+	runtime.KeepAlive(mw)
 }

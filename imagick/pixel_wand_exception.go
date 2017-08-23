@@ -11,6 +11,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 )
 
@@ -25,7 +26,9 @@ func (pwe *PixelWandException) Error() string {
 
 // Clears any exceptions associated with the wand
 func (pw *PixelWand) clearException() bool {
-	return 1 == C.int(C.PixelClearException(pw.pw))
+	ret := 1 == C.int(C.PixelClearException(pw.pw))
+	runtime.KeepAlive(pw)
+	return ret
 }
 
 // Returns the kind, reason and description of any error that occurs when using other methods in this API
@@ -37,5 +40,6 @@ func (pw *PixelWand) GetLastError() error {
 		pw.clearException()
 		return &PixelWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}
+	runtime.KeepAlive(pw)
 	return nil
 }

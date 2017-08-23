@@ -11,6 +11,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 )
 
@@ -25,7 +26,9 @@ func (dwe *DrawingWandException) Error() string {
 
 // Clears any exceptions associated with the wand
 func (dw *DrawingWand) clearException() bool {
-	return 1 == C.int(C.DrawClearException(dw.dw))
+	ret := 1 == C.int(C.DrawClearException(dw.dw))
+	runtime.KeepAlive(dw)
+	return ret
 }
 
 // Returns the kind, reason and description of any error that occurs when using other methods in this API
@@ -37,6 +40,7 @@ func (dw *DrawingWand) GetLastError() error {
 		dw.clearException()
 		return &DrawingWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}
+	runtime.KeepAlive(dw)
 	return nil
 }
 

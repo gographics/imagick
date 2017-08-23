@@ -11,6 +11,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 )
 
@@ -37,6 +38,7 @@ func (mw *MagickWand) GetLastError() error {
 		mw.clearException()
 		return &MagickWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}
+	runtime.KeepAlive(mw)
 	return nil
 }
 
