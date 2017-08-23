@@ -8,6 +8,7 @@ package imagick
 #include <MagickCore/MagickCore.h>
 */
 import "C"
+import "runtime"
 
 type Image struct {
 	img *C.Image
@@ -23,6 +24,8 @@ func NewMagickImage(info *ImageInfo, width, height uint,
 		C.size_t(width), C.size_t(height),
 		background.pi,
 		&exc)
+
+	runtime.KeepAlive(info)
 
 	if err := checkExceptionInfo(&exc); err != nil {
 		return nil, err

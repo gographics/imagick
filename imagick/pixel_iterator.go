@@ -37,7 +37,9 @@ func newPixelIterator(cpi *C.PixelIterator) *PixelIterator {
 // mw: the magick wand to iterate on
 //
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
-	return newPixelIterator(C.NewPixelIterator(mw.mw))
+	ret := newPixelIterator(C.NewPixelIterator(mw.mw))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Returns a new pixel iterator
@@ -46,17 +48,22 @@ func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 // x, y, cols, rows: there values define the perimeter of a region of pixels
 //
 func (mw *MagickWand) NewPixelRegionIterator(x, y int, width, height uint) *PixelIterator {
-	return newPixelIterator(C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height)))
+	ret := newPixelIterator(C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height)))
+	runtime.KeepAlive(mw)
+	return ret
 }
 
 // Clear resources associated with a PixelIterator.
 func (pi *PixelIterator) Clear() {
 	C.ClearPixelIterator(pi.pi)
+	runtime.KeepAlive(pi)
 }
 
 // Makes an exact copy of the specified iterator.
 func (pi *PixelIterator) Clone() *PixelIterator {
-	return newPixelIterator(C.ClonePixelIterator(pi.pi))
+	ret := newPixelIterator(C.ClonePixelIterator(pi.pi))
+	runtime.KeepAlive(pi)
+	return ret
 }
 
 // Deallocates resources associated with a PixelIterator.
@@ -79,7 +86,9 @@ func (pi *PixelIterator) IsVerified() bool {
 	if pi.pi == nil {
 		return false
 	}
-	return 1 == C.IsPixelIterator(pi.pi)
+	ret := 1 == C.IsPixelIterator(pi.pi)
+	runtime.KeepAlive(pi)
+	return ret
 }
 
 // Increase PixelIterator ref counter and set according "can`t be terminated status"
@@ -108,12 +117,15 @@ func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 		// get destroyed by C API when PixelIterator is destroyed.
 		pws = append(pws, &PixelWand{pw: cpw})
 	}
+	runtime.KeepAlive(pi)
 	return
 }
 
 // Returns the current pixel iterator row.
 func (pi *PixelIterator) GetIteratorRow() int {
-	return int(C.PixelGetIteratorRow(pi.pi))
+	ret := int(C.PixelGetIteratorRow(pi.pi))
+	runtime.KeepAlive(pi)
+	return ret
 }
 
 // Returns the next row as an array of pixel wands from the pixel iterator.
@@ -130,6 +142,7 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 		// get destroyed by C API when PixelIterator is destroyed.
 		pws = append(pws, &PixelWand{pw: cpw})
 	}
+	runtime.KeepAlive(pi)
 	return
 }
 
@@ -147,6 +160,7 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 		// get destroyed by C API when PixelIterator is destroyed.
 		pws = append(pws, &PixelWand{pw: cpw})
 	}
+	runtime.KeepAlive(pi)
 	return
 }
 
@@ -154,11 +168,13 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 // to iterate over all the pixels in a pixel container.
 func (pi *PixelIterator) Reset() {
 	C.PixelResetIterator(pi.pi)
+	runtime.KeepAlive(pi)
 }
 
 // Sets the pixel iterator to the first pixel row.
 func (pi *PixelIterator) SetFirstIteratorRow() {
 	C.PixelSetFirstIteratorRow(pi.pi)
+	runtime.KeepAlive(pi)
 }
 
 // Set the pixel iterator row.
@@ -170,6 +186,7 @@ func (pi *PixelIterator) SetIteratorRow(row int) error {
 // Sets the pixel iterator to the last pixel row.
 func (pi *PixelIterator) SetLastIteratorRow() {
 	C.PixelSetLastIteratorRow(pi.pi)
+	runtime.KeepAlive(pi)
 }
 
 // Syncs the pixel iterator.

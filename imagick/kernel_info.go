@@ -51,6 +51,7 @@ func (ki *KernelInfo) ToArray() [][]float64 {
 		values = append(values, rowValues)
 	}
 
+	runtime.KeepAlive(ki)
 	return values
 }
 
@@ -161,6 +162,7 @@ func NewKernelInfoBuiltIn(typ KernelInfoType, kernel string) (*KernelInfo, error
 //     KERNEL_NORMALIZE_PERCENT
 func (ki *KernelInfo) Scale(scale float64, normalizeType KernelNormalizeType) {
 	C.ScaleKernelInfo(ki.info, C.double(scale), C.GeometryFlags(normalizeType))
+	runtime.KeepAlive(ki)
 }
 
 // cleanGeometryInfo peforms some tidy up of the geometry info for the kernel.

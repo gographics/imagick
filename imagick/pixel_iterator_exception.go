@@ -11,6 +11,7 @@ import "C"
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 )
 
@@ -25,7 +26,9 @@ func (pie *PixelIteratorException) Error() string {
 
 // Clears any exceptions associated with the iterator
 func (pi *PixelIterator) clearException() bool {
-	return 1 == C.int(C.PixelClearIteratorException(pi.pi))
+	ret := 1 == C.int(C.PixelClearIteratorException(pi.pi))
+	runtime.KeepAlive(pi)
+	return ret
 }
 
 // Returns the kind, reason and description of any error that occurs when using
@@ -38,6 +41,7 @@ func (pi *PixelIterator) GetLastError() error {
 		pi.clearException()
 		return &PixelIteratorException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}
+	runtime.KeepAlive(pi)
 	return nil
 }
 
