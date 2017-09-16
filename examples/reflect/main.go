@@ -23,7 +23,7 @@ func main() {
 	mwr := mw.Clone()
 
 	// Resize it
-	mwr.ResizeImage(w, h/2, imagick.FILTER_LANCZOS, 1)
+	mwr.ResizeImage(w, h/2, imagick.FILTER_LANCZOS)
 	// Flip the image over to form the reflection
 	mwr.FlipImage()
 
@@ -34,10 +34,11 @@ func main() {
 	mwg.ReadImage("gradient:white-black")
 
 	// Copy the gradient in to the alpha channel of the reflection image
-	mwr.CompositeImage(mwg, imagick.COMPOSITE_OP_COPY_OPACITY, 0, 0)
+	mwr.CompositeImage(mwg, imagick.COMPOSITE_OP_COPY_ALPHA, false, 0, 0)
 
 	// Add the reflection image to the wand which holds the original image
 	mw.AddImage(mwr)
+	mw.SetFirstIterator()
 
 	// Append the reflection to the bottom (MagickTrue) of the original image
 	mwout := mw.AppendImages(true)
