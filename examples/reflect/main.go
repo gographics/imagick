@@ -38,6 +38,7 @@ func main() {
 
 	// Add the reflection image to the wand which holds the original image
 	mw.AddImage(mwr)
+	mw.SetFirstIterator()
 
 	// Append the reflection to the bottom (MagickTrue) of the original image
 	mwout := mw.AppendImages(true)
