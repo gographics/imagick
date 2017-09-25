@@ -83,7 +83,7 @@ go build -tags no_pkgconfig gopkg.in/gographics/imagick.v2/imagick
 
 # Examples
 
-The examples folder is full with usage examples ported from C ones found in here: http://members.shaw.ca/el.supremo/MagickWand/
+The examples folder is full with usage examples ported from C ones found in here: http://www.imagemagick.org/MagickWand/
 
 # Quick and partial example
 
