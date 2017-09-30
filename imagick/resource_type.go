@@ -21,4 +21,6 @@ const (
 	RESOURCE_THREAD    ResourceType = C.ThreadResource
 	RESOURCE_TIME      ResourceType = C.TimeResource
 	RESOURCE_THROTTLE  ResourceType = C.ThrottleResource
+	RESOURCE_WIDTH     ResourceType = C.WidthResource
+	RESOURCE_HEIGHT    ResourceType = C.HeightResource
 )
