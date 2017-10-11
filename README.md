@@ -88,7 +88,7 @@ The examples folder is full with usage examples ported from C ones found in here
 # Quick and partial example
 
 Since this is a CGO binding, and the Go GC does not manage memory allocated by the C API, it is then necessary to use the Terminate() and Destroy() methods.
-Objects of type MagickWand, DrawingWand, PixelIterator and PixelWand are managed by Go GC if you create them via constructors.
+Types which are created via `New*` constructors (MagickWand, DrawingWand, PixelIterator, PixelWand,...) are managed by Go GC.
 
 ```go
 package main
@@ -159,6 +159,8 @@ func main() {
     ...
 }
 ```
+
+Calling `Destroy()` on types that are either created via `New*` or returned from other functions calls only forces the cleanup of the item immediately as opposed to later after garbage collection triggers the finalizer for the object.
 
 # License
 
