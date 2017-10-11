@@ -14,6 +14,7 @@ func main() {
 	var err error
 
 	mw := imagick.NewMagickWand()
+	defer mw.Destroy()
 
 	err = mw.ReadImage("logo:")
 	if err != nil {
