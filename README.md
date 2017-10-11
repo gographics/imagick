@@ -87,9 +87,6 @@ The examples folder is full with usage examples ported from C ones found in here
 
 # Quick and partial example
 
-Since this is a CGO binding, and the Go GC does not manage memory allocated by the C API, it is then necessary to use the Terminate() and Destroy() methods.
-Types which are created via `New*` constructors (MagickWand, DrawingWand, PixelIterator, PixelWand,...) are managed by Go GC.
-
 ```go
 package main
 
@@ -104,6 +101,17 @@ func main() {
     ...
 }
 ```
+## `Initialize()` and `Terminate`
+
+As per the ImageMagick C API, `Initialize()` should be called only once to set up the resources for using ImageMagick. This is typically done in your `main()` or `init()` for the entire application or library. Applications can defer a call to `Terminate()` to tear down the ImageMagick resources.
+
+It is an error to `Initialize` and `Terminate` multiple times in specific functions and leads to common problems such as crashes or missing delegates. Do not use `Terminate` anywhere other than the absolute end of your need for ImageMagick within the program.
+
+## Managing memory
+
+Since this is a CGO binding, and the Go GC does not manage memory allocated by the C API, it is then necessary to use the Terminate() and Destroy() methods.
+
+Types which are created via `New*` constructors (MagickWand, DrawingWand, PixelIterator, PixelWand,...) are managed by Go GC through the use of finalizers.
 
 If you use struct literals, you should free resources manually:
 
