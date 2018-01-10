@@ -24,7 +24,7 @@ before_install:
     cd /tmp && 
     sudo apt-get install build-essential -y && 
     sudo apt-get build-dep imagemagick -y && 
-    wget "http://www.imagemagick.org/download/ImageMagick-${IMAGEMAGICK_VERSION}.tar.gz" && 
+    wget "https://www.imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.gz" && 
     tar -xvf "ImageMagick-${IMAGEMAGICK_VERSION}.tar.gz" && 
     cd "ImageMagick-${IMAGEMAGICK_VERSION}" && 
     ./configure --prefix=$HOME/opt --without-magick-plus-plus --without-perl --disable-openmp --with-gvc=no && 
