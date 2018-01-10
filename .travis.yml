@@ -1,0 +1,50 @@
+language: go
+sudo: required
+    
+go:
+  - 1.9.x
+
+cache:
+  directories:
+  - "$HOME/opt"
+  
+env:
+  global:
+    - GOARCH=amd64
+    - IMAGEMAGICK_VERSION=7.0.7-21
+    
+before_install:
+  # Update PATH so that travis can find newer imagemagick
+  - export PATH=$HOME/opt/bin:$PATH
+  
+  # Build ImageMagick from source
+  - convert -version | grep $IMAGEMAGICK_VERSION || {
+    export CORES=$(nproc) && 
+    echo "Using $CORES cores for compiling..." && 
+    cd /tmp && 
+    sudo apt-get install build-essential -y && 
+    sudo apt-get build-dep imagemagick -y && 
+    wget "https://www.imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.gz" && 
+    tar -xvf "ImageMagick-${IMAGEMAGICK_VERSION}.tar.gz" && 
+    cd "ImageMagick-${IMAGEMAGICK_VERSION}" && 
+    ./configure --prefix=$HOME/opt --without-magick-plus-plus --without-perl --disable-openmp --with-gvc=no && 
+    make -j$CORES && sudo make install && sudo ldconfig && 
+    $HOME/opt/bin/convert -version | grep $IMAGEMAGICK_VERSION && 
+    cd $TRAVIS_BUILD_DIR; }
+  
+  # Update library paths for programs
+  - export LD_FLAGS=-L$HOME/opt/lib
+  - export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib:$HOME/opt/lib
+  - export CPATH=$CPATH:$HOME/opt/include
+  - export LD_LIBRARY_PATH=/lib:/usr/lib:/usr/local/lib:$HOME/opt/lib
+  - export PKG_CONFIG_PATH=$HOME/opt/lib/pkgconfig
+  
+  # Set the import path for the particular branch of imagick bindings
+  - export IMAGICK_IMPORT_PATH=$(grep gopkg.in/gographics/imagick.v imagick/imagick.go | cut -d\" -f2)
+
+install:
+  - pkg-config --cflags --libs MagickWand
+  - go get $IMAGICK_IMPORT_PATH
+
+script: 
+  - go test -v $IMAGICK_IMPORT_PATH

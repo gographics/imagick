@@ -1,6 +1,6 @@
 # Go Imagick
 
-[![GoDoc](https://godoc.org/gopkg.in/gographics/imagick.v2/imagick?status.svg)](https://gopkg.in/gographics/imagick.v2/imagick)
+[![GoDoc](https://godoc.org/gopkg.in/gographics/imagick.v2/imagick?status.svg)](https://gopkg.in/gographics/imagick.v2/imagick) [![Travis Build Status](https://api.travis-ci.org/gographics/imagick.svg)](https://travis-ci.org/gographics/imagick)
 
 Go Imagick is a Go bind to ImageMagick's MagickWand C API.
 
