@@ -1085,20 +1085,20 @@ func (mw *MagickWand) GetImageHeight() uint {
 //
 // numberColors: the number of unique colors in the image and the number of
 // pixel wands returned.
-func (mw *MagickWand) GetImageHistogram() (numberColors uint, pws []PixelWand) {
+func (mw *MagickWand) GetImageHistogram() (numberColors uint, pws []*PixelWand) {
 	cnc := C.size_t(0)
 	p := C.MagickGetImageHistogram(mw.mw, &cnc)
 	defer relinquishMemory(unsafe.Pointer(p))
 	q := uintptr(unsafe.Pointer(p))
-	for {
+	numberColors = uint(cnc)
+	for i := 0; i < int(numberColors); i++ {
 		p = (**C.PixelWand)(unsafe.Pointer(q))
 		if *p == nil {
 			break
 		}
-		pws = append(pws, *newPixelWand(*p))
+		pws = append(pws, newPixelWand(*p))
 		q += unsafe.Sizeof(q)
 	}
-	numberColors = uint(cnc)
 	runtime.KeepAlive(mw)
 	return
 }
