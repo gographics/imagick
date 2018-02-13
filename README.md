@@ -41,7 +41,7 @@ sudo apt-get install libmagickwand-dev
 *Thanks @vprus*
 
 + Install [msys2-x86_64](http://www.msys2.org/)
-+ In msys shell, do: 
++ In msys shell, do:
 ```
 pacman -Syuu
 pacman -S mingw-w64-x86_64-gcc
@@ -54,10 +54,16 @@ pacman -S mingw-w64-x86_64-imagemagick
 ```
 set PATH=<msys64>\mingw64\bin;%PATH%
 set PKG_CONFIG_PATH=<msys64>\mingw64\lib\pkgconfig
-set MAGICK_CODER_MODULE_PATH=<msys64>\mingw64\lib\ImageMagick-7.0.5\modules-Q16HDRI\coders
+set MAGICK_CODER_MODULE_PATH=<msys64>\mingw64\lib\ImageMagick-7.0.6\modules-Q16HDRI\coders
 go build gopkg.in/gographics/imagick.v3/imagick
 ```
-(BTW: you should change `<msys64>` to your installation path of `msys2` ; the environment variable of `MAGICK_CODER_MODULE_PATH` is to avoid `NoDecodeDelegateForThisImageFormat` error.)
+
+The default installation path of `msys2` is `C:\msys64` and you must change
+`<msys64>` to your installation path of `msys2`.
+
+The `MAGICK_CODER_MODULE_PATH` environment variable tells ImageMagick where to
+find the decoders. If you still get the `NoDecodeDelegateForThisImageFormat`
+error, then make sure the version number and folders are correct.
 
 ## Common
 
