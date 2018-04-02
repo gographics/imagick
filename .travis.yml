@@ -11,7 +11,7 @@ cache:
 env:
   global:
     - GOARCH=amd64
-    - IMAGEMAGICK_VERSION=7.0.7-21
+    - IMAGEMAGICK_VERSION=$IMAGEMAGICK7_VERSION
     
 before_install:
   # Update PATH so that travis can find newer imagemagick
