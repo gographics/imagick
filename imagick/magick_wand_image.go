@@ -1552,19 +1552,17 @@ func (mw *MagickWand) GetImageTotalInkDensity() float64 {
 
 func (mw *MagickWand) GradientImage(gradientType GradientType, spreadMethod SpreadMethod, startColor string, stopColor string) error {
 	ppStart := C.PixelPacket{}
-	ppStartColor := newPixelPacketFromCAPI(&ppStart)
 	ppStop := C.PixelPacket{}
-	ppStopColor := newPixelPacketFromCAPI(&ppStop)
 
 	pw := NewPixelWand()
 	defer pw.Destroy()
 	pw.SetColor(startColor)
-	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, ppStartColor.pp)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, &ppStart)
 	pw.SetColor(stopColor)
-	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, ppStopColor.pp)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, &ppStop)
 	ok := C.GradientImage(mw.GetImageFromMagickWand().img,
 		C.GradientType(gradientType), C.SpreadMethod(spreadMethod),
-		ppStartColor.pp, ppStopColor.pp)
+		&ppStart, &ppStop)
 	runtime.KeepAlive(mw)
 	return mw.getLastErrorIfFailed(ok)
 }
