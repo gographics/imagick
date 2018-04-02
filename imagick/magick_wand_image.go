@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"runtime"
 	"unsafe"
 )
 
@@ -1431,6 +1432,25 @@ func (mw *MagickWand) GetImageTotalInkDensity() float64 {
 // image and then use this method to apply the transform to the image.
 func (mw *MagickWand) HaldClutImage(hald *MagickWand) error {
 	C.MagickHaldClutImage(mw.mw, hald.mw)
+	return mw.GetLastError()
+}
+
+func (mw *MagickWand) GradientImage(gradientType GradientType, spreadMethod SpreadMethod, startColor string, stopColor string) error {
+	ppStart := C.PixelPacket{}
+	ppStartColor := newPixelPacketFromCAPI(&ppStart)
+	ppStop := C.PixelPacket{}
+	ppStopColor := newPixelPacketFromCAPI(&ppStop)
+
+	pw := NewPixelWand()
+	defer pw.Destroy()
+	pw.SetColor(startColor)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, ppStartColor.pp)
+	pw.SetColor(stopColor)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, ppStopColor.pp)
+	C.GradientImage(mw.GetImageFromMagickWand().img,
+		C.GradientType(gradientType), C.SpreadMethod(spreadMethod),
+		ppStartColor.pp, ppStopColor.pp)
+	runtime.KeepAlive(mw)
 	return mw.GetLastError()
 }
 
