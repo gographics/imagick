@@ -1550,6 +1550,23 @@ func (mw *MagickWand) GetImageTotalInkDensity() float64 {
 	return ret
 }
 
+func (mw *MagickWand) GradientImage(gradientType GradientType, spreadMethod SpreadMethod, startColor string, stopColor string) error {
+	ppStart := C.PixelPacket{}
+	ppStop := C.PixelPacket{}
+
+	pw := NewPixelWand()
+	defer pw.Destroy()
+	pw.SetColor(startColor)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, &ppStart)
+	pw.SetColor(stopColor)
+	C.SetPixelViaMagickPixel(mw.GetImageFromMagickWand().img, pw.GetMagickColor().mpp, &ppStop)
+	ok := C.GradientImage(mw.GetImageFromMagickWand().img,
+		C.GradientType(gradientType), C.SpreadMethod(spreadMethod),
+		&ppStart, &ppStop)
+	runtime.KeepAlive(mw)
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // Replaces colors in the image from a Hald color lookup table. A Hald color
 // lookup table is a 3-dimensional color cube mapped to 2 dimensions. Create
 // it with the HALD coder. You can apply any color transformation to the Hald
