@@ -40,7 +40,7 @@ func TestPixelIteratorPrivatePixelWands(t *testing.T) {
 	for i, each := range pis {
 
 		if !each.IsVerified() {
-			t.Fatal("PixelIterator %d is not verified", i)
+			t.Fatalf("PixelIterator %d is not verified", i)
 		}
 
 		var j uint
