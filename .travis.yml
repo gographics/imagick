@@ -26,7 +26,7 @@ before_install:
     sudo apt-get build-dep imagemagick -y && 
     wget "https://github.com/ImageMagick/ImageMagick6/archive/${IMAGEMAGICK_VERSION}.tar.gz" && 
     tar -xvf "${IMAGEMAGICK_VERSION}.tar.gz" && 
-    cd "ImageMagick-${IMAGEMAGICK_VERSION}" && 
+    cd "ImageMagick6-${IMAGEMAGICK_VERSION}" && 
     ./configure --prefix=$HOME/opt --without-magick-plus-plus --without-perl --disable-openmp --with-gvc=no && 
     make -j$CORES && sudo make install && sudo ldconfig && 
     $HOME/opt/bin/convert -version | grep $IMAGEMAGICK_VERSION && 
