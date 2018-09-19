@@ -21,11 +21,11 @@ func draw_setfont(mw *imagick.MagickWand, dw *imagick.DrawingWand, font string, 
 		pw.SetColor(colour)
 		dw.SetFillColor(pw)
 		pw.Destroy()
-		sflag = true
 	}
 
 	if size > 0 {
 		dw.SetFontSize(size)
+		sflag = true
 	}
 
 	// If either the font or the fontsize (or both) have changed
