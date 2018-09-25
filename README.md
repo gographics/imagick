@@ -22,6 +22,10 @@ gopkg.in/gographics/imagick.v1/imagick
 
 # Install
 
+## Docker
+
+See [examples/docker](examples/docker)
+
 ## Mac OS X
 
 ### MacPorts
