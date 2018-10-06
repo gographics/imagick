@@ -30,7 +30,7 @@ func main() {
 
 	// Resize the image using the Lanczos filter
 	// The blur factor is a float, where > 1 is blurry, < 1 is sharp
-	err = mw.ResizeImage(hWidth, hHeight, imagick.FILTER_LANCZOS, 1)
+	err = mw.ResizeImage(hWidth, hHeight, imagick.FILTER_LANCZOS)
 	if err != nil {
 		panic(err)
 	}
