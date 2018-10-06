@@ -140,6 +140,10 @@ func TestImageAlpha(t *testing.T) {
 	if !mw.GetImageAlphaChannel() {
 		t.Fatal("Expected image to have an activated alpha channel")
 	}
+
+	if err := mw.SetImageAlpha(.5); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func TestImageChannelMask(t *testing.T) {
