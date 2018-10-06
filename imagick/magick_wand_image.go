@@ -2061,6 +2061,17 @@ func (mw *MagickWand) SetImage(source *MagickWand) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// Sets the image to the specified alpha level.
+//
+// alpha: the level of transparency: 1.0 is fully opaque and 0.0 is fully
+// transparent.
+//
+func (mw *MagickWand) SetImageAlpha(alpha float64) error {
+	ok := C.MagickSetImageAlpha(mw.mw, C.double(alpha))
+	runtime.KeepAlive(mw)
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // Sets the image background color.
 func (mw *MagickWand) SetImageBackgroundColor(background *PixelWand) error {
 	ok := C.MagickSetImageBackgroundColor(mw.mw, background.pw)
