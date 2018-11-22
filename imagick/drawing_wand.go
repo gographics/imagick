@@ -418,6 +418,12 @@ func (dw *DrawingWand) GetTextDecoration() DecorationType {
 	return ret
 }
 
+// Specifies a direction to be applied when annotating with text.
+func (dw *DrawingWand) SetTextDirection(direction DirectionType) {
+	C.DrawSetTextDirection(dw.dw, C.DirectionType(direction))
+	runtime.KeepAlive(dw)
+}
+
 // Returns a string which specifies the code set used for text annotations.
 func (dw *DrawingWand) GetTextEncoding() string {
 	cstr := C.DrawGetTextEncoding(dw.dw)
