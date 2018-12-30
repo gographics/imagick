@@ -72,7 +72,7 @@ func textEffect1() {
 	// Opacity is a real number indicating (apparently) percentage
 	mw.ShadowImage(70, 4, 5, 5)
 	// Composite the text on top of the shadow
-	mw.CompositeImage(cw, imagick.COMPOSITE_OP_OVER, 5, 5)
+	mw.CompositeImage(cw, imagick.COMPOSITE_OP_OVER, false, 5, 5)
 	cw.Destroy()
 	cw = imagick.NewMagickWand()
 
@@ -81,7 +81,7 @@ func textEffect1() {
 	pw.SetColor("rgb(125,215,255)")
 	cw.NewImage(mw.GetImageWidth(), mw.GetImageHeight(), pw)
 	// Now composite the shadowed text over the plain background
-	cw.CompositeImage(mw, imagick.COMPOSITE_OP_OVER, 0, 0)
+	cw.CompositeImage(mw, imagick.COMPOSITE_OP_OVER, false, 0, 0)
 	// and write the result
 	cw.WriteImage("text_shadow.png")
 }
@@ -109,7 +109,7 @@ func textEffect2() {
 	mw.TrimImage(0)
 	// Add a transparent border
 	pw.SetColor("lightblue")
-	mw.BorderImage(pw, 5, 5)
+	mw.BorderImage(pw, 5, 5, imagick.COMPOSITE_OP_COPY)
 	// and write it
 	mw.WriteImage("text_pattern.png")
 }
@@ -136,7 +136,7 @@ func textEffect3() {
 	mw.TrimImage(0)
 	// Add the border
 	pw.SetColor("lightblue")
-	mw.BorderImage(pw, 10, 10)
+	mw.BorderImage(pw, 10, 10, imagick.COMPOSITE_OP_COPY)
 	// and write it
 	mw.WriteImage("text_arc.png")
 }
@@ -195,7 +195,7 @@ func textEffect5And6() {
 	mw.TrimImage(0)
 	// Add the border
 	pw.SetColor("none")
-	mw.BorderImage(pw, 10, 10)
+	mw.BorderImage(pw, 10, 10, imagick.COMPOSITE_OP_OVER)
 	//mw.SetImageMatte(true)
 	//mw.SetImageVirtualPixelMethod(TransparentVirtualPixelMethod)
 	// 	d_args[0] = 0.1;d_args[1] = -0.25;d_args[2] = -0.25; [3] += .1
@@ -224,7 +224,7 @@ func textEffect5And6() {
 	mw.TrimImage(0)
 	// Add the border
 	pw.SetColor("none")
-	mw.BorderImage(pw, 10, 10)
+	mw.BorderImage(pw, 10, 10, imagick.COMPOSITE_OP_OVER)
 	// and write it
 	mw.WriteImage("text_barrel.png")
 }
@@ -255,7 +255,7 @@ func textEffect7() {
 	mw.TrimImage(0)
 	// Add the border
 	pw.SetColor("none")
-	mw.BorderImage(pw, 10, 10)
+	mw.BorderImage(pw, 10, 10, imagick.COMPOSITE_OP_OVER)
 	// and write it
 	mw.WriteImage("text_polar.png")
 }
@@ -292,7 +292,7 @@ func textEffect8() {
 	mw.TrimImage(0)
 	// Add the border
 	pw.SetColor("none")
-	mw.BorderImage(pw, 10, 10)
+	mw.BorderImage(pw, 10, 10, imagick.COMPOSITE_OP_OVER)
 	// and write it
 	mw.WriteImage("text_shepards.png")
 }

@@ -34,6 +34,6 @@ func main() {
 	if err := cw.SetImageArtifact("compose:args", "15"); err != nil {
 		panic(err)
 	}
-	mw.CompositeImage(cw, imagick.COMPOSITE_OP_BLUR, 0, 0)
+	mw.CompositeImage(cw, imagick.COMPOSITE_OP_BLUR, false, 0, 0)
 	mw.WriteImage("beijing_model.jpg")
 }
