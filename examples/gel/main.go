@@ -72,9 +72,9 @@ func main() {
 	// The +clone operation copies the original but only so that
 	// it can be used in the following composite operation, so we don't
 	// actually need to do a clone, just reference the original image.
-	mwf.CompositeImage(mw, imagick.COMPOSITE_OP_SCREEN, 0, 0)
+	mwf.CompositeImage(mw, imagick.COMPOSITE_OP_SCREEN, false, 0, 0)
 
-	mw.CompositeImage(mwf, imagick.COMPOSITE_OP_IN, 0, 0)
+	mw.CompositeImage(mwf, imagick.COMPOSITE_OP_IN, false, 0, 0)
 	mw.WriteImage("gel_highlight.png")
 
 	mw.Destroy()
@@ -107,8 +107,8 @@ func main() {
 	mwf.EvaluateImage(imagick.EVAL_OP_MULTIPLY, 0.4)
 	mwf.NegateImage(false)
 	mwf.RollImage(-1, -1)
-	mwf.CompositeImage(mw, imagick.COMPOSITE_OP_MULTIPLY, 0, 0)
-	mw.CompositeImage(mwf, imagick.COMPOSITE_OP_IN, 0, 0)
+	mwf.CompositeImage(mw, imagick.COMPOSITE_OP_MULTIPLY, false, 0, 0)
+	mw.CompositeImage(mwf, imagick.COMPOSITE_OP_IN, false, 0, 0)
 	mw.WriteImage("gel_border.png")
 
 	mw.Destroy()

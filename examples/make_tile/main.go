@@ -20,7 +20,7 @@ func make_tile(mw *imagick.MagickWand, outfile string) {
 	w := mwf.GetImageWidth()
 	h := mwf.GetImageHeight()
 	// 1 = Don't blur or sharpen image
-	mwf.ResizeImage(w/2, h/2, imagick.FILTER_LANCZOS, 1)
+	mwf.ResizeImage(w/2, h/2, imagick.FILTER_LANCZOS)
 	mwf.WriteImage(outfile)
 	mwf.Destroy()
 	mwc.Destroy()
@@ -39,7 +39,7 @@ func main() {
 	mw = imagick.NewMagickWand()
 	mw.SetSize(100, 100)
 	mw.ReadImage("xc:")
-	mw.AddNoiseImage(imagick.NOISE_RANDOM)
+	mw.AddNoiseImage(imagick.NOISE_RANDOM, 0)
 	mw.SetImageVirtualPixelMethod(imagick.VIRTUAL_PIXEL_TILE)
 	mw.BlurImage(0, 10)
 	mw.NormalizeImage()
