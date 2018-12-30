@@ -2,6 +2,7 @@
 package main
 
 import (
+	"math"
 	"os"
 
 	"gopkg.in/gographics/imagick.v3/imagick"
@@ -21,15 +22,20 @@ func main() {
 	}
 
 	bg.SetColor("white")
-	mw.BorderImage(bg, 1, 1)
-	mw.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_SET)
+	mw.SetBackgroundColor(bg)
+	mw.BorderImage(bg, 1, 1, imagick.COMPOSITE_OP_COPY)
 
 	fg.SetColor("none")
-	channel := imagick.CHANNELS_RGB | imagick.CHANNEL_ALPHA
+
+	// Floodfill uses a fuzz param value that is dependent on the
+	// quantum color depth of ImageMagick. So we have to convert
+	// from 10% to a color depth fuzz value.
+	_, depth := imagick.GetQuantumDepth()
+	fuzz := math.Pow(2, float64(depth)) * .10
 
 	// Floodfill the "background" colour with the "foreground" colour
 	// starting at coordinate 0,0 using a fuzz of 20
-	mw.FloodfillPaintImage(channel, fg, 20, bg, 0, 0, false)
+	mw.FloodfillPaintImage(fg, fuzz, bg, 0, 0, false)
 	mw.ShaveImage(1, 1)
 
 	mw.DisplayImage(os.Getenv("DISPLAY"))
