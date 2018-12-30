@@ -6,7 +6,7 @@ fail=0
 failed=()
 
 for example in $(find . -type f -name main.go | sort); do
-	path=$(realpath $example)
+	path=$(readlink -f $example)
 	name=$(basename $(dirname $path))
 	echo $path
 	if ! go build -o ${DIR}/tmp/${name} ${path} ; then
