@@ -24,7 +24,7 @@ func main() {
 	lw.ReadImage("logo:")
 	// Note that MagickSetImageCompose is usually only used for the MagickMontageImage
 	// function and isn't used or needed by MagickCompositeImage
-	mw.CompositeImage(lw, imagick.COMPOSITE_OP_SRC_IN, 0, 0)
+	mw.CompositeImage(lw, imagick.COMPOSITE_OP_SRC_IN, false, 0, 0)
 
 	/* Write the new image */
 	mw.WriteImage("mask_result.png")

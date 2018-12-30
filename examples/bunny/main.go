@@ -50,7 +50,7 @@ func main() {
 	// -deconstruct
 	// Anthony says that MagickDeconstructImages is equivalent
 	// to MagickCompareImagesLayers so we'll use that
-	aw = mw.CompareImageLayers(imagick.IMAGE_LAYER_COMPARE_ANY)
+	aw = mw.CompareImagesLayers(imagick.IMAGE_LAYER_COMPARE_ANY)
 	// -loop 0
 	aw.SetOption("loop", "0")
 

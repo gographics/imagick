@@ -13,7 +13,10 @@ func image_blur() {
 	mw.ReadImage("magick:logo")
 	mw.SetFormat("png")
 
-	kernel_info := imagick.NewKernelInfoBuiltIn(imagick.KERNEL_RING, "2,1")
+	kernel_info, err := imagick.NewKernelInfoBuiltIn(imagick.KERNEL_RING, "2,1")
+	if err != nil {
+		panic(err)
+	}
 	kernel_info.Scale(1.0, imagick.KERNEL_NORMALIZE_VALUE)
 	kernel_values := kernel_info.ToArray()
 

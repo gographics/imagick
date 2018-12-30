@@ -335,6 +335,12 @@ func (mw *MagickWand) CommentImage(comment string) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// Compares each image with the next in a sequence and returns the maximum
+// bounding region of any pixel differences it discovers.
+func (mw *MagickWand) CompareImagesLayers(method LayerMethod) *MagickWand {
+	return newMagickWand(C.MagickCompareImagesLayers(mw.mw, C.LayerMethod(method)))
+}
+
 // CompareImages() compares an image to a reconstructed image and returns the
 // specified difference image. Returns the new MagickWand and the computed
 // distortion between the images
@@ -1486,7 +1492,7 @@ func (mw *MagickWand) MagnifyImage() error {
 // a given virtual canvas. MosaicLayer: Start with the virtual canvas of the
 // first image, enlarging left and right edges to contain all images. Images
 // with negative offsets will be clipped.
-func (mw *MagickWand) MergeImageLayers(method ImageLayerMethod) *MagickWand {
+func (mw *MagickWand) MergeImageLayers(method LayerMethod) *MagickWand {
 	ret := newMagickWand(C.MagickMergeImageLayers(mw.mw, C.LayerMethod(method)))
 	runtime.KeepAlive(mw)
 	return ret
