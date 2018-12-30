@@ -24,17 +24,19 @@ func main() {
 		panic(err)
 	}
 
-	// When you create a mask, you use white for those parts that you want
-	// to show through and black for those which must not show through.
-	// But internally it's the opposite so the mask must be negated
+	// IM7 got rid of clip masks in the API, so we have to approach this by
+	// way of using alpha channels.
+
+	// We want to cut out a hole with the mask within the middle of the image.
+	// This will allow the src image to be filled within the masked hole.
 	mask.NegateImage(false)
-	dest.SetImageClipMask(mask)
+	dest.CompositeImage(mask, imagick.COMPOSITE_OP_COPY_ALPHA, false, 0, 0)
 
 	if err := src.ReadImage("tile:tile_disks.jpg"); err != nil {
 		panic(err)
 	}
 
-	// This does the src (overlay) over the dest (background)
-	dest.CompositeImage(src, imagick.COMPOSITE_OP_OVER, 0, 0)
+	// This does the dst over the src
+	dest.CompositeImage(src, imagick.COMPOSITE_OP_DST_OVER, false, 0, 0)
 	dest.WriteImage("clip_out.jpg")
 }
