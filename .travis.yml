@@ -48,3 +48,4 @@ install:
 
 script: 
   - go test -v $IMAGICK_IMPORT_PATH
+  - ./examples/test.sh
