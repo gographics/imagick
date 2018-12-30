@@ -10,6 +10,7 @@ cache:
   
 env:
   global:
+    - GO111MODULE=on
     - GOARCH=amd64
     - IMAGEMAGICK_VERSION=$IMAGEMAGICK7_VERSION
     
@@ -44,8 +45,9 @@ before_install:
 
 install:
   - pkg-config --cflags --libs MagickWand
-  - go get $IMAGICK_IMPORT_PATH
+#  - go get $IMAGICK_IMPORT_PATH
 
 script: 
-  - go test -v $IMAGICK_IMPORT_PATH
+#  - go test -v $IMAGICK_IMPORT_PATH
+  - go test -v 
   - ./examples/test.sh
