@@ -45,9 +45,7 @@ before_install:
 
 install:
   - pkg-config --cflags --libs MagickWand
-#  - go get $IMAGICK_IMPORT_PATH
 
 script: 
-#  - go test -v $IMAGICK_IMPORT_PATH
-  - go test -v 
+  - go test -v ./imagick
   - ./examples/test.sh
