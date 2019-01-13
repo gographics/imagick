@@ -70,6 +70,13 @@ Then go get it:
 go get gopkg.in/gographics/imagick.v2/imagick
 ```
 
+Per the security update https://groups.google.com/forum/#!topic/golang-announce/X7N1mvntnoU
+you may need whitelist the -Xpreprocessor flag in your environment.
+
+```
+export CGO_CFLAGS_ALLOW='-Xpreprocessor'
+```
+
 ### Build tags
 
 If you want to specify CGO_CFLAGS/CGO_LDFLAGS manually at build time, such as for building statically or without pkg-config, you can use the "no_pkgconfig" build tag:
