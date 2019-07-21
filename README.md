@@ -128,7 +128,7 @@ It is an error to `Initialize` and `Terminate` multiple times in specific functi
 
 Since this is a CGO binding, and the Go GC does not manage memory allocated by the C API, it is then necessary to use the Terminate() and Destroy() methods.
 
-Types which are created via `New*` constructors (MagickWand, DrawingWand, PixelIterator, PixelWand,...) are managed by Go GC through the use of finalizers.
+Types which are created via `New*` constructors (MagickWand, DrawingWand, PixelIterator, PixelWand,...), or created and returned by methods like `Clone()` are managed by Go GC through the use of finalizers. They are not guaranteed to be cleaned up immediately after the object is not longer in use, but rather at some point later when GC actually executes its finalizers.
 
 If you use struct literals, you should free resources manually:
 
@@ -185,7 +185,7 @@ func main() {
 }
 ```
 
-Calling `Destroy()` on types that are either created via `New*` or returned from other functions calls only forces the cleanup of the item immediately as opposed to later after garbage collection triggers the finalizer for the object.
+Calling `Destroy()` on types that are either created via `New*` or returned from other functions calls forces the cleanup of the item immediately as opposed to later after garbage collection triggers the finalizer for the object. It would be good practice to explicitely call `Destroy()` to ensure C memory is freed sooner rather than later, depending on how often the GC is triggered.
 
 # License
 
