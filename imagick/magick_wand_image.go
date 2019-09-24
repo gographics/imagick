@@ -377,6 +377,18 @@ func (mw *MagickWand) CompositeImage(source *MagickWand,
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// Composite one image onto another at the specified offset.
+// source: The magick wand holding source image.
+// compose: This operator affects how the composite is applied to the image.
+// The default is Over.
+// gravity : positioning gravity.
+//
+func (mw *MagickWand) CompositeImageGravity(source *MagickWand, compose CompositeOperator, gravity GravityType) error {
+	ok := C.MagickCompositeImageGravity(mw.mw, source.mw, C.CompositeOperator(compose), C.GravityType(gravity))
+	runtime.KeepAlive(source)
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // Composite the images in the source wand over the images in the destination
 // wand in sequence, starting with the current image in both lists. Each layer
 // from the two image lists are composted together until the end of one of the
