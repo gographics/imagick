@@ -49,7 +49,8 @@ func (e *ExceptionInfo) Error() string {
 	if e == nil {
 		return ""
 	}
-	return fmt.Sprintf("%s: %s", e.kind.String(), e.description)
+	return fmt.Sprintf("%s (%d): %s %s",
+		e.kind.String(), e.Errno(), e.Reason(), e.Description())
 }
 
 // Errno returns the ExceptionInfo error number (non-zero if error)
