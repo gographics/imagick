@@ -5,10 +5,14 @@
 package imagick
 
 /*
+#include <MagickWand/MagickWand.h>
 #include <MagickCore/MagickCore.h>
 */
 import "C"
-import "runtime"
+import (
+	"runtime"
+	"unsafe"
+)
 
 type Image struct {
 	img *C.Image
@@ -32,4 +36,65 @@ func NewMagickImage(info *ImageInfo, width, height uint,
 	}
 
 	return &Image{img: img}, nil
+}
+
+type ImageCommandResult struct {
+	Info *ImageInfo
+	Meta string
+}
+
+/*
+ConvertImageCommand reads one or more images, applies one or more image
+processing operations, and writes out the image in the same or differing
+format.
+
+A description of each parameter follows:
+   * image_info: the image info.
+   * argc: the number of elements in the argument vector.
+   * argv: A text array containing the command line arguments.
+   * metadata: any metadata is returned here.
+   * exception: return any errors or warnings in this structure.
+*/
+func ConvertImageCommand(args []string) (*ImageCommandResult, error) {
+	size := len(args)
+
+	cmdArr := make([]*C.char, size)
+	for i, s := range args {
+		cmdArr[i] = C.CString(s)
+	}
+
+	empty := C.CString("")
+	metaStr := C.AcquireString(empty)
+	C.free(unsafe.Pointer(empty))
+
+	defer func() {
+		for i := range cmdArr {
+			C.free(unsafe.Pointer(cmdArr[i]))
+		}
+
+		C.DestroyString(metaStr)
+	}()
+
+	imageInfo := newImageInfo()
+
+	var exc *C.ExceptionInfo = C.AcquireExceptionInfo()
+	defer C.DestroyExceptionInfo(exc)
+
+	ok := C.ConvertImageCommand(
+		imageInfo.info,
+		C.int(size), // argc
+		&cmdArr[0],  // argv
+		&metaStr,    // metadata
+		exc,         // exception
+	)
+	if C.int(ok) == 0 {
+		imageInfo.Destroy()
+		return nil, newExceptionInfo(exc)
+	}
+
+	ret := &ImageCommandResult{
+		Info: imageInfo,
+		Meta: C.GoString(metaStr),
+	}
+	return ret, nil
 }
