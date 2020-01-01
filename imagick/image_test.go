@@ -5,6 +5,7 @@
 package imagick
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -29,6 +30,16 @@ func TestNewMagickImage(t *testing.T) {
 	if err != nil {
 		t.Fatal(err.Error())
 	}
+}
+
+func ExampleConvertImageCommand() {
+	ret, err := ConvertImageCommand([]string{
+		"convert", "logo:", "-resize", "100x100", "/tmp/out.png",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Meta:", ret.Meta)
 }
 
 func TestConvertImageCommand(t *testing.T) {
