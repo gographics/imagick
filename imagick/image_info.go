@@ -27,6 +27,7 @@ func newImageInfo() *ImageInfo {
 func (ii *ImageInfo) Destroy() {
 	if ii.info != nil {
 		C.DestroyImageInfo(ii.info)
+		runtime.SetFinalizer(ii, nil)
 		ii.info = nil
 	}
 }

@@ -65,6 +65,7 @@ func (mw *MagickWand) Destroy() {
 	mw.init.Do(func() {
 		mw.mw = C.DestroyMagickWand(mw.mw)
 		relinquishMemory(unsafe.Pointer(mw.mw))
+		runtime.SetFinalizer(mw, nil)
 		mw.mw = nil
 
 		mw.DecreaseCount()
