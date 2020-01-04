@@ -56,6 +56,7 @@ func (dw *DrawingWand) Destroy() {
 	dw.init.Do(func() {
 		dw.dw = C.DestroyDrawingWand(dw.dw)
 		relinquishMemory(unsafe.Pointer(dw.dw))
+		runtime.SetFinalizer(dw, nil)
 		dw.dw = nil
 
 		dw.DecreaseCount()

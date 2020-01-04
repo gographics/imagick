@@ -40,6 +40,7 @@ func newKernelInfo(cki *C.KernelInfo) *KernelInfo {
 func (ki *KernelInfo) Destroy() {
 	if ki.info != nil {
 		C.DestroyKernelInfo(ki.info)
+		runtime.SetFinalizer(ki, nil)
 		ki.info = nil
 	}
 }

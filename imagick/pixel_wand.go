@@ -57,6 +57,7 @@ func (pw *PixelWand) Destroy() {
 	pw.init.Do(func() {
 		pw.pw = C.DestroyPixelWand(pw.pw)
 		relinquishMemory(unsafe.Pointer(pw.pw))
+		runtime.SetFinalizer(pw, nil)
 		pw.pw = nil
 
 		pw.DecreaseCount()

@@ -75,6 +75,7 @@ func (pi *PixelIterator) Destroy() {
 	pi.init.Do(func() {
 		pi.pi = C.DestroyPixelIterator(pi.pi)
 		relinquishMemory(unsafe.Pointer(pi.pi))
+		runtime.SetFinalizer(pi, nil)
 		pi.pi = nil
 
 		pi.DecreaseCount()
