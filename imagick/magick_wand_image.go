@@ -1284,6 +1284,39 @@ func (mw *MagickWand) GetImageTotalInkDensity() float64 {
 	return ret
 }
 
+// Applies a continuously smooth color transition along a vector
+// from one color stop to another.
+func (mw *MagickWand) GradientImage(gradientType GradientType, spreadMethod SpreadMethod,
+	colorStops []StopInfo) error {
+
+	stops := make([]C.StopInfo, len(colorStops))
+	for i, colorStop := range colorStops {
+		stops[i] = colorStop.info
+	}
+
+	var exc *C.ExceptionInfo = C.AcquireExceptionInfo()
+	defer C.DestroyExceptionInfo(exc)
+
+	img := mw.GetImageFromMagickWand()
+
+	ok := C.GradientImage(
+		img.img,
+		C.GradientType(gradientType),
+		C.SpreadMethod(spreadMethod),
+		(*C.StopInfo)(unsafe.Pointer(&stops[0])),
+		C.size_t(len(stops)),
+		exc)
+
+	runtime.KeepAlive(mw)
+	runtime.KeepAlive(img)
+	runtime.KeepAlive(colorStops)
+
+	if C.int(ok) == 0 {
+		return checkExceptionInfo(exc)
+	}
+	return nil
+}
+
 // Replaces colors in the image from a Hald color lookup table. A Hald color
 // lookup table is a 3-dimensional color cube mapped to 2 dimensions. Create
 // it with the HALD coder. You can apply any color transformation to the Hald
