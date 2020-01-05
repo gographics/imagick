@@ -45,6 +45,40 @@ func checkExceptionInfo(errInfo *C.ExceptionInfo) *ExceptionInfo {
 	return nil
 }
 
+func (e *ExceptionInfo) Clear() {
+	if e == nil {
+		return
+	}
+	*e = ExceptionInfo{kind: EXCEPTION_UNDEFINED}
+}
+
+// IsSet returns true if any exception level is set, be it
+// a warning or error kind
+func (e *ExceptionInfo) IsSet() bool {
+	if e == nil {
+		return false
+	}
+	return e.kind > EXCEPTION_UNDEFINED
+}
+
+// IsWarningKind returns true if the exception level is set
+// to a warning
+func (e *ExceptionInfo) IsWarningKind() bool {
+	if e == nil {
+		return false
+	}
+	return e.kind >= EXCEPTION_WARNING && e.kind < EXCEPTION_ERROR
+}
+
+// IsErrorKind returns true if the exception level is set
+// to at least an error
+func (e *ExceptionInfo) IsErrorKind() bool {
+	if e == nil {
+		return false
+	}
+	return e.kind >= EXCEPTION_ERROR
+}
+
 func (e *ExceptionInfo) Error() string {
 	if e == nil {
 		return ""
@@ -59,6 +93,15 @@ func (e *ExceptionInfo) Errno() int {
 		return 0
 	}
 	return e.errno
+}
+
+// Kind returns the exception level.
+// EXCEPTION_UNDEFINED indicates that no exception has been set
+func (e *ExceptionInfo) Kind() ExceptionType {
+	if e == nil {
+		return EXCEPTION_UNDEFINED
+	}
+	return e.kind
 }
 
 // Reason returns the string reason for the Exception
