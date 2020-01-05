@@ -6,6 +6,7 @@ package imagick
 
 /*
 #include <unistd.h>
+#include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
 */
 import "C"
@@ -443,6 +444,7 @@ func (mw *MagickWand) ContrastStretchImage(blackPoint, whitePoint float64) error
 //
 func (mw *MagickWand) ConvolveImage(kernel *KernelInfo) error {
 	ok := C.MagickConvolveImage(mw.mw, kernel.info)
+	runtime.KeepAlive(mw)
 	runtime.KeepAlive(kernel)
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -450,13 +452,57 @@ func (mw *MagickWand) ConvolveImage(kernel *KernelInfo) error {
 // Extracts a region of the image
 func (mw *MagickWand) CropImage(width, height uint, x, y int) error {
 	ok := C.MagickCropImage(mw.mw, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
+	runtime.KeepAlive(mw)
 	return mw.getLastErrorIfFailed(ok)
+}
+
+// CropImageToTiles crops a single image, into a possible list of tiles.
+// This may include a single sub-region of the image. This basically applies
+// all the normal geometry flags for Crop.
+// The new cropped image replaces the current image.
+func (mw *MagickWand) CropImageToTiles(cropGeom string) error {
+	var exc *C.ExceptionInfo = C.AcquireExceptionInfo()
+	defer C.DestroyExceptionInfo(exc)
+
+	cstr := C.CString(cropGeom)
+	defer C.free(unsafe.Pointer(cstr))
+
+	img := mw.GetImageFromMagickWand()
+	newImg := C.CropImageToTiles(img.img, cstr, exc)
+
+	if exc != nil {
+		err := newExceptionInfo(exc)
+		if err.IsSet() {
+			return err
+		}
+	}
+
+	defer C.MagickDestroyImage(newImg)
+
+	newWand := NewMagickWandFromImage(&Image{newImg})
+	defer newWand.Destroy()
+
+	if err := mw.AddImage(newWand); err != nil {
+		return fmt.Errorf("error replacing image: %v", err)
+	}
+
+	mw.PreviousImage()
+
+	if err := mw.RemoveImage(); err != nil {
+		return fmt.Errorf("error removing current image: %v", err)
+	}
+
+	runtime.KeepAlive(mw)
+	runtime.KeepAlive(img)
+
+	return nil
 }
 
 // Displaces an Image's colormap by a given number of positions. If you cycle
 // the colormap a number of times you can produce a psychodelic effect.
 func (mw *MagickWand) CycleColormapImage(displace int) error {
 	ok := C.MagickCycleColormapImage(mw.mw, C.ssize_t(displace))
+	runtime.KeepAlive(mw)
 	return mw.getLastErrorIfFailed(ok)
 }
 
@@ -493,6 +539,7 @@ func (mw *MagickWand) DecipherImage(passphrase string) error {
 	cspassphrase := C.CString(passphrase)
 	defer C.free(unsafe.Pointer(cspassphrase))
 	ok := C.MagickDecipherImage(mw.mw, cspassphrase)
+	runtime.KeepAlive(mw)
 	return mw.getLastErrorIfFailed(ok)
 }
 
