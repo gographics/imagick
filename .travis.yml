@@ -9,25 +9,21 @@ env:
   global:
     - DOCKER_IMAGE=gographics/imagick.v2:im-$IMAGEMAGICK6_VERSION
     - CACHE_DIR=$HOME/.cache
-    - DOCKER_CACHE_DIR=$CACHE_DIR/docker
+    - GOCACHE=$CACHE_DIR/go-build
+    - GOPATH=$CACHE_DIR/go
 
 cache:
   directories:
-    - $DOCKER_CACHE_DIR
+    - $GOCACHE
+    - $GOPATH/pkg
 
-before_install:
-  # load cached Docker images
-  - if [[ -d $DOCKER_CACHE_DIR ]]; then ls $DOCKER_CACHE_DIR/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
-
-install:
-  - docker build -f Dockerfile --cache-from $DOCKER_IMAGE -t $DOCKER_IMAGE .
+before_script:
+  - docker pull "$DOCKER_IMAGE"
 
 script:
-  - docker run -it --rm -v $PWD:/go/projects/imagick $DOCKER_IMAGE
-
-before_cache:
-  # save tagged Docker images
-  # https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
   - >
-    mkdir -p $DOCKER_CACHE_DIR && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
-    | xargs -n 2 -t sh -c 'test -e $DOCKER_CACHE_DIR/$1.tar.gz || docker save $0 | gzip -2 > $DOCKER_CACHE_DIR/$1.tar.gz'
+    docker run -it --rm \
+      -v $PWD:/go/projects/imagick \
+      -v ${GOCACHE}:/root/.cache/go-build \
+      -v ${GOPATH}/pkg:/go/pkg \
+      "$DOCKER_IMAGE"
