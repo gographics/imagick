@@ -412,8 +412,8 @@ func (mw *MagickWand) SetImageProfile(name string, profile []byte) error {
 }
 
 // Associates a property with an image.
-// Note: Which properties are persisted(file write, byte slice) depends on the writer for the used fle format respectively.
-// Refer to the ImageMagick documention for more specific information.
+// Note: Which properties are persisted(file write, byte slice) depends on the writer for the used file format respectively.
+// Refer to the ImageMagick documention and source for more specific information.
 func (mw *MagickWand) SetImageProperty(property, value string) error {
 	csproperty := C.CString(property)
 	defer C.free(unsafe.Pointer(csproperty))
