@@ -412,9 +412,8 @@ func (mw *MagickWand) SetImageProfile(name string, profile []byte) error {
 }
 
 // Associates a property with an image.
-// Note: no tags except "comment" are persisted, during the use of the instance
-// all tags are accessible, should the data be written(to a file, as btye slice...) and re read,
-//all edited tags excluding "comment" will NOT be present anymore.
+// Note: Which properties are persisted(file write, byte slice) depends on the writer for the used fle format respectively.
+// Refer to the ImageMagick documention for more specific information.
 func (mw *MagickWand) SetImageProperty(property, value string) error {
 	csproperty := C.CString(property)
 	defer C.free(unsafe.Pointer(csproperty))
