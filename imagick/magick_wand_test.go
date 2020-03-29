@@ -6,6 +6,8 @@ package imagick
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"reflect"
 	"runtime"
 	"sync/atomic"
@@ -158,6 +160,33 @@ func TestImageChannelMask(t *testing.T) {
 	channel = mw.SetImageChannelMask(CHANNELS_ALL)
 	if channel != CHANNEL_ALPHA {
 		t.Fatalf("Expected CHANNEL_ALPHA (%v), got %v", CHANNEL_ALPHA, channel)
+	}
+}
+
+func TestReadImageFile(t *testing.T) {
+	Initialize()
+	defer Terminate()
+
+	mw := NewMagickWand()
+	if err := mw.ReadImage(`logo:`); err != nil {
+		t.Fatal(err)
+	}
+
+	tmp, err := ioutil.TempFile("", "imagick_test-*.jpg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(tmp.Name())
+
+	if err := mw.WriteImage(tmp.Name()); err != nil {
+		t.Fatal(err)
+	}
+	mw.Destroy()
+
+	mw = NewMagickWand()
+	defer mw.Destroy()
+	if err := mw.ReadImageFile(tmp); err != nil {
+		t.Fatal(err)
 	}
 }
 
