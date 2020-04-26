@@ -1,0 +1,39 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  test_go:
+    name: Test go-${{ matrix.go }} on ${{ matrix.os }}
+    strategy:
+      matrix:
+        go: [1.14.x]
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Setup MSYS2
+        uses: numworks/setup-msys2@v1
+        with:
+          update: true
+          msystem: MSYS
+        run: |
+          msys2do makepkg-mingw -sCLfc --noconfirm --noprogressbar
+          msys2do pacman --noconfirm -U mingw-w64-*-any.pkg.tar.xz
+          msys2do pacman -S mingw-w64-x86_64-pkg-config
+          msys2do pacman -S mingw-w64-x86_64-imagemagick
+          msys2do pacman -S mingw-w64-x86_64-gcc
+
+      - name: Test
+        run: |
+          set MSYSTEM=MINGW64
+          msys2do go test -v ./...
+
