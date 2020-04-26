@@ -25,6 +25,8 @@ jobs:
         with:
           update: true
           msystem: MSYS
+
+      - name: Install deps
         run: |
           msys2do makepkg-mingw -sCLfc --noconfirm --noprogressbar
           msys2do pacman --noconfirm -U mingw-w64-*-any.pkg.tar.xz
