@@ -35,7 +35,5 @@ jobs:
           msys2do pacman --noconfirm -S mingw-w64-x86_64-gcc
 
       - name: Test
-        run: |
-          set MSYSTEM=MINGW64
-          msys2do go test -v ./...
+        run: go test -v ./...
 
