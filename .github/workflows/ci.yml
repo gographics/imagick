@@ -30,9 +30,9 @@ jobs:
         run: |
           msys2do makepkg-mingw -sCLfc --noconfirm --noprogressbar --needed mingw-w64-x86_64-toolchain
           msys2do pacman --noconfirm -U mingw-w64-*-any.pkg.tar.xz
-          msys2do pacman -S mingw-w64-x86_64-pkg-config
-          msys2do pacman -S mingw-w64-x86_64-imagemagick
-          msys2do pacman -S mingw-w64-x86_64-gcc
+          msys2do pacman --noconfirm -S mingw-w64-x86_64-pkg-config
+          msys2do pacman --noconfirm -S mingw-w64-x86_64-imagemagick
+          msys2do pacman --noconfirm -S mingw-w64-x86_64-gcc
 
       - name: Test
         run: |
