@@ -33,7 +33,9 @@ jobs:
           msys2do pacman --noconfirm -S mingw-w64-x86_64-pkg-config
           msys2do pacman --noconfirm -S mingw-w64-x86_64-imagemagick
           msys2do pacman --noconfirm -S mingw-w64-x86_64-gcc
-
+          env
+          which pkg-config
+          
       - name: Test
         run: go test -v ./...
 
