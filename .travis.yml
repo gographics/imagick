@@ -1,5 +1,3 @@
-sudo: required
-
 language: generic
 
 os:
@@ -34,6 +32,7 @@ cache:
 
 before_script:
   - |-
+    echo "Setting up $TRAVIS_OS_NAME"
     case $TRAVIS_OS_NAME in
       linux)
         docker pull "$DOCKER_IMAGE"
@@ -49,14 +48,19 @@ before_script:
         export msys2+=" -msys2 -c "\"\$@"\" --"
         $msys2 pacman --sync --noconfirm --needed mingw-w64-x86_64-toolchain
         ## Install more MSYS2 packages from https://packages.msys2.org/base here
+        $msys2 pacman -S mingw-w64-x86_64-pkg-config
+        $msys2 pacman -S mingw-w64-x86_64-imagemagick
+        $msys2 pacman -S mingw-w64-x86_64-gcc
         taskkill //IM gpg-agent.exe //F  # https://travis-ci.community/t/4967
         export PATH=/C/tools/msys64/mingw64/bin:$PATH
+        export PKG_CONFIG_PATH=/C/tools/msys64/mingw64/lib/pkgconfig
         export MAKE=mingw32-make  # so that Autotools can find it
         ;;
     esac
 
 script:
   - |-
+    echo "Executing under $TRAVIS_OS_NAME"
     case $TRAVIS_OS_NAME in
       linux)
         docker run -it --rm \
