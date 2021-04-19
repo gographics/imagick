@@ -8,6 +8,11 @@ package imagick
 #include <unistd.h>
 #include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
+
+// declare symbols only defined in C source and not in header
+WandExport MagickBooleanType MagickSetImageMask(
+	MagickWand *wand, const PixelMask type, const MagickWand *clip_mask
+);
 */
 import "C"
 
@@ -2354,6 +2359,13 @@ func (mw *MagickWand) SetImageIterations(iterations uint) error {
 // Sets the image matte channel.
 func (mw *MagickWand) SetImageMatte(matte bool) error {
 	ok := C.MagickSetImageMatte(mw.mw, b2i(matte))
+	return mw.getLastErrorIfFailed(ok)
+}
+
+// Sets image clip mask.
+// PixelMaskType can be one of: PIXEL_MASK_READ, PIXEL_MASK_WRITE
+func (mw *MagickWand) SetImageMask(typ PixelMaskType, clipMask *MagickWand) error {
+	ok := C.MagickSetImageMask(mw.mw, C.PixelMask(typ), clipMask.mw)
 	return mw.getLastErrorIfFailed(ok)
 }
 
