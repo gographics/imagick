@@ -146,6 +146,22 @@ func TestImageAlpha(t *testing.T) {
 	}
 }
 
+func TestImageMask(t *testing.T) {
+	mw := NewMagickWand()
+	mw.ReadImage(`logo:`)
+
+	mask := NewMagickWand()
+	mask.ReadImage(`logo:`)
+
+	if err := mw.SetImageMask(PIXEL_MASK_READ, mask); err != nil {
+		t.Fatal(err)
+	}
+	if err := mw.SetImageMask(PIXEL_MASK_WRITE, mask); err != nil {
+		t.Fatal(err)
+	}
+
+}
+
 func TestImageChannelMask(t *testing.T) {
 	mw := NewMagickWand()
 	mw.ReadImage(`logo:`)
