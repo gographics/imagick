@@ -150,16 +150,16 @@ use Windows GUI.
    go clean -cache
    ```
    
-   then choose the right version to rebuild. option `-a`    here is to force rebuild the package to prevent using    the cached cgo file.
+   then choose the right version to rebuild. option `-a` here is to force rebuild the package to prevent using the cached cgo file.
    
    ```shell
-   go build -a gopkg.in/gographics/imagick.<right-version>/   imagick
+   go build -a gopkg.in/gographics/imagick.<right-version>/imagick
    ```
    
    then install again
    
    ```shell
-   go get gopkg.in/gographics/imagick.<right-version>/   imagick
+   go get gopkg.in/gographics/imagick.<right-version>/imagick
    ```
 
 
