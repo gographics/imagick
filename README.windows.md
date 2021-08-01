@@ -2,7 +2,7 @@
 
 ## step 1: install msys2
 
-Msys2 is required for build ImageMagick dll. You can download from [Msys2](https://www.msys2.org/).
+Msys2 is required to build ImageMagick dll. You can download from [Msys2](https://www.msys2.org/).
 
 Follow the install guide described in the page.
 
@@ -52,26 +52,26 @@ There are many ways to set env variables. Through Windows GUI or by command. In 
 we use `PowerShell`. If you are not sure about the right command in your shell environment, please
 use Windows GUI.
 
-1. enable msys2 shell to inherit environment variables to enable us calling `go build` command in msys2 shell from windows. set `MSYS2_PATH_TYPE` to `inherit`
+1. enable msys2 shell to inherit environment variables to enable calling `go build` command in msys2 shell from windows. set `MSYS2_PATH_TYPE` to `inherit`
 
     ```powershell
     $env:MSYS2_PATH_TYPE="inherit"
     ```
 
-2. add `msys2_shell.cmd` to `Path` to enable us invoking msys2 shell from anywhere. File `msys2_shell.cmd` is in your root of msys2 install directory, just add it to your system `Path` variable.
+2. add `msys2_shell.cmd` to `Path` to enable invoking msys2 shell from anywhere. File `msys2_shell.cmd` is in the root of msys2 install directory, just add it to your system `Path` variable.
 
 
     ```powershell
     $env:Path += ";<your_msys2_root>"
     ```
 
-3. set decoders variable. This is very important for building. Those decoders needed to be included in build time for your code to recognize different image format.
+3. set decoders variable. This is very important for building. The decoders need to be included at build time for your code to recognize different image formats.
 
     ```powershell
     $env:MAGICK_CODER_MODULE_PATH="<your_msys2_root>/mingw64/lib/ImageMagick-7.x.x/modules-Q16HDRI/coders"
     ```
 
-    > If fail to set this variable, no error would be reported at build time, but this might cause `no decode delegate for this image format` error at run time.
+    > If you fail to set this variable, no error would be reported at build time, but this might cause `no decode delegate for this image format` error at run time.
 
 ## step 4: start building.
 
@@ -99,7 +99,7 @@ use Windows GUI.
 
 4. build go binding.
 
-    Please choose right binding version for your installed `ImageMagick` version.
+    Please choose the correct binding version for your installed `ImageMagick` version.
 
 
     ```shell
@@ -114,7 +114,7 @@ use Windows GUI.
     gopkg.in/gographics/imagick.v1/imagick
     ```
 
-    in this instruction, we should install `v3`
+    in this instruction, we should install `v3`, as it aligned with ImageMagick7.
 
     ```shell
     go build gopkg.in/gographics/imagick.v3/imagick
@@ -126,7 +126,7 @@ use Windows GUI.
     fatal error: wand/MagickWand.h: No such file or directory
     ```
 
-    Please check the right binding version is really matched with your installed `ImageMagick` version.
+    Please check that you are using the correct binding version to match the installed `ImageMagick` version.
 
 5. install the package.
 
@@ -144,13 +144,13 @@ use Windows GUI.
    undefined references to __errno in errno_itself
    ```
    
-   Tis is because of badly cached cgo file. If you build    the wrong version for your `ImageMagick`, you might meet    this error. Please clean the cache by this command:
+   It may be caused by a badly cached cgo file. If you build the wrong version for your `ImageMagick`, you might meet this error. Please clean the cache:
    
    ```shell
    go clean -cache
    ```
    
-   then choose the right version to rebuild. option `-a` here is to force rebuild the package to prevent using the cached cgo file.
+   then choose the correct version to rebuild. option `-a` here is to force rebuild the package to prevent using the cached cgo file.
    
    ```shell
    go build -a gopkg.in/gographics/imagick.<right-version>/imagick
@@ -161,19 +161,3 @@ use Windows GUI.
    ```shell
    go get gopkg.in/gographics/imagick.<right-version>/imagick
    ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
