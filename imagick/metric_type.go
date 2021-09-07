@@ -22,5 +22,7 @@ const (
 	METRIC_ROOT_MEAN_SQUARED_ERROR            MetricType = C.RootMeanSquaredErrorMetric
 	METRIC_NORMALIZED_CROSS_CORRELATION_ERROR MetricType = C.NormalizedCrossCorrelationErrorMetric
 	METRIC_FUZZ_ERROR                         MetricType = C.FuzzErrorMetric
+	METRIC_PERCEPTUAL_HASH_ERROR              MetricType = C.PerceptualHashErrorMetric
 	METRIC_STRUCTURAL_SIMILARITY_ERROR        MetricType = C.StructuralSimilarityErrorMetric
+	METRIC_STRUCTURAL_DISSIMILARITY_ERROR     MetricType = C.StructuralDissimilarityErrorMetric
 )
