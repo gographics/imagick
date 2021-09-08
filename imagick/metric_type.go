@@ -23,4 +23,6 @@ const (
 	METRIC_PEAK_SIGNAL_TO_NOISE_RATIO         MetricType = C.PeakSignalToNoiseRatioErrorMetric
 	METRIC_PERCEPTUAL_HASH_ERROR              MetricType = C.PerceptualHashErrorMetric
 	METRIC_ROOT_MEAN_SQUARED_ERROR            MetricType = C.RootMeanSquaredErrorMetric
+	METRIC_STRUCTURAL_SIMILARITY_ERROR        MetricType = C.StructuralSimilarityErrorMetric
+	METRIC_STRUCTURAL_DISSIMILARITY_ERROR     MetricType = C.StructuralDissimilarityErrorMetric
 )
