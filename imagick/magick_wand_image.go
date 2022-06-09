@@ -20,6 +20,16 @@ import (
 	"unsafe"
 )
 
+func checkColsRows(cols, rows uint) error {
+	if cols == 0 {
+		return errors.New("bad parameter value: cols=0")
+	}
+	if rows == 0 {
+		return errors.New("bad parameter value: rows=0")
+	}
+	return nil
+}
+
 // Returns the current image from the magick wand
 func (mw *MagickWand) GetImageFromMagickWand() *Image {
 	return &Image{C.GetImageFromMagickWand(mw.mw)}
@@ -57,6 +67,9 @@ func (mw *MagickWand) AdaptiveBlurImageChannel(channel ChannelType, radius, sigm
 
 // Adaptively resize image with data dependent triangulation
 func (mw *MagickWand) AdaptiveResizeImage(cols, rows uint) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickAdaptiveResizeImage(mw.mw, C.size_t(cols), C.size_t(rows))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -593,6 +606,9 @@ func (mw *MagickWand) CycleColormapImage(displace int) error {
 // type.
 //
 func (mw *MagickWand) ConstituteImage(cols, rows uint, pmap string, stype StorageType, pixels interface{}) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
 	ptr, calculatedStype, err := pixelInterfaceToPtr(pixels)
@@ -1707,6 +1723,10 @@ func pixelInterfaceToPtr(pixels interface{}) (unsafe.Pointer, StorageType, error
 func (mw *MagickWand) ImportImagePixels(x, y int, cols, rows uint, pmap string,
 	stype StorageType, pixels interface{}) error {
 
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
+
 	cspmap := C.CString(pmap)
 	defer C.free(unsafe.Pointer(cspmap))
 
@@ -1789,6 +1809,9 @@ func (mw *MagickWand) LinearStretchImage(blackPoint, whitePoint float64) error {
 // rigidity: introduce a bias for non-straight seams (typically 0).
 //
 func (mw *MagickWand) LiquidRescaleImage(cols, rows uint, deltaX, rigidity float64) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickLiquidRescaleImage(mw.mw, C.size_t(cols), C.size_t(rows), C.double(deltaX), C.double(rigidity))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2409,6 +2432,9 @@ func (mw *MagickWand) ResetImagePage(page string) error {
 // blur: the blur factor where > 1 is blurry, < 1 is sharp.
 //
 func (mw *MagickWand) ResizeImage(cols, rows uint, filter FilterType, blur float64) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickResizeImage(mw.mw, C.size_t(cols), C.size_t(rows), C.FilterTypes(filter), C.double(blur))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -2441,12 +2467,18 @@ func (mw *MagickWand) RotateImage(background *PixelWand, degrees float64) error 
 // scaling methods, this method does not introduce any additional color into
 // the scaled image.
 func (mw *MagickWand) SampleImage(cols, rows uint) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickSampleImage(mw.mw, C.size_t(cols), C.size_t(rows))
 	return mw.getLastErrorIfFailed(ok)
 }
 
 // Scales the size of an image to the given dimensions.
 func (mw *MagickWand) ScaleImage(cols, rows uint) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickScaleImage(mw.mw, C.size_t(cols), C.size_t(rows))
 	return mw.getLastErrorIfFailed(ok)
 }
@@ -3144,6 +3176,9 @@ func (mw *MagickWand) ThresholdImageChannel(channel ChannelType, threshold float
 // associated profiles. The goal is to produce small low cost thumbnail images
 // suited for display on the Web.
 func (mw *MagickWand) ThumbnailImage(cols, rows uint) error {
+	if err := checkColsRows(cols, rows); err != nil {
+		return err
+	}
 	ok := C.MagickThumbnailImage(mw.mw, C.size_t(cols), C.size_t(rows))
 	return mw.getLastErrorIfFailed(ok)
 }
