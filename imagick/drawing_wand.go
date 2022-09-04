@@ -80,7 +80,6 @@ func (dw *DrawingWand) DecreaseCount() {
 // rather than replaced.
 //
 // affine: Affine matrix parameters
-//
 func (dw *DrawingWand) Affine(affine *AffineMatrix) {
 	C.DrawAffine(dw.dw, affine.ptr())
 	runtime.KeepAlive(dw)
@@ -110,7 +109,6 @@ func (dw *DrawingWand) Annotation(x, y float64, text string) {
 // sd:  starting degrees of rotation
 //
 // ed:  ending degrees of rotation
-//
 func (dw *DrawingWand) Arc(sx, sy, ex, ey, sd, ed float64) {
 	C.DrawArc(dw.dw, C.double(sx), C.double(sy), C.double(ex), C.double(ey), C.double(sd), C.double(ed))
 	runtime.KeepAlive(dw)
@@ -135,7 +133,6 @@ func (dw *DrawingWand) Bezier(coordinates []PointInfo) {
 // px: perimeter x ordinate
 //
 // py: perimeter y ordinate
-//
 func (dw *DrawingWand) Circle(ox, oy, px, py float64) {
 	C.DrawCircle(dw.dw, C.double(ox), C.double(oy), C.double(px), C.double(py))
 	runtime.KeepAlive(dw)
@@ -157,7 +154,6 @@ func (dw *DrawingWand) Circle(ox, oy, px, py float64) {
 // existing height.
 //
 // mw: Image to composite is obtained from this wand.
-//
 func (dw *DrawingWand) Composite(compose CompositeOperator, x, y, width, height float64, mw *MagickWand) error {
 	ok := C.DrawComposite(dw.dw, C.CompositeOperator(compose), C.double(x), C.double(y), C.double(width), C.double(height), mw.mw)
 	return dw.getLastErrorIfFailed(ok)
@@ -173,7 +169,6 @@ func (dw *DrawingWand) Composite(compose CompositeOperator, x, y, width, height 
 // pm: paint method. PointMethod: Recolors the target pixel. ReplaceMethod:
 // Recolor any pixel that matches the target pixel. FloodfillMethod: Recolors
 // target pixels and matching neighbors. ResetMethod: Recolor all pixels.
-//
 func (dw *DrawingWand) Color(x, y float64, pm PaintMethod) {
 	C.DrawColor(dw.dw, C.double(x), C.double(y), C.PaintMethod(pm))
 	runtime.KeepAlive(dw)
@@ -200,7 +195,6 @@ func (dw *DrawingWand) Comment(comment string) {
 // start: starting rotation in degrees
 //
 // end: ending rotation in degrees
-//
 func (dw *DrawingWand) Ellipse(ox, oy, rx, ry, start, end float64) {
 	C.DrawEllipse(dw.dw, C.double(ox), C.double(oy), C.double(rx), C.double(ry), C.double(start), C.double(end))
 	runtime.KeepAlive(dw)
@@ -436,7 +430,7 @@ func (dw *DrawingWand) GetTextKerning() float64 {
 
 // Gets the spacing between lines in text.
 func (dw *DrawingWand) GetTextInterlineSpacing() float64 {
-	ret := float64(C.DrawGetTextInterwordSpacing(dw.dw))
+	ret := float64(C.DrawGetTextInterlineSpacing(dw.dw))
 	runtime.KeepAlive(dw)
 	return ret
 }
@@ -468,14 +462,13 @@ func (dw *DrawingWand) GetTextUnderColor() (pw *PixelWand) {
 // Draws a line on the image using the current stroke color, stroke opacity,
 // and stroke width.
 //
-//sx: starting x ordinate
+// sx: starting x ordinate
 //
-//sy: starting y ordinate
+// sy: starting y ordinate
 //
-//ex: ending x ordinate
+// ex: ending x ordinate
 //
-//ey: ending y ordinate
-//
+// ey: ending y ordinate
 func (dw *DrawingWand) Line(sx, sy, ex, ey float64) {
 	C.DrawLine(dw.dw, C.double(sx), C.double(sy), C.double(ex), C.double(ey))
 	runtime.KeepAlive(dw)
@@ -492,16 +485,16 @@ func (dw *DrawingWand) Matte(x, y float64, pmethod PaintMethod) {
 // transparent. to influence the opacity of pixels. The available paint
 // methods are:
 //
-// 	ResetMethod: Select all pixels.
+//		ResetMethod: Select all pixels.
 //
-// 	PointMethod: Select the target pixel
+//		PointMethod: Select the target pixel
 //
-// 	ReplaceMethod: Select any pixel that matches the target pixel.
+//		ReplaceMethod: Select any pixel that matches the target pixel.
 //
-// 	FloodfillMethod: Select the target pixel and matching neighbors.
+//		FloodfillMethod: Select the target pixel and matching neighbors.
 //
-// 	FillToBorderMethod: Select the target pixel and neighbors not matching
-//                      border color.
+//		FillToBorderMethod: Select the target pixel and neighbors not matching
+//	                     border color.
 //
 // x, y: x, y ordinates
 // pmethod: paint method
@@ -529,7 +522,6 @@ func (dw *DrawingWand) PathClose() {
 // x2, y2: x, y ordinates of control point for curve ending
 //
 // x, y: x, y ordinates of the end of the curve
-//
 func (dw *DrawingWand) PathCurveToAbsolute(x1, y1, x2, y2, x, y float64) {
 	C.DrawPathCurveToAbsolute(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -546,7 +538,6 @@ func (dw *DrawingWand) PathCurveToAbsolute(x1, y1, x2, y2, x, y float64) {
 // x2, y2: x, y ordinates of control point for curve ending
 //
 // x, y: x, y ordinates of the end of the curve
-//
 func (dw *DrawingWand) PathCurveToRelative(x1, y1, x2, y2, x, y float64) {
 	C.DrawPathCurveToRelative(dw.dw, C.double(x1), C.double(y1), C.double(x2), C.double(y2), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -560,7 +551,6 @@ func (dw *DrawingWand) PathCurveToRelative(x1, y1, x2, y2, x, y float64) {
 // x1, y1: ordinates of the control point
 //
 // x, y: ordinates of final point
-//
 func (dw *DrawingWand) PathCurveToQuadraticBezierAbsolute(x1, y1, x, y float64) {
 	C.DrawPathCurveToQuadraticBezierAbsolute(dw.dw, C.double(x1), C.double(y1), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -587,8 +577,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierRelative(x1, y1, x, y float64) 
 // coincident with the current point.). At the end of the command, the new
 // current point becomes the final (x,y) coordinate pair used in the polybezier.
 //
-//x, y: ordinates of final point
-//
+// x, y: ordinates of final point
 func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothAbsolute(x, y float64) {
 	C.DrawPathCurveToQuadraticBezierSmoothAbsolute(dw.dw, C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -604,8 +593,7 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothAbsolute(x, y float64) {
 // coincident with the current point.). At the end of the command, the new
 // current point becomes the final (x,y) coordinate pair used in the polybezier.
 //
-//x, y: ordinates of final point
-//
+// x, y: ordinates of final point
 func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothRelative(x, y float64) {
 	C.DrawPathCurveToQuadraticBezierSmoothRelative(dw.dw, C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -624,7 +612,6 @@ func (dw *DrawingWand) PathCurveToQuadraticBezierSmoothRelative(x, y float64) {
 // x2, y2: ordinates of second control point
 //
 // x, y: ordinates of termination point
-//
 func (dw *DrawingWand) PathCurveToSmoothAbsolute(x2, y2, x, y float64) {
 	C.DrawPathCurveToSmoothAbsolute(dw.dw, C.double(x2), C.double(y2), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -643,7 +630,6 @@ func (dw *DrawingWand) PathCurveToSmoothAbsolute(x2, y2, x, y float64) {
 // x2, y2: ordinates of second control point
 //
 // x, y: ordinates of termination point
-//
 func (dw *DrawingWand) PathCurveToSmoothRelative(x2, y2, x, y float64) {
 	C.DrawPathCurveToSmoothRelative(dw.dw, C.double(x2), C.double(y2), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -667,7 +653,6 @@ func (dw *DrawingWand) PathCurveToSmoothRelative(x2, y2, x, y float64) {
 // largeArcFlag: If true then draw the larger of the available arcs
 //
 // sweepFlag: If true then draw the arc matching a clock-wise rotation
-//
 func (dw *DrawingWand) PathEllipticArcAbsolute(rx, ry, xAxisRotation float64, largeArcFlag, sweepFlag bool, x, y float64) {
 	C.DrawPathEllipticArcAbsolute(dw.dw, C.double(rx), C.double(ry), C.double(xAxisRotation), b2i(largeArcFlag), b2i(sweepFlag), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -691,7 +676,6 @@ func (dw *DrawingWand) PathEllipticArcAbsolute(rx, ry, xAxisRotation float64, la
 // largeArcFlag: If true then draw the larger of the available arcs
 //
 // sweepFlag: If true then draw the arc matching a clock-wise rotation
-//
 func (dw *DrawingWand) PathEllipticArcRelative(rx, ry, xAxisRotation float64, largeArcFlag, sweepFlag bool, x, y float64) {
 	C.DrawPathEllipticArcRelative(dw.dw, C.double(rx), C.double(ry), C.double(xAxisRotation), b2i(largeArcFlag), b2i(sweepFlag), C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -716,7 +700,6 @@ func (dw *DrawingWand) PathLineToAbsolute(x, y float64) {
 // relative coordinates. The coordinate then becomes the new current point.
 //
 // x, y: target x and y ordinates
-//
 func (dw *DrawingWand) PathLineToRelative(x, y float64) {
 	C.DrawPathLineToRelative(dw.dw, C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
@@ -916,7 +899,6 @@ func (dw *DrawingWand) RoundRectangle(x1, y1, x2, y2, rx, ry float64) {
 // x: horizontal scale factor
 //
 // y: vertical scale factor
-//
 func (dw *DrawingWand) Scale(x, y float64) {
 	C.DrawScale(dw.dw, C.double(x), C.double(y))
 	runtime.KeepAlive(dw)
