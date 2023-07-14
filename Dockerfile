@@ -1,4 +1,4 @@
-FROM golang:1.13
+FROM golang:1.20
 
 # Ignore APT warnings about not having a TTY
 ENV DEBIAN_FRONTEND noninteractive
