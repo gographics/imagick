@@ -1,7 +1,7 @@
 # Go Imagick
 
 [![GoDoc](https://godoc.org/gopkg.in/gographics/imagick.v3/imagick?status.svg)](https://gopkg.in/gographics/imagick.v3/imagick) 
-[![Build](https://github.com/gographics/imagick/workflows/Test/badge.svg)](https://github.com/gographics/imagick/actions?query=workflow%3A%22Test%22)
+[![Build](https://github.com/gographics/imagick/workflows/Test/badge.svg?branch=im-7)](https://github.com/gographics/imagick/actions?query=workflow%3A%22Test%22)
 
 Go Imagick is a Go bind to ImageMagick's MagickWand C API.
 
