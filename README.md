@@ -1,22 +1,23 @@
 # Go Imagick
 
-[![GoDoc](https://godoc.org/gopkg.in/gographics/imagick.v3/imagick?status.svg)](https://gopkg.in/gographics/imagick.v3/imagick) [![Travis Build Status](https://api.travis-ci.org/gographics/imagick.svg)](https://travis-ci.org/gographics/imagick)
+[![GoDoc](https://godoc.org/gopkg.in/gographics/imagick.v3/imagick?status.svg)](https://gopkg.in/gographics/imagick.v3/imagick) 
+[![Build](https://github.com/gographics/imagick/workflows/Test/badge.svg)](https://github.com/gographics/imagick/actions?query=workflow%3A%22Test%22)
 
 Go Imagick is a Go bind to ImageMagick's MagickWand C API.
 
 We support two compatibility branches:
 
 ```
-master (tag v2.x.x): 6.9.1-7 <= ImageMagick <= 6.9.9-35
 im-7   (tag v3.x.x): 7.x     <= ImageMagick <= 7.x
+master (tag v2.x.x): 6.9.1-7 <= ImageMagick <= 6.9.9-35
 legacy (tag v1.x.x): 6.7.x   <= ImageMagick <= 6.8.9-10
 ```
 
 They map, respectively, through gopkg.in:
 
 ```
-gopkg.in/gographics/imagick.v2/imagick
 gopkg.in/gographics/imagick.v3/imagick
+gopkg.in/gographics/imagick.v2/imagick
 gopkg.in/gographics/imagick.v1/imagick
 ```
 
