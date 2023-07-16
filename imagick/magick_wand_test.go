@@ -6,6 +6,8 @@ package imagick
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"reflect"
 	"runtime"
 	"sync/atomic"
@@ -124,6 +126,33 @@ func TestDeleteImageArtifact(t *testing.T) {
 
 	if err := mw.DeleteImageArtifact("*"); err != nil {
 		t.Fatalf("Error calling DeleteImageArtifact: %s", err.Error())
+	}
+}
+
+func TestReadImageFile(t *testing.T) {
+	Initialize()
+	defer Terminate()
+
+	mw := NewMagickWand()
+	if err := mw.ReadImage(`logo:`); err != nil {
+		t.Fatal(err)
+	}
+
+	tmp, err := ioutil.TempFile("", "imagick_test-*.jpg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Remove(tmp.Name())
+
+	if err := mw.WriteImage(tmp.Name()); err != nil {
+		t.Fatal(err)
+	}
+	mw.Destroy()
+
+	mw = NewMagickWand()
+	defer mw.Destroy()
+	if err := mw.ReadImageFile(tmp); err != nil {
+		t.Fatal(err)
 	}
 }
 

@@ -3380,11 +3380,17 @@ func (mw *MagickWand) WriteImagesFile(out *os.File) error {
 // cfdopen returns a C-level FILE*. mode should be as described in fdopen(3).
 // Caller is responsible for closing the file when successfully returned,
 // via C.fclose()
-func cfdopen(file *os.File, mode string) (*C.FILE, error) {
+func cfdopen(file *os.File, mode string) (cfile *C.FILE, err error) {
+	cname := C.CString(file.Name())
 	cmode := C.CString(mode)
+	defer C.free(unsafe.Pointer(cname))
 	defer C.free(unsafe.Pointer(cmode))
 
-	cfile, err := C.fdopen(C.dup(C.int(file.Fd())), cmode)
+	if file.Name() != "" {
+		cfile, err = C.fopen(cname, cmode)
+	} else {
+		cfile, err = C.fdopen(C.dup(C.int(file.Fd())), cmode)
+	}
 	if err != nil {
 		return nil, err
 	}

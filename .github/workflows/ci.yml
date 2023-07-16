@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    name: Test ImageMagick6
+    name: Test ImageMagick6 linux
     runs-on: ubuntu-latest
     environment: imagemagick6
     env:
