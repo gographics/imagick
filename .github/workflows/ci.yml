@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    name: Test ImageMagick7
+    name: Test ImageMagick7 linux
     runs-on: ubuntu-latest
     environment: imagemagick7
     env:
@@ -31,3 +31,40 @@ jobs:
             -v $PWD/.cache/go-build:/root/.cache/go-build \
             -v $PWD/.cache/go/pkg:/go/pkg \
             "$DOCKER_IMAGE"
+
+  test_windows:
+    name: Test ImageMagick7 windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Setup go
+        uses: actions/setup-go@v4.0.1
+        with:
+          go-version: 1.20.6
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            base-devel 
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-imagemagick
+
+      - name: Install deps
+        shell: msys2 {0}
+        run: |
+          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
+          pkg-config --cflags --libs MagickWand
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 convert -list configure
+
+      - name: Test
+        shell: msys2 {0}
+        run: >
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
+          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe test -v ./imagick 
