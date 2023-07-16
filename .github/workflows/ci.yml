@@ -1,0 +1,74 @@
+name: Test
+
+on:
+  push:
+    tags:
+      - "*"
+    branches-ignore:
+      - 'exp_*'
+  pull_request:
+    branches-ignore:
+      - 'exp_*'
+
+jobs:
+  test:
+    name: Test ImageMagick7
+    runs-on: ubuntu-latest
+    environment: imagemagick7
+    env:
+      DOCKER_IMAGE: gographics/imagick.v3:im-${{ vars.IMAGEMAGICK7_VERSION }}
+    # We want to run on external PRs, but not on our own internal PRs as they'll be run
+    # by the push to the branch.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        run: |
+          docker run --rm \
+            -v $PWD:/go/projects/imagick \
+            -v $PWD/.cache/go-build:/root/.cache/go-build \
+            -v $PWD/.cache/go/pkg:/go/pkg \
+            "$DOCKER_IMAGE"
+
+  test_windows:
+    name: Test go-${{ matrix.go }} on ${{ matrix.os }}
+    strategy:
+      matrix:
+        go: [1.20.6]
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Setup go
+        uses: actions/setup-go@v4.0.1
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            base-devel 
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-imagemagick
+
+      - name: Install deps
+        shell: msys2 {0}
+        run: |
+          /c/hostedtoolcache/windows/go/${{ matrix.go }}/x64/bin/go.exe env
+          pkg-config --cflags --libs MagickWand
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 convert -list configure
+
+      - name: Test
+        shell: msys2 {0}
+        run: >
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
+          /c/hostedtoolcache/windows/go/${{ matrix.go }}/x64/bin/go.exe test -v ./imagick 
