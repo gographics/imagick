@@ -129,7 +129,6 @@ func example1() {
 // Since rotation is done around the origin, we must translate
 // the point (300,100) up to the origin, do the rotation, and
 // then translate back again
-//
 func example2() {
 	imagick.Initialize()
 	defer imagick.Terminate()

@@ -25,7 +25,7 @@ func relinquishMemory(ptr unsafe.Pointer) {
 func relinquishMemoryCStringArray(p **C.char) {
 	if p == nil {
 		return
-	} 
+	}
 	defer relinquishMemory(unsafe.Pointer(p))
 	for *p != nil {
 		relinquishMemory(unsafe.Pointer(*p))

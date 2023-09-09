@@ -37,7 +37,7 @@ func TestAffineMatrix(t *testing.T) {
 		t.Errorf("Expected SY=-1, got %v", m.ScaleY())
 	}
 
-	dw.Affine(m)	
+	dw.Affine(m)
 	mw.DrawImage(dw)
 
 	m.ResetToIdentity()

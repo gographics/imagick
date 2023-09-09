@@ -157,10 +157,11 @@ func NewKernelInfoBuiltIn(typ KernelInfoType, kernel string) (*KernelInfo, error
 // http://www.imagemagick.org/api/morphology.php#ScaleKernelInfo for details.
 //
 // Flag should be one of:
-//     KERNEL_NORMALIZE_NONE
-//     KERNEL_NORMALIZE_VALUE
-//     KERNEL_NORMALIZE_CORRELATE
-//     KERNEL_NORMALIZE_PERCENT
+//
+//	KERNEL_NORMALIZE_NONE
+//	KERNEL_NORMALIZE_VALUE
+//	KERNEL_NORMALIZE_CORRELATE
+//	KERNEL_NORMALIZE_PERCENT
 func (ki *KernelInfo) Scale(scale float64, normalizeType KernelNormalizeType) {
 	C.ScaleKernelInfo(ki.info, C.double(scale), C.GeometryFlags(normalizeType))
 	runtime.KeepAlive(ki)

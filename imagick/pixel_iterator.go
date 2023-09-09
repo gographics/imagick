@@ -32,21 +32,19 @@ func newPixelIterator(cpi *C.PixelIterator) *PixelIterator {
 	return pi
 }
 
-// Returns a new pixel iterator
+// NewPixelIterator Returns a new pixel iterator
 //
-// mw: the magick wand to iterate on
-//
+//	mw: the magick wand to iterate on
 func (mw *MagickWand) NewPixelIterator() *PixelIterator {
 	ret := newPixelIterator(C.NewPixelIterator(mw.mw))
 	runtime.KeepAlive(mw)
 	return ret
 }
 
-// Returns a new pixel iterator
+// NewPixelRegionIterator Returns a new pixel iterator
 //
-// mw: the magick wand to iterate on
-// x, y, cols, rows: there values define the perimeter of a region of pixels
-//
+//	mw: the magick wand to iterate on
+//	x, y, cols, rows: there values define the perimeter of a region of pixels
 func (mw *MagickWand) NewPixelRegionIterator(x, y int, width, height uint) *PixelIterator {
 	ret := newPixelIterator(C.NewPixelRegionIterator(mw.mw, C.ssize_t(x), C.ssize_t(y), C.size_t(width), C.size_t(height)))
 	runtime.KeepAlive(mw)
@@ -59,14 +57,14 @@ func (pi *PixelIterator) Clear() {
 	runtime.KeepAlive(pi)
 }
 
-// Makes an exact copy of the specified iterator.
+// Clone Makes an exact copy of the specified iterator.
 func (pi *PixelIterator) Clone() *PixelIterator {
 	ret := newPixelIterator(C.ClonePixelIterator(pi.pi))
 	runtime.KeepAlive(pi)
 	return ret
 }
 
-// Deallocates resources associated with a PixelIterator.
+// Destroy Deallocates resources associated with a PixelIterator.
 func (pi *PixelIterator) Destroy() {
 	if pi.pi == nil {
 		return
@@ -82,7 +80,7 @@ func (pi *PixelIterator) Destroy() {
 	})
 }
 
-// Returns true if the iterator is verified as a pixel iterator.
+// IsVerified Returns true if the iterator is verified as a pixel iterator.
 func (pi *PixelIterator) IsVerified() bool {
 	if pi.pi == nil {
 		return false
@@ -92,19 +90,19 @@ func (pi *PixelIterator) IsVerified() bool {
 	return ret
 }
 
-// Increase PixelIterator ref counter and set according "can`t be terminated status"
+// IncreaseCount Increase PixelIterator ref counter and set according "can`t be terminated status"
 func (pi *PixelIterator) IncreaseCount() {
 	atomic.AddInt64(&pixelIteratorCounter, int64(1))
 	unsetCanTerminate()
 }
 
-// Decrease DrawingWand ref counter and set according "can be terminated status"
+// DecreaseCount Decrease DrawingWand ref counter and set according "can be terminated status"
 func (pi *PixelIterator) DecreaseCount() {
 	atomic.AddInt64(&pixelIteratorCounter, int64(-1))
 	setCanTerminate()
 }
 
-// Returns the current row as an array of pixel wands from the pixel iterator.
+// GetCurrentIteratorRow Returns the current row as an array of pixel wands from the pixel iterator.
 func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetCurrentIteratorRow(pi.pi, &num)
@@ -122,14 +120,14 @@ func (pi *PixelIterator) GetCurrentIteratorRow() (pws []*PixelWand) {
 	return
 }
 
-// Returns the current pixel iterator row.
+// GetIteratorRow Returns the current pixel iterator row.
 func (pi *PixelIterator) GetIteratorRow() int {
 	ret := int(C.PixelGetIteratorRow(pi.pi))
 	runtime.KeepAlive(pi)
 	return ret
 }
 
-// Returns the next row as an array of pixel wands from the pixel iterator.
+// GetNextIteratorRow Returns the next row as an array of pixel wands from the pixel iterator.
 func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetNextIteratorRow(pi.pi, &num)
@@ -147,7 +145,7 @@ func (pi *PixelIterator) GetNextIteratorRow() (pws []*PixelWand) {
 	return
 }
 
-// Returns the previous row as an array of pixel wands from the pixel iterator.
+// GetPreviousIteratorRow Returns the previous row as an array of pixel wands from the pixel iterator.
 func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 	num := C.size_t(0)
 	pp := C.PixelGetPreviousIteratorRow(pi.pi, &num)
@@ -165,32 +163,32 @@ func (pi *PixelIterator) GetPreviousIteratorRow() (pws []*PixelWand) {
 	return
 }
 
-// Resets the pixel iterator. Use it in conjunction with GetNextIteratorRow()
+// Reset Resets the pixel iterator. Use it in conjunction with GetNextIteratorRow()
 // to iterate over all the pixels in a pixel container.
 func (pi *PixelIterator) Reset() {
 	C.PixelResetIterator(pi.pi)
 	runtime.KeepAlive(pi)
 }
 
-// Sets the pixel iterator to the first pixel row.
+// SetFirstIteratorRow Sets the pixel iterator to the first pixel row.
 func (pi *PixelIterator) SetFirstIteratorRow() {
 	C.PixelSetFirstIteratorRow(pi.pi)
 	runtime.KeepAlive(pi)
 }
 
-// Set the pixel iterator row.
+// SetIteratorRow Set the pixel iterator row.
 func (pi *PixelIterator) SetIteratorRow(row int) error {
 	ok := C.PixelSetIteratorRow(pi.pi, C.ssize_t(row))
 	return pi.getLastErrorIfFailed(ok)
 }
 
-// Sets the pixel iterator to the last pixel row.
+// SetLastIteratorRow Sets the pixel iterator to the last pixel row.
 func (pi *PixelIterator) SetLastIteratorRow() {
 	C.PixelSetLastIteratorRow(pi.pi)
 	runtime.KeepAlive(pi)
 }
 
-// Syncs the pixel iterator.
+// SyncIterator Syncs the pixel iterator.
 func (pi *PixelIterator) SyncIterator() error {
 	ok := C.PixelSyncIterator(pi.pi)
 	return pi.getLastErrorIfFailed(ok)

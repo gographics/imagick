@@ -20,7 +20,7 @@ func TestKernelInfo(t *testing.T) {
 		kernel string
 		size   int
 	}{
-		{"Laplacian:2", 3},                                      // Laplacian
+		{"Laplacian:2", 3}, // Laplacian
 		{"3x3: 0.0, 0.5, 0.0, 0.5, 1.0, 0.5, 0.0, 0.5, 0.0", 3}, // spread
 		{"0.0 0.5 0.0 0.5 1.0 0.5 0.0 0.5 0.0", 3},              // old
 	}
