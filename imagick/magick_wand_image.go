@@ -2289,6 +2289,17 @@ func (mw *MagickWand) AutoOrientImage() error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// AutoThresholdImage automatically performs image thresholding
+// dependent on which method you specify.
+//
+// A description of each parameter follows:
+//
+//	method: choose from Kapur, OTSU, or Triangle.
+func (mw *MagickWand) AutoThresholdImage(method AutoThresholdMethodType) error {
+	ok := C.MagickAutoThresholdImage(mw.mw, C.AutoThresholdMethod(method))
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // SetImagePage Sets the page geometry of the image.
 func (mw *MagickWand) SetImagePage(width, height uint, x, y int) error {
 	ok := C.MagickSetImagePage(mw.mw, C.size_t(width), C.size_t(height), C.ssize_t(x), C.ssize_t(y))
