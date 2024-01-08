@@ -35,6 +35,8 @@ jobs:
   test_windows:
     name: Test ImageMagick7 windows
     runs-on: windows-latest
+    env:
+      IMAGEMAGICK7_VERSION: ${{ vars.IMAGEMAGICK7_VERSION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -54,7 +56,7 @@ jobs:
             base-devel 
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-imagemagick-${{ vars.IMAGEMAGICK7_VERSION }}
+            mingw-w64-x86_64-imagemagick-${IMAGEMAGICK7_VERSION}
 
       - name: Install deps
         shell: msys2 {0}
