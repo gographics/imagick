@@ -22,7 +22,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Test
         run: |
@@ -37,12 +37,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Setup go
-        uses: actions/setup-go@v4.0.1
+        uses: actions/setup-go@v4
         with:
           go-version: 1.20.6
 
@@ -53,22 +53,23 @@ jobs:
           install: >-
             base-devel 
             mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-pkgconf
 
       - name: Setup ImageMagick
         shell: msys2 {0}
         run: |
             pacman --noconfirm -S mingw-w64-x86_64-imagemagick
 
-      - name: Install deps
+      - name: Check deps
         shell: msys2 {0}
         run: |
           /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
           pkg-config --cflags --libs MagickWand
-          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 convert -list configure
+          set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7
+          convert -list configure
 
       - name: Test
         shell: msys2 {0}
         run: >
-          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
+          set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
           /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe test -v ./imagick 
