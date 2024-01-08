@@ -61,6 +61,7 @@ jobs:
             pacman --noconfirm -S mingw-w64-x86_64-imagemagick
             pkg-config --cflags --libs MagickWand
             set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys64/mingw64/etc/ImageMagick-7
+            set MAGICK_CODER_MODULE_PATH=/d/a/_temp/msys64/mingw64/lib/ImageMagick-7.1.1/modules-Q16HDRI/coders
             convert -list configure
             ls /d/a/_temp/msys64/mingw64/etc/ImageMagick-7
             ls /d/a/_temp/msys64/mingw64/lib
@@ -68,6 +69,7 @@ jobs:
       - name: Test
         shell: msys2 {0}
         run: |
-          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
           set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys64/mingw64/etc/ImageMagick-7 
+          set MAGICK_CODER_MODULE_PATH=/d/a/_temp/msys64/mingw64/lib/ImageMagick-7.1.1/modules-Q16HDRI/coders
+          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
           /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe test -v ./imagick 
