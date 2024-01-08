@@ -54,7 +54,11 @@ jobs:
             base-devel 
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-imagemagick-7.0.9-12
+
+      - name: Setup ImageMagick
+        shell: msys2 {0}
+        run: |
+            pacman --noconfirm -U ./.github/workflows/testfiles/mingw-w64-x86_64-imagemagick-7.1.0.29-1-any.pkg.tar.zst
 
       - name: Install deps
         shell: msys2 {0}
