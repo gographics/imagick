@@ -60,9 +60,8 @@ jobs:
         run: |
             pacman --noconfirm -S mingw-w64-x86_64-imagemagick
             pkg-config --cflags --libs MagickWand
-            set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7
+            set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys64/mingw64/etc/ImageMagick-7
             convert -list configure
-            ls /d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7
             ls /d/a/_temp/msys64/mingw64/etc/ImageMagick-7
             ls /d/a/_temp/msys64/mingw64/lib
 
@@ -70,5 +69,5 @@ jobs:
         shell: msys2 {0}
         run: |
           /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
-          set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
+          set MAGICK_CONFIGURE_PATH=/d/a/_temp/msys64/mingw64/etc/ImageMagick-7 
           /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe test -v ./imagick 
