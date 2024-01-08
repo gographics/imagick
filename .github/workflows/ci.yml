@@ -58,7 +58,7 @@ jobs:
       - name: Setup ImageMagick
         shell: msys2 {0}
         run: |
-            pacman --noconfirm -SU mingw-w64-x86_64-imagemagick
+            pacman --noconfirm -S mingw-w64-x86_64-imagemagick
 
       - name: Install deps
         shell: msys2 {0}
