@@ -70,8 +70,8 @@ jobs:
           IM_BASE=/d/a/_temp/msys64/mingw64
           export MAGICK_CONFIGURE_PATH=$IM_BASE/etc/ImageMagick-7 
           export MAGICK_CODER_MODULE_PATH=$IM_BASE/lib/ImageMagick-7.1.1/modules-Q16HDRI/coders
-          export PATH=$IM_BASE/bin:$PATH
+          export PATH=$IM_BASE/bin:/c/hostedtoolcache/windows/go/1.20.6/x64/bin:$PATH
           export PKG_CONFIG_PATH=$IM_BASE/lib/pkgconfig
           which go
-          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe env
-          /c/hostedtoolcache/windows/go/1.20.6/x64/bin/go.exe test -v ./imagick 
+          go env
+          go test ./imagick 
