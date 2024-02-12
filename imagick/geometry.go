@@ -13,6 +13,13 @@ func ParseGeometry(geometry string, info *GeometryInfo) uint {
 	return uint(flags)
 }
 
+func ParseAbsoluteGeometry(geometry string, info *RectangleInfo) uint {
+	var gi C.RectangleInfo
+	flags := C.ParseAbsoluteGeometry(C.CString(geometry), &gi)
+	*info = *newRectangleInfo(&gi)
+	return uint(flags)
+}
+
 func ParseMetaGeometry(geometry string, x *int, y *int, width *uint, height *uint) uint {
 	var info C.RectangleInfo
 
