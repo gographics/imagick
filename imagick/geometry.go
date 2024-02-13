@@ -43,3 +43,25 @@ func (mw *MagickWand) ParseGravityGeometry(geometry string, rect *RectangleInfo,
 	*exception = *newExceptionInfo(&ex)
 	return uint(flags)
 }
+
+func (mw *MagickWand) ParsePageGeometry(geometry string, rect *RectangleInfo, exception *ExceptionInfo) uint {
+	var info C.RectangleInfo
+	var ex C.ExceptionInfo
+
+	image := C.GetImageFromMagickWand(mw.mw)
+	flags := C.ParsePageGeometry(image, C.CString(geometry), &info, &ex)
+	*rect = *newRectangleInfo(&info)
+	*exception = *newExceptionInfo(&ex)
+	return uint(flags)
+}
+
+func (mw *MagickWand) ParseRegionGeometry(geometry string, rect *RectangleInfo, exception *ExceptionInfo) uint {
+	var info C.RectangleInfo
+	var ex C.ExceptionInfo
+
+	image := C.GetImageFromMagickWand(mw.mw)
+	flags := C.ParseRegionGeometry(image, C.CString(geometry), &info, &ex)
+	*rect = *newRectangleInfo(&info)
+	*exception = *newExceptionInfo(&ex)
+	return uint(flags)
+}
