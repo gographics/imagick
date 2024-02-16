@@ -11,4 +11,4 @@ import "C"
 
 type Quantum C.Quantum
 
-//const QUANTUM_RANGE = C.QuantumRange
+const QUANTUM_RANGE = C.QuantumRange

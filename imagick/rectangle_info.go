@@ -10,5 +10,21 @@ package imagick
 import "C"
 
 type RectangleInfo struct {
-	info *C.RectangleInfo
+	X      int
+	Y      int
+	Width  uint
+	Height uint
+}
+
+// Create a new RectangleInfo wrapper around a C RectangleInfo ptr
+func newRectangleInfo(rectInfo *C.RectangleInfo) *RectangleInfo {
+	if rectInfo == nil {
+		return nil
+	}
+	return &RectangleInfo{
+		X:      int(rectInfo.x),
+		Y:      int(rectInfo.y),
+		Width:  uint(rectInfo.width),
+		Height: uint(rectInfo.height),
+	}
 }

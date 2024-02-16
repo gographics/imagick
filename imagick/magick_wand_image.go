@@ -2450,7 +2450,7 @@ func (mw *MagickWand) SimilarityImage(reference *MagickWand, metric MetricType,
 		&rectInfo, (*C.double)(&similarity))
 
 	runtime.KeepAlive(reference)
-	return &RectangleInfo{&rectInfo}, similarity, newMagickWand(mwarea)
+	return newRectangleInfo(&rectInfo), similarity, newMagickWand(mwarea)
 }
 
 // SketchImage Simulates a pencil sketch. We convolve the image with a Gaussian operator
