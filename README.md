@@ -32,7 +32,7 @@ See [examples/docker](examples/docker)
 ### MacPorts
 
 ```
-sudo port install ImageMagick
+brew install imagemagick
 ```
 
 ## Ubuntu / Debian
