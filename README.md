@@ -29,10 +29,8 @@ See [examples/docker](examples/docker)
 
 ## Mac OS X
 
-### MacPorts
-
 ```
-sudo port install ImageMagick
+brew install imagemagick
 ```
 
 ## Ubuntu / Debian
