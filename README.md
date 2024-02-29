@@ -29,8 +29,6 @@ See [examples/docker](examples/docker)
 
 ## Mac OS X
 
-### MacPorts
-
 ```
 brew install imagemagick
 ```
