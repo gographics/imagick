@@ -129,6 +129,9 @@ func (mw *MagickWand) QueryFontMetrics(dw *DrawingWand, textLine string) *FontMe
 	cstext := C.CString(textLine)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryFontMetrics(mw.mw, dw.dw, cstext)
+	if err := mw.GetLastError(); err != nil {
+		return nil
+	}
 	runtime.KeepAlive(mw)
 	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cdoubles))
@@ -141,6 +144,9 @@ func (mw *MagickWand) QueryMultilineFontMetrics(dw *DrawingWand, textParagraph s
 	cstext := C.CString(textParagraph)
 	defer C.free(unsafe.Pointer(cstext))
 	cdoubles := C.MagickQueryMultilineFontMetrics(mw.mw, dw.dw, cstext)
+	if err := mw.GetLastError(); err != nil {
+		return nil
+	}
 	runtime.KeepAlive(mw)
 	runtime.KeepAlive(dw)
 	defer relinquishMemory(unsafe.Pointer(cdoubles))
