@@ -942,6 +942,9 @@ func (mw *MagickWand) GetImageBlob() []byte {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImageBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
+	if err := mw.GetLastError(); err != nil {
+		return nil
+	}
 	ret := C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 	runtime.KeepAlive(mw)
 	return ret
@@ -957,6 +960,9 @@ func (mw *MagickWand) GetImagesBlob() []byte {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImagesBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
+	if err := mw.GetLastError(); err != nil {
+		return nil
+	}
 	runtime.KeepAlive(mw)
 	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 }
