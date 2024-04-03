@@ -101,6 +101,24 @@ func TestQueryFonts(t *testing.T) {
 	}
 }
 
+func TestQueryFontMetrics(t *testing.T) {
+	Initialize()
+	defer func(t *testing.T) {
+		checkGC(t)
+	}(t)
+	defer Terminate()
+
+	mw := NewMagickWand()
+	// Create an empty wand. Don't ready anything.
+	//if err := mw.ReadImage("xc:black"); err != nil {
+	//	panic(err)
+	//}
+	fonts := mw.QueryFontMetrics(NewDrawingWand(), "")
+	if fonts != nil {
+		t.Fatal("Expected a nil FontMetrics when passing a bad MagickWand")
+	}
+}
+
 func TestQueryFormats(t *testing.T) {
 	Initialize()
 	defer func(t *testing.T) {
