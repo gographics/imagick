@@ -475,18 +475,18 @@ func (mw *MagickWand) CropImageToTiles(cropGeom string) error {
 
 	defer C.MagickDestroyImage(newImg)
 
-	newWand := NewMagickWandFromImage(&Image{newImg})
-	defer newWand.Destroy()
-
-	if err := mw.AddImage(newWand); err != nil {
-		return fmt.Errorf("error replacing image: %v", err)
-	}
-
-	mw.PreviousImage()
-
 	if err := mw.RemoveImage(); err != nil {
 		return fmt.Errorf("error removing current image: %v", err)
 	}
+
+	for next := newImg; next != nil; next = C.GetNextImageInList(next) {
+		tempWand := NewMagickWandFromImage(&Image{next})
+		if err := mw.AddImage(tempWand); err != nil {
+			return fmt.Errorf("error replacing image: %v", err)
+		}
+		tempWand.Destroy()
+	}
+	mw.SetFirstIterator()
 
 	runtime.KeepAlive(mw)
 	runtime.KeepAlive(img)
