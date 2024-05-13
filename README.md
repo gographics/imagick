@@ -184,7 +184,7 @@ func main() {
 }
 ```
 
-Calling `Destroy()` on types that are either created via `New*` or returned from other functions calls forces the cleanup of the item immediately as opposed to later after garbage collection triggers the finalizer for the object. It would be good practice to explicitely call `Destroy()` to ensure C memory is freed sooner rather than later, depending on how often the GC is triggered.
+Calling `Destroy()` on types that are either created via `New*` or returned from other functions calls forces the cleanup of the item immediately as opposed to later after garbage collection triggers the finalizer for the object. It would be good practice to explicitly call `Destroy()` to ensure C memory is freed sooner rather than later, depending on how often the GC is triggered.
 
 # License
 
