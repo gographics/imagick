@@ -468,12 +468,6 @@ func (mw *MagickWand) SetPointsize(pointSize float64) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
-// SetResourceLimit Sets the limit for a particular resource in megabytes.
-func (mw *MagickWand) SetResourceLimit(rtype ResourceType, limit int64) error {
-	ok := C.MagickSetResourceLimit(C.ResourceType(rtype), C.MagickSizeType(limit))
-	return mw.getLastErrorIfFailed(ok)
-}
-
 // SetResolution Sets the image resolution.
 func (mw *MagickWand) SetResolution(xRes, yRes float64) error {
 	ok := C.MagickSetResolution(mw.mw, C.double(xRes), C.double(yRes))
