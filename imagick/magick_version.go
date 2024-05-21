@@ -5,10 +5,25 @@
 package imagick
 
 /*
+#include <MagickCore/MagickCore.h>
 #include <MagickWand/MagickWand.h>
 */
 import "C"
 import "unsafe"
+
+// Returns the ImageMagick delegates as a string constant.
+func GetDelegates() (delegates string) {
+	csdelegates := C.GetMagickDelegates()
+
+	return C.GoString(csdelegates)
+}
+
+// Returns the ImageMagick features as a string constant.
+func GetFeatures() (features string) {
+	csfeatures := C.GetMagickFeatures()
+
+	return C.GoString(csfeatures)
+}
 
 // Returns the ImageMagick API copyright as a string constant.
 func GetCopyright() string {
