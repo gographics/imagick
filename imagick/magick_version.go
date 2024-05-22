@@ -12,17 +12,15 @@ import "C"
 import "unsafe"
 
 // Returns the ImageMagick delegates as a string constant.
-func GetDelegates() (delegates string) {
-	csdelegates := C.GetMagickDelegates()
-
-	return C.GoString(csdelegates)
+func GetDelegates() string {
+	cstr := C.GetMagickDelegates()
+	return C.GoString(cstr)
 }
 
 // Returns the ImageMagick features as a string constant.
-func GetFeatures() (features string) {
-	csfeatures := C.GetMagickFeatures()
-
-	return C.GoString(csfeatures)
+func GetFeatures() string {
+	cstr := C.GetMagickFeatures()
+	return C.GoString(cstr)
 }
 
 // Returns the ImageMagick API copyright as a string constant.
