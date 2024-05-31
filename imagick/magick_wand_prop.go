@@ -133,13 +133,20 @@ func (mw *MagickWand) GetImageArtifacts(pattern string) (artifacts []string) {
 //
 //	name: Name of profile to return: ICC, IPTC, or generic profile.
 func (mw *MagickWand) GetImageProfile(name string) string {
+	return string(mw.GetImageProfileBytes(name))
+}
+
+// GetImageProfileBytes returns the named image profile.
+//
+//	name: Name of profile to return: ICC, IPTC, or generic profile.
+func (mw *MagickWand) GetImageProfileBytes(name string) []byte {
 	csname := C.CString(name)
 	defer C.free(unsafe.Pointer(csname))
-	szlen := C.size_t(0)
-	csprofile := C.MagickGetImageProfile(mw.mw, csname, &szlen)
+	clen := C.size_t(0)
+	profile := C.MagickGetImageProfile(mw.mw, csname, &clen)
 	runtime.KeepAlive(mw)
-	defer relinquishMemory(unsafe.Pointer(csprofile))
-	return C.GoStringN((*C.char)((unsafe.Pointer)(csprofile)), C.int(szlen))
+	defer relinquishMemory(unsafe.Pointer(profile))
+	return C.GoBytes(unsafe.Pointer(profile), C.int(clen))
 }
 
 // GetImageProfiles Returns all the profile names that match the specified pattern associated
