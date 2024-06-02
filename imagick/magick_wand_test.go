@@ -234,7 +234,7 @@ func TestReadImageBlob(t *testing.T) {
 	mw := NewMagickWand()
 
 	// Try to read an empty wand
-	blob := mw.GetImageBlob()
+	blob, _ := mw.GetImageBlob()
 	if blob != nil {
 		t.Fatal("Expected nil blob on invalid wand")
 	}
@@ -246,7 +246,10 @@ func TestReadImageBlob(t *testing.T) {
 	}
 
 	mw.ReadImage(`logo:`)
-	blob = mw.GetImageBlob()
+	blob, err := mw.GetImageBlob()
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// Read a valid blob
 	if err := mw.ReadImageBlob(blob); err != nil {
