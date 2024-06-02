@@ -937,16 +937,16 @@ func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) 
 // position in the image sequence. Use SetImageFormat() to set the format to
 // write to the blob (GIF, JPEG, PNG, etc.). Utilize ResetIterator() to ensure
 // the write is from the beginning of the image sequence.
-func (mw *MagickWand) GetImageBlob() []byte {
+func (mw *MagickWand) GetImageBlob() ([]byte, error) {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImageBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
 	if err := mw.GetLastError(); err != nil {
-		return nil
+		return nil, err
 	}
 	ret := C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 	runtime.KeepAlive(mw)
-	return ret
+	return ret, nil
 }
 
 // GetImagesBlob Implements direct to memory image formats. It returns the image sequence
@@ -955,15 +955,16 @@ func (mw *MagickWand) GetImageBlob() []byte {
 // format, use SetImageFormat(). Note, some image formats do not permit
 // multiple images to the same image stream (e.g. JPEG). in this instance,
 // just the first image of the sequence is returned as a blob.
-func (mw *MagickWand) GetImagesBlob() []byte {
+func (mw *MagickWand) GetImagesBlob() ([]byte, error) {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImagesBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
 	if err := mw.GetLastError(); err != nil {
-		return nil
+		return nil, err
 	}
+	ret := C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 	runtime.KeepAlive(mw)
-	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
+	return ret, nil
 }
 
 // GetImageBluePrimary Returns the chromaticy blue primary point for the image.
