@@ -1085,39 +1085,39 @@ func (mw *MagickWand) GetImageBackgroundColor() (bgColor *PixelWand, err error) 
 	return cbgcolor, mw.getLastErrorIfFailed(ok)
 }
 
-// Implements direct to memory image formats. It returns the image as a blob
+// GetImageBlob implements direct to memory image formats. It returns the image as a blob
 // (a formatted "file" in memory) and its length, starting from the current
 // position in the image sequence. Use SetImageFormat() to set the format to
 // write to the blob (GIF, JPEG, PNG, etc.). Utilize ResetIterator() to ensure
 // the write is from the beginning of the image sequence.
-func (mw *MagickWand) GetImageBlob() []byte {
+func (mw *MagickWand) GetImageBlob() ([]byte, error) {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImageBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
 	if err := mw.GetLastError(); err != nil {
-		fmt.Println("DEBUG: GetImageBlob ERR:", err.Error())
-		return nil
+		return nil, err
 	}
 	ret := C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 	runtime.KeepAlive(mw)
-	return ret
+	return ret, nil
 }
 
-// Implements direct to memory image formats. It returns the image sequence
+// GetImagesBlob implements direct to memory image formats. It returns the image sequence
 // as a blob and its length. The format of the image determines the format of
 // the returned blob (GIF, JPEG, PNG, etc.). To return a different image
 // format, use SetImageFormat(). Note, some image formats do not permit
 // multiple images to the same image stream (e.g. JPEG). in this instance,
 // just the first image of the sequence is returned as a blob.
-func (mw *MagickWand) GetImagesBlob() []byte {
+func (mw *MagickWand) GetImagesBlob() ([]byte, error) {
 	clen := C.size_t(0)
 	csblob := C.MagickGetImagesBlob(mw.mw, &clen)
 	defer relinquishMemory(unsafe.Pointer(csblob))
 	if err := mw.GetLastError(); err != nil {
-		return nil
+		return nil, err
 	}
+	ret := C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
 	runtime.KeepAlive(mw)
-	return C.GoBytes(unsafe.Pointer(csblob), C.int(clen))
+	return ret, nil
 }
 
 // Returns the chromaticy blue primary point for the image.

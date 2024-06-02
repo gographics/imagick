@@ -29,13 +29,22 @@ func (mw *MagickWand) clearException() bool {
 	return 1 == C.int(C.MagickClearException(mw.mw))
 }
 
-// Returns the kind, reason and description of any error that occurs when using other methods in this API
+// GetLastError returns the kind, reason and description of any error that occurs when using other methods in this API.
+// The exception is cleared after this call.
 func (mw *MagickWand) GetLastError() error {
+	return mw.getLastError(true)
+}
+
+// Returns the kind, reason and description of any error that occurs when using other methods in this API.
+// Clears the exception, if clear is true.
+func (mw *MagickWand) getLastError(clear bool) error {
 	var et C.ExceptionType
 	csdescription := C.MagickGetException(mw.mw, &et)
 	defer relinquishMemory(unsafe.Pointer(csdescription))
 	if ExceptionType(et) != EXCEPTION_UNDEFINED {
-		mw.clearException()
+		if clear {
+			mw.clearException()
+		}
 		return &MagickWandException{ExceptionType(C.int(et)), C.GoString(csdescription)}
 	}
 	runtime.KeepAlive(mw)
