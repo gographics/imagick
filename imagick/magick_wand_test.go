@@ -197,7 +197,7 @@ func TestReadImageBlob(t *testing.T) {
 
 	mw.ReadImage(`logo:`)
 	blob, err := mw.GetImageBlob()
-	if err == nil {
+	if err != nil {
 		t.Fatal(err)
 	}
 
