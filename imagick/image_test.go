@@ -6,8 +6,7 @@ package imagick
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -43,14 +42,11 @@ func ExampleConvertImageCommand() {
 }
 
 func TestConvertImageCommand(t *testing.T) {
-	tmp, err := ioutil.TempFile("", "imagick_test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove(tmp.Name())
+	dir := t.TempDir()
+	tfile := filepath.Join(dir, "imagick_test.jpg")
 
 	ret, err := ConvertImageCommand([]string{
-		"convert", "logo:", "-resize", "100x100", tmp.Name(),
+		"convert", "logo:", "-resize", "100x100", tfile,
 	})
 	if err != nil {
 		t.Fatalf("command failed: %v", err)
