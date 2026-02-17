@@ -20,9 +20,10 @@ jobs:
     # We want to run on external PRs, but not on our own internal PRs as they'll be run
     # by the push to the branch.
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Test
         run: |
@@ -35,23 +36,24 @@ jobs:
   test_windows:
     name: Test ImageMagick7 windows
     runs-on: windows-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Setup go
-        uses: actions/setup-go@v4.0.1
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.23.0
+          go-version: '1.23.0'
 
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
           update: true
           install: >-
-            base-devel 
+            base-devel
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-pkg-config
             mingw-w64-x86_64-imagemagick
@@ -61,10 +63,11 @@ jobs:
         run: |
           /c/hostedtoolcache/windows/go/1.23.0/x64/bin/go.exe env
           pkg-config --cflags --libs MagickWand
-          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 convert -list configure
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 \
+            convert -list configure
 
       - name: Test
         shell: msys2 {0}
-        run: >
-          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 
-          /c/hostedtoolcache/windows/go/1.23.0/x64/bin/go.exe test -v ./imagick 
+        run: |
+          MAGICK_CONFIGURE_PATH=/d/a/_temp/msys/msys64/mingw64/etc/ImageMagick-7 \
+            /c/hostedtoolcache/windows/go/1.23.0/x64/bin/go.exe test -v ./imagick

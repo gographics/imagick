@@ -6,8 +6,8 @@ package imagick
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
+	"path/filepath"
 	"reflect"
 	"runtime"
 	"sync/atomic"
@@ -206,20 +206,22 @@ func TestReadImageFile(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	tmp, err := ioutil.TempFile("", "imagick_test-*.jpg")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove(tmp.Name())
+	dir := t.TempDir()
+	tfile := filepath.Join(dir, "imagick_test.jpg")
 
-	if err := mw.WriteImage(tmp.Name()); err != nil {
+	if err := mw.WriteImage(tfile); err != nil {
 		t.Fatal(err)
 	}
 	mw.Destroy()
 
 	mw = NewMagickWand()
 	defer mw.Destroy()
-	if err := mw.ReadImageFile(tmp); err != nil {
+	fh, err := os.Open(tfile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fh.Close()
+	if err := mw.ReadImageFile(fh); err != nil {
 		t.Fatal(err)
 	}
 }
