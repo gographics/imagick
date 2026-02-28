@@ -232,6 +232,20 @@ func (mw *MagickWand) ChopImage(width, height uint, x, y int) error {
 	return mw.getLastErrorIfFailed(ok)
 }
 
+// CLAHEImage is a variant of adaptive histogram equalization in which the contrast amplification is limited,
+// so as to reduce this problem of noise amplification.
+//
+//	width:	the width of the tile divisions to use in horizontal direction
+//	height:	the height of the tile divisions to use in vertical direction
+//	numberBins: number of bins for histogram ("dynamic range") (usually 256).
+//	clipLimit:	contrast limit for localised changes in contrast. A limit less than 1 results in standard
+//		non-contrast limited AHE
+
+func (mw *MagickWand) CLAHEImage(width, height uint, numberBins, clipLimit float64) error {
+	ok := C.MagickCLAHEImage(mw.mw, C.size_t(width), C.size_t(height), C.double(numberBins), C.double(clipLimit))
+	return mw.getLastErrorIfFailed(ok)
+}
+
 // ClampImage Restricts the color range from 0 to the quantum depth
 func (mw *MagickWand) ClampImage() error {
 	ok := C.MagickClampImage(mw.mw)
